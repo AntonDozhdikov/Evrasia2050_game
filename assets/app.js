@@ -66,6 +66,12 @@ const metricExplanations={
  mean_reward:'Внутренняя оценка действий алгоритмом. Это не прибыль и не общественное благосостояние; использовать ее как единственную меру успеха нельзя.',
  network_strength:'Условный индекс межгосударственной связности внутри модели. Он отличается от исторической схемы торговли за 2024 год.'
 };
+const policyExplanations={
+ MAPPO_GREEDY:'ИИ выбирает наиболее вероятное действие обученной политики для каждого государства. Это не означает, что действие обязательно самое выгодное.',
+ MAPPO:'ИИ выбирает действия с учетом их вероятностей; при сходных условиях решения могут различаться между расчетами.',
+ BARGAIN:'Все страны действуют по заранее установленным правилам переговоров, инвестиций и сотрудничества. Это контрольный вариант для сравнения.',
+ NEUTRAL:'Государства сохраняют преимущественно нейтральные решения и не выдвигают новые крупные инициативы. Это контрольная стратегия.'
+};
 const scenarioQuestions={
  S01:'Как отличаются решения стран при изменении условий сырьевых рынков?',
  S02:'Какие стратегии сохраняют ресурсы и позволяют продолжать сотрудничество при финансовых ограничениях?',
@@ -126,7 +132,7 @@ function renderScenario(){
  const items=[['Действующие соглашения',x.agreements],['Проекты, достигшие отдачи за год',x.projects_matured],['Чистая отдача проектов, условные единицы',x.project_benefit_current-x.project_cash_out],['Индекс связей, условный',x.network_strength],['Доступный капитал, условные единицы',x.capital_budget_total],['Оценка политики внутри модели',x.mean_reward]];
  $('reportMetrics').innerHTML=items.map(([k,v])=>`<div><span>${safe(k)}</span><strong>${fmt(v,2)}</strong></div>`).join('');
 }
-function render(){ $('selectedYear').textContent=state.year;$('year').value=state.year;renderStats();renderChart();renderNetwork();renderCountry();renderScenario();}
+function render(){ $('policyExplanation').textContent=policyExplanations[state.policy]; $('selectedYear').textContent=state.year;$('year').value=state.year;renderStats();renderChart();renderNetwork();renderCountry();renderScenario();}
 function download(name,text,mime){let url=URL.createObjectURL(new Blob([text],{type:mime}));let a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
 function downloadJSON(){download(`eurasia_${state.scenario}_${state.policy}_${state.seed}_${state.year}.json`,JSON.stringify({manifest:D.manifest,snapshot:current(),origin:'V4.7 archived trajectory, not newly calculated'},null,2),'application/json;charset=utf-8');}
 function downloadCSV(){download(`eurasia_${state.scenario}_${state.policy}_${state.seed}_2025-2050.csv`,'\ufeff'+M.exportCsv(D,state.scenario,state.policy,state.seed),'text/csv;charset=utf-8');}
