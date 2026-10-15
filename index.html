@@ -26,7 +26,7 @@
         <label>Вариант расчета <select id="seed" aria-label="Вариант расчета"></select></label>
       </div>
       <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
-      <p class="controls-note">Все варианты взяты из завершенного вычислительного эксперимента. Изменение настроек переключает сохраненные сценарии, а не запускает новый расчет.</p>
+      <p class="controls-note" id="policyExplanation">Выбранная стратегия определяет, как в каждом году принимаются решения восьми государств.</p><p class="controls-note">При выборе варианта открываются уже сохраненные расчеты. Новые решения здесь пока не рассчитываются.</p>
     </section>
     <section class="stat-grid" aria-label="Результаты выбранного года">
       <article class="stat"><div class="stat-label">Средний рост ВВП <span>8 стран, результат модели</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
