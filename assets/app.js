@@ -28,7 +28,7 @@ function pause(){if(timer){clearInterval(timer);timer=null;}$('play').textConten
 function updateStat(id,deltaId,v,other,suffix='',digits=1){
  $(id).textContent=fmt(v,digits)+suffix;
  let diff=Number(v)-Number(other);
- $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${suffix}</span> к ${safe(state.compare)}`;
+ $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${suffix}</span> к ${safe(M.policyNames[state.compare])}`;
 }
 function renderStats(){let x=current().values,y=compare().values;
  updateStat('growth','growth-delta',x.mean_growth_pct,y.mean_growth_pct,'%',2);
@@ -46,30 +46,84 @@ function renderChart(){
  const grids=Array.from({length:5},(_,i)=>{let v=low+i*(high-low)/4,yy=Y(v);return `<line x1="${p.l}" y1="${yy}" x2="${w-p.r}" y2="${yy}" stroke="#e3e9f0"/><text x="${p.l-12}" y="${yy+4}" font-size="12" fill="#718095" text-anchor="end">${fmt(state.metric==='trade_usd_total'?v/1e9:v,1)}</text>`;}).join('');
  const labels=[2025,2030,2035,2040,2045,2050].map(v=>`<text x="${X(v-2025)}" y="${h-13}" text-anchor="middle" fill="#718095" font-size="12">${v}</text>`).join('');
  $('chart').innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Динамика ${safe(state.metric)}"><g>${grids}${labels}${hl}${makeLine(b,'#d44f5d')}${makeLine(a,'#2362c6')}</g><circle cx="${X(ix)}" cy="${Y(a[ix].value)}" r="6" fill="#2362c6" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.policy])}: ${fmt(a[ix].value,3)}</title></circle><circle cx="${X(ix)}" cy="${Y(b[ix].value)}" r="5" fill="#d44f5d" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.compare])}: ${fmt(b[ix].value,3)}</title></circle></svg>`;
- $('legendPrimary').textContent=M.policyNames[state.policy];$('legendCompare').textContent=M.policyNames[state.compare];
+ $('legendPrimary').textContent=M.policyNames[state.policy];$('legendCompare').textContent=M.policyNames[state.compare]; $('metricExplanation').textContent=metricExplanations[state.metric]+' Синяя линия — выбранная стратегия, красная — сравниваемая. Это условные результаты модели.';
 }
 const positions={RUS:[255,75],BLR:[110,122],KAZ:[312,186],KGZ:[205,260],UZB:[295,293],TJK:[385,283],TKM:[380,218],ARM:[87,246]};
+const actionLevels=[
+ ['Диверсифицировать торговлю','Сохранить торговые условия','Углублять региональную торговлю'],
+ ['Накапливать резервы','Умеренные инвестиции','Предлагать совместные проекты'],
+ ['Сохранять автономию','Вести переговоры','Выдвигать институциональные инициативы'],
+ ['Минимальная защита от кризисов','Умеренная защита','Усиленная защита'],
+ ['Ориентация на внешние рынки','Работа с действующими партнерами','Развитие регионального партнерства'],
+ ['Сохранять ограничения','Сохранять действующие условия','Развивать согласованную трудовую мобильность']
+];
+const metricExplanations={
+ mean_growth_pct:'Средний модельный темп роста ВВП восьми стран за год, в процентах.',
+ new_projects:'Количество новых совместных проектов, согласованных странами за год. Запуск проекта не означает немедленного дохода.',
+ projects_matured:'Сколько ранее начатых проектов достигли стадии отдачи за год. В модели она появляется с задержкой.',
+ trade_usd_total:'Сумма моделируемых экспортных потоков между странами, показанная в млрд долларов; это не исторические данные 2025–2050 годов.',
+ capital_budget_total:'Суммарный доступный капитал восьми государств в условных единицах расчетной модели.',
+ mean_reward:'Внутренняя оценка действий алгоритмом. Это не прибыль и не общественное благосостояние; использовать ее как единственную меру успеха нельзя.',
+ network_strength:'Условный индекс межгосударственной связности внутри модели. Он отличается от исторической схемы торговли за 2024 год.'
+};
+const scenarioQuestions={
+ S01:'Как отличаются решения стран при изменении условий сырьевых рынков?',
+ S02:'Какие стратегии сохраняют ресурсы и позволяют продолжать сотрудничество при финансовых ограничениях?',
+ S03:'Как меняются торговля и совместные проекты при перестройке торговых связей?',
+ S04:'Что происходит с проектами, когда меняются инвестиционные условия?',
+ S05:'Как страны ведут переговоры и заключают соглашения при разных стратегиях?',
+ S06:'Какие различия возникают в координации и числе соглашений?',
+ S07:'Как распределяются результаты совместных решений между участниками?',
+ S08:'Как меняются число и отдача совместных инвестиционных проектов?',
+ S09:'Как сочетаются экономические решения и выбор политики трудовой мобильности?',
+ S10:'Как стратегии реагируют на сценарий, связанный с водными ресурсами?',
+ S11:'Как ведут себя страны в условиях развития транспортных коридоров?',
+ S12:'Чем различаются решения при сценарии энергетической интеграции?',
+ S13:'Как стратегии ведут себя при изменении мировой торговли?',
+ S14:'Какие решения принимают государства при внешних финансовых ограничениях?',
+ S15:'Как страны реагируют на условия технологических изменений?',
+ S16:'Что происходит при появлении новых рыночных возможностей?',
+ S17:'Как стратегии проходят несколько последовательных кризисных воздействий?',
+ S18:'Что происходит, когда несколько неблагоприятных воздействий накладываются друг на друга?',
+ S19:'Какие решения сохраняются при длительном периоде адаптации?',
+ S20:'Как в условиях стрессового сценария меняются действия государств и их сотрудничество?'
+};
+function availableFlows(){return D.trade2024.filter(([a,b,v,observed])=>a!==b&&Boolean(observed)&&v!=null&&Number.isFinite(Number(v))&&v>0);}
+function tradeAmount(usd){if(usd>=1e9)return fmt(usd/1e9,2)+' млрд $';if(usd>=1e6)return fmt(usd/1e6,1)+' млн $';return fmt(usd/1e3,0)+' тыс. $';}
 function renderNetwork(){
- let edges=[];for(let r of D.trade2024){const [a,b,v,observed]=r;if(!observed||!v||a===b)continue;const key=[a,b].sort().join('–');let e=edges.find(x=>x.key===key);if(!e){e={key,a,b,total:0};edges.push(e);}e.total+=v;}
- edges.sort((a,b)=>a.total-b.total);
- let lines=edges.map(e=>{let [ax,ay]=positions[e.a],[bx,by]=positions[e.b];return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="#94afcf" stroke-width="${Math.min(8,1+Math.log10(1+e.total)/2.5).toFixed(1)}" stroke-opacity="0.21"/>`}).join('');
- const nodes=D.countries.map(c=>{let [x,y]=positions[c],is=c===state.country;return `<g class="network-node" tabindex="0" role="button" aria-label="${safe(M.countryNames[c])}" data-country="${c}"><circle cx="${x}" cy="${y}" r="${is?24:21}" fill="${is?'#2362c6':'#fff'}" stroke="${is?'#2362c6':'#a7bbd3'}" stroke-width="2"/><text x="${x}" y="${y+4}" fill="${is?'#fff':'#304963'}" font-size="12" font-weight="700" text-anchor="middle">${c}</text></g>`}).join('');
+ const flows=availableFlows();const pairs=new Map();
+ flows.forEach(([from,to,usd])=>{const ids=[from,to].sort();let key=ids.join('|');if(!pairs.has(key))pairs.set(key,{key,a:ids[0],b:ids[1],total:0,flows:[]});const e=pairs.get(key);e.total+=usd;e.flows.push({from,to,usd});});
+ const totals=[...pairs.values()],maxValue=Math.max(1,...totals.map(e=>e.total));
+ const lines=totals.map(e=>{
+  const [ax,ay]=positions[e.a],[bx,by]=positions[e.b];const highlighted=e.a===state.country||e.b===state.country;
+  const width=(1.5+6.5*Math.sqrt(e.total/maxValue)).toFixed(2);
+  const info=e.flows.map(f=>`${M.countryNames[f.from]} → ${M.countryNames[f.to]}: ${tradeAmount(f.usd)}`).join('\n');
+  return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${highlighted?'#2362c6':'#739bbd'}" stroke-width="${width}" stroke-opacity="${highlighted?'.86':'.33'}" stroke-linecap="round"><title>${safe(info)}</title></line>`;
+ }).join('');
+ const nodes=D.countries.map(c=>{const [x,y]=positions[c],is=c===state.country;
+  return `<g class="network-node" tabindex="0" role="button" aria-label="Выбрать ${safe(M.countryNames[c])}" data-country="${c}"><circle cx="${x}" cy="${y}" r="${is?25:22}" fill="${is?'#2362c6':'#fff'}" stroke="${is?'#2362c6':'#93afcb'}" stroke-width="2"/><text x="${x}" y="${y+4}" fill="${is?'#fff':'#304963'}" font-size="12" font-weight="700" text-anchor="middle">${c}</text><title>${safe(M.countryNames[c])}</title></g>`;
+ }).join('');
  $('network').innerHTML=lines+nodes;
- $('network').querySelectorAll('[data-country]').forEach(n=>{n.addEventListener('click',()=>{state.country=n.dataset.country;renderNetwork();renderCountry();});n.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();state.country=n.dataset.country;renderNetwork();renderCountry();}});});
+ $('network').querySelectorAll('[data-country]').forEach(n=>{const choose=()=>{state.country=n.dataset.country;renderNetwork();renderCountry();};n.addEventListener('click',choose);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();}});});
+ $('tradeOverview').textContent=`Наблюдаемые направления экспорта: ${flows.length} из ${D.trade2024.length}. Линии показывают только известные данные, без заполнения пропусков.`;
+ const outgoing=flows.filter(f=>f[0]===state.country),incoming=flows.filter(f=>f[1]===state.country);
+ const related=[...outgoing.map(f=>({from:f[0],to:f[1],usd:f[2]})),...incoming.map(f=>({from:f[0],to:f[1],usd:f[2]}))].sort((a,b)=>b.usd-a.usd);
+ const rows=related.slice(0,7).map(f=>`<li><span>${safe(M.countryNames[f.from])} <b aria-label="экспортирует в">→</b> ${safe(M.countryNames[f.to])}</span><strong>${tradeAmount(f.usd)}</strong></li>`).join('');
+ $('tradePartners').innerHTML=`<div class="trade-heading"><strong>${safe(M.countryNames[state.country])}: известные торговые направления</strong><small>Экспорт из страны: ${outgoing.length}/7 · экспорт в страну: ${incoming.length}/7</small></div>${related.length?`<ul>${rows}</ul>`:'<p>Подтвержденных направлений в загруженной таблице нет.</p>'}<p class="trade-caveat">Пропущенное наблюдение — не нулевая торговля. Потоки показаны по доступным данным, а не по всем возможным направлениям.</p>`;
 }
 function renderCountry(){
  const snapshot=current(),actions=snapshot.actions;
- $('actionPeriod').textContent=`${state.year} · ${state.policy}`;
- $('actions').innerHTML=D.countries.map(c=>`<button class="agent-row ${state.country===c?'chosen':''}" data-code="${c}"><span>${safe(M.countryNames[c])}<small>${c}</small></span><span class="mini-actions">${actions[c].map((v,i)=>`<i title="${safe(M.actionNames[i])}: ${v}" class="level level-${v}"></i>`).join('')}</span><span class="chevron">›</span></button>`).join('');
+ $('actionPeriod').textContent=`${state.year} · ${M.policyNames[state.policy]}`;
+ $('actions').innerHTML=D.countries.map(c=>`<button class="agent-row ${state.country===c?'chosen':''}" data-code="${c}" aria-label="Решения: ${safe(M.countryNames[c])}"><span>${safe(M.countryNames[c])}<small>${c}</small></span><span class="mini-actions">${actions[c].map((v,i)=>`<i title="${safe(M.actionNames[i])}: ${safe(actionLevels[i][v])}" class="level level-${v}"></i>`).join('')}</span><span class="chevron">›</span></button>`).join('');
  $('actions').querySelectorAll('[data-code]').forEach(el=>el.addEventListener('click',()=>{state.country=el.dataset.code;renderCountry();renderNetwork();}));
  const h=M.historic(D,state.country),a=actions[state.country];
- const historic=(k,suffix='')=>{let m=h?.[k];if(!m||m.value==null)return 'нет наблюдения';return fmt(m.value,k==='population_total'?0:2)+suffix+(m.observed?'':' · без подтверждения наблюдения');};
- $('countryDetail').innerHTML=`<div class="country-title"><b>${safe(M.countryNames[state.country])}</b><small>Данные 2024 · решения ${state.year}</small></div><div class="country-kpis"><span>Рост ВВП <strong>${historic('gdp_growth_pct','%')}</strong></span><span>Инвестиции / ВВП <strong>${historic('investment_share_gdp','%')}</strong></span></div><div class="action-chips">${a.map((v,i)=>`<span>${safe(M.actionNames[i])} <b>${v}/2</b></span>`).join('')}</div>`;
+ const historic=(k,suffix='')=>{const m=h?.[k];return (!m||!m.observed||m.value==null)?'нет подтвержденного значения':fmt(m.value,k==='population_total'?0:2)+suffix;};
+ $('countryDetail').innerHTML=`<div class="country-title"><b>${safe(M.countryNames[state.country])}</b><small>Решения ${state.year} года</small></div><p class="decision-intro">Выбранная стратегия дала этой стране следующие решения:</p><div class="decision-list">${a.map((v,i)=>`<div class="decision-item"><span>${safe(M.actionNames[i])}</span><strong>${safe(actionLevels[i][v])}</strong></div>`).join('')}</div><div class="historical-context"><strong>Для справки: наблюдения 2024 года</strong><div class="country-kpis"><span>Рост ВВП <b>${historic('gdp_growth_pct','%')}</b></span><span>Инвестиции / ВВП <b>${historic('investment_share_gdp','%')}</b></span></div></div>`;
 }
 function renderScenario(){
- const s=D.scenarios.find(e=>e.scenario_id===state.scenario),x=current().values,other=compare().values;
- $('scenarioDescription').innerHTML=`<div class="scenario-chip">${safe(s.group)}</div><h3>${safe(s.name)}</h3><p>${safe(s.description)}</p><div class="scenario-crisis">Каталожные кризисы: <b>${s.crisis_ids.map(safe).join(', ')}</b><small>Их календарная активность определяется архивной траекторией.</small></div>`;
- let items=[['Соглашения за год',x.agreements],['Созревших проектов',x.projects_matured],['Чистая проектная отдача за год', x.project_benefit_current-x.project_cash_out],['Сетевой показатель',x.network_strength],['Бюджет стран',x.capital_budget_total],['Награда среды',x.mean_reward]];
+ const s=D.scenarios.find(e=>e.scenario_id===state.scenario),x=current().values;
+ $('scenarioDescription').innerHTML=`<div class="scenario-chip">${safe(s.group)}</div><h3>${safe(s.name)}</h3><p>${safe(scenarioQuestions[s.scenario_id]||'Как различаются результаты выбранных стратегий?')}</p><p class="scenario-context">В сценарии предусмотрено ${s.crisis_ids.length} расчетных воздействия из каталога возможных кризисов. Их интенсивность и время появления задаются экспериментом; это не перечень реальных событий.</p>`;
+ const items=[['Действующие соглашения',x.agreements],['Проекты, достигшие отдачи за год',x.projects_matured],['Чистая отдача проектов, условные единицы',x.project_benefit_current-x.project_cash_out],['Индекс связей, условный',x.network_strength],['Доступный капитал, условные единицы',x.capital_budget_total],['Оценка политики внутри модели',x.mean_reward]];
  $('reportMetrics').innerHTML=items.map(([k,v])=>`<div><span>${safe(k)}</span><strong>${fmt(v,2)}</strong></div>`).join('');
 }
 function render(){ $('selectedYear').textContent=state.year;$('year').value=state.year;renderStats();renderChart();renderNetwork();renderCountry();renderScenario();}
