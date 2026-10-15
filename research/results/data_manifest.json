@@ -1,0 +1,32 @@
+{
+  "source_file": "EURASIA_STAGE3_HANDOFF_V47.zip",
+  "source_sha256": "3d51cfb2c4058b7cfc31aff5de793de42c84488fe3dd48bea3b7a841c37a3aab",
+  "source_stage1_sha256": "fd314ae2678a8af97812632219a0722b1e8512a5ac33d98a2cc0c7cb22f920da",
+  "research_version": "V4.7",
+  "scientific_ready": false,
+  "technical_pass": true,
+  "years": [
+    2025,
+    2050
+  ],
+  "historical": [
+    2000,
+    2025
+  ],
+  "policies": [
+    "MAPPO_GREEDY",
+    "MAPPO",
+    "BARGAIN",
+    "NEUTRAL"
+  ],
+  "seeds": [
+    163,
+    272,
+    381
+  ],
+  "simulation": "archived_replay_only",
+  "data_provenance": "V4.7 synthetic scenario outputs",
+  "expected_runs": 240,
+  "action_rows": 49920,
+  "scenario_rows": 6240
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "scenario_id": "S01",
+    "group": "Экономика",
+    "name": "Сырьевые рынки",
+    "description": "Модельный стресс-тест: Сырьевые рынки",
+    "crisis_ids": [
+      101,
+      108,
+      115
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S02",
+    "group": "Экономика",
+    "name": "Финансовая адаптация",
+    "description": "Модельный стресс-тест: Финансовая адаптация",
+    "crisis_ids": [
+      106,
+      113,
+      120
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S03",
+    "group": "Экономика",
+    "name": "Торговая перестройка",
+    "description": "Модельный стресс-тест: Торговая перестройка",
+    "crisis_ids": [
+      111,
+      118,
+      125
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S04",
+    "group": "Экономика",
+    "name": "Инвестиционный цикл",
+    "description": "Модельный стресс-тест: Инвестиционный цикл",
+    "crisis_ids": [
+      116,
+      123,
+      130
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S05",
+    "group": "Институты",
+    "name": "Переговоры по общим правилам",
+    "description": "Модельный стресс-тест: Переговоры по общим правилам",
+    "crisis_ids": [
+      121,
+      128,
+      135
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S06",
+    "group": "Институты",
+    "name": "Координация соглашений",
+    "description": "Модельный стресс-тест: Координация соглашений",
+    "crisis_ids": [
+      126,
+      133,
+      140
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S07",
+    "group": "Институты",
+    "name": "Распределение выгод",
+    "description": "Модельный стресс-тест: Распределение выгод",
+    "crisis_ids": [
+      131,
+      138,
+      145
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S08",
+    "group": "Институты",
+    "name": "Совместные инвестиции",
+    "description": "Модельный стресс-тест: Совместные инвестиции",
+    "crisis_ids": [
+      136,
+      143,
+      150
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S09",
+    "group": "Центральная Азия",
+    "name": "Мобильность труда",
+    "description": "Модельный стресс-тест: Мобильность труда",
+    "crisis_ids": [
+      141,
+      148,
+      155
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S10",
+    "group": "Центральная Азия",
+    "name": "Водные ресурсы",
+    "description": "Модельный стресс-тест: Водные ресурсы",
+    "crisis_ids": [
+      146,
+      153,
+      160
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S11",
+    "group": "Центральная Азия",
+    "name": "Транспортные коридоры",
+    "description": "Модельный стресс-тест: Транспортные коридоры",
+    "crisis_ids": [
+      151,
+      158,
+      165
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S12",
+    "group": "Центральная Азия",
+    "name": "Энергетическая интеграция",
+    "description": "Модельный стресс-тест: Энергетическая интеграция",
+    "crisis_ids": [
+      156,
+      163,
+      170
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S13",
+    "group": "Внешняя среда",
+    "name": "Изменение мировой торговли",
+    "description": "Модельный стресс-тест: Изменение мировой торговли",
+    "crisis_ids": [
+      161,
+      168,
+      175
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S14",
+    "group": "Внешняя среда",
+    "name": "Финансовые ограничения",
+    "description": "Модельный стресс-тест: Финансовые ограничения",
+    "crisis_ids": [
+      166,
+      173,
+      2005
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S15",
+    "group": "Внешняя среда",
+    "name": "Технологические сдвиги",
+    "description": "Модельный стресс-тест: Технологические сдвиги",
+    "crisis_ids": [
+      171,
+      2003,
+      2010
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S16",
+    "group": "Внешняя среда",
+    "name": "Новые рынки",
+    "description": "Модельный стресс-тест: Новые рынки",
+    "crisis_ids": [
+      2001,
+      2008,
+      2015
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S17",
+    "group": "Системные шоки",
+    "name": "Последовательный кризис",
+    "description": "Модельный стресс-тест: Последовательный кризис",
+    "crisis_ids": [
+      2006,
+      2013,
+      2020
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S18",
+    "group": "Системные шоки",
+    "name": "Совмещенные возмущения",
+    "description": "Модельный стресс-тест: Совмещенные возмущения",
+    "crisis_ids": [
+      2011,
+      2018,
+      2025
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S19",
+    "group": "Системные шоки",
+    "name": "Долгая адаптация",
+    "description": "Модельный стресс-тест: Долгая адаптация",
+    "crisis_ids": [
+      2016,
+      2023,
+      105
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  },
+  {
+    "scenario_id": "S20",
+    "group": "Системные шоки",
+    "name": "Стресс-тест коалиций",
+    "description": "Модельный стресс-тест: Стресс-тест коалиций",
+    "crisis_ids": [
+      2021,
+      103,
+      110
+    ],
+    "provenance": "constructed_synthetic_scenario"
+  }
+]

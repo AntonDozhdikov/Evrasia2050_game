@@ -1,0 +1,81 @@
+{
+  "version": "V4.7",
+  "engine": [
+    "eurasia_runtime.py",
+    "eurasia_v4.py",
+    "eurasia_world_v42.py",
+    "eurasia_marl_v42.py",
+    "eurasia_world_v43.py",
+    "eurasia_marl_v43.py",
+    "eurasia_world_v44.py",
+    "eurasia_marl_v44.py",
+    "eurasia_v45_panel.py",
+    "eurasia_v45_finalize.py",
+    "eurasia_v45_qa.py",
+    "eurasia_v46_guardrails.py"
+  ],
+  "base_year": 2024,
+  "simulation_years": [
+    2025,
+    2050
+  ],
+  "countries": [
+    "RUS",
+    "BLR",
+    "KAZ",
+    "KGZ",
+    "UZB",
+    "TJK",
+    "TKM",
+    "ARM"
+  ],
+  "action_names": [
+    "trade",
+    "investment",
+    "coordination",
+    "resilience",
+    "partner_focus",
+    "labor_mobility"
+  ],
+  "actions_per_head": 3,
+  "world_model": "results/world/world_metrics.json + selected world files",
+  "marl_model": "results/marl/mappo.pt",
+  "load_world": "from eurasia_world_v44 import load_world_v44",
+  "load_marl": "from eurasia_marl_v44 import load_marl_v44",
+  "crisis_templates": "metadata/crises_future_100.json",
+  "scenarios": "metadata/scenarios_20.json",
+  "language_adapters": [
+    "lora_crisis",
+    "lora_interpreter"
+  ],
+  "base_language_model": "Qwen/Qwen3-4B",
+  "base_qwen_download_separate": true,
+  "numerical_runtime_without_language_model": true,
+  "safe_world_model": "results/world/v41_safe/",
+  "per_target_selection": true,
+  "project_lag_years": 2,
+  "requires_state_gated_policy": true,
+  "policy_observation_indices": {
+    "capital": -7,
+    "time": -6,
+    "crisis": -2
+  },
+  "trade_amount_separated_from_share": true,
+  "scientific_acceptance_file": "results/acceptance_v45.json",
+  "sequence_length": 5,
+  "diagnostics_folder": "results/diagnostics",
+  "rule_changes_require_human_approval": true,
+  "policy_effects_are_assumed": true,
+  "promoted_policy": "results/marl/mappo.pt",
+  "protected_frozen_policy": "results/marl/v45_archive/frozen_stage1_immutable.pt",
+  "panel_world_experiment": "results/world/v45_global_panel/",
+  "world_panel_automatic_activation": false,
+  "selection_is_paired": true,
+  "llm_optional_for_numerical_runtime": true,
+  "v47_economic_audit": "results/v47_economic_regression.json",
+  "v47_structural_audit": "results/v47_structural_regression.json",
+  "v47_selection_uncertainty": "results/marl/v45_archive/selection_uncertainty.json",
+  "reward_proxy_audit": "results/marl/v46_reward_audit/reward_proxy_audit.json",
+  "v46_scientific_acceptance": "results/acceptance_v46.json",
+  "ppo_early_stopping": true
+}

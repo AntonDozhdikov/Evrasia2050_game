@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
+<title>Евразия 2050 — исследовательская игра · V4.7</title>
+<meta name="description" content="Браузерный просмотрщик научного эксперимента Евразия 2050: восемь стран, 20 сценариев, четыре политики, 2025–2050 годы.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div id="root" class="shell">
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Евразия 2050 — главная"><span class="brand-mark">Е<span class="brand-dot"></span></span><span><strong>ЕВРАЗИЯ <b>2050</b></strong><small>исследовательская лаборатория</small></span></a>
+    <nav class="topnav" aria-label="Разделы"><a class="active" href="#experiment">Эксперимент</a><a href="#countries">Страны</a><a href="#methods">Методология</a></nav>
+    <span class="version">STAGE 3 · V4.7 DATA</span>
+  </header>
+  <main id="experiment">
+    <section class="intro">
+      <div><div class="eyebrow"><span class="pulse"></span> РЕЗУЛЬТАТЫ ВЫЧИСЛИТЕЛЬНОГО ЭКСПЕРИМЕНТА</div><h1>Евразия <em>2050</em></h1><p>Двадцать сценариев будущего. Восемь государств. Четыре стратегии принятия решений. Исследуйте последствия, зафиксированные в эксперименте V4.7.</p></div>
+      <aside class="intro-note"><strong>Режим воспроизведения</strong><span>Это первая браузерная сборка: она показывает сохраненные траектории V4.7. Новые решения игрока пока не рассчитываются.</span><a href="#methods">Что означает результат <span aria-hidden="true">↗</span></a></aside>
+    </section>
+    <section class="control-panel" aria-label="Настройки симуляции">
+      <div class="controls-grid">
+        <label>Сценарий <select id="scenario" aria-label="Сценарий"></select></label>
+        <label>Стратегия <select id="policy" aria-label="Стратегия"></select></label>
+        <label>Сравнить с <select id="compare" aria-label="Стратегия для сравнения"></select></label>
+        <label>Начальное число <select id="seed" aria-label="Начальное число"></select></label>
+      </div>
+      <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
+    </section>
+    <section class="stat-grid" aria-label="Результаты выбранного года">
+      <article class="stat"><div class="stat-label">Модельный рост <span>8 стран, среднее</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
+      <article class="stat"><div class="stat-label">Новые проекты <span>за год</span></div><div class="stat-value" id="projects">—</div><div class="stat-caption" id="projects-delta"></div></article>
+      <article class="stat"><div class="stat-label">Торговый оборот <span>млрд долл. (модель)</span></div><div class="stat-value" id="trade">—</div><div class="stat-caption" id="trade-delta"></div></article>
+      <article class="stat"><div class="stat-label">Кризисная нагрузка <span>активные шоки</span></div><div class="stat-value" id="crisis">—</div><div class="stat-caption" id="crisis-delta"></div></article>
+    </section>
+    <div class="main-grid">
+      <section class="panel plot-panel"><div class="section-header"><div><span class="section-kicker">01 / ДИНАМИКА</span><h2>Траектория стратегии</h2></div><label class="metric-picker">Показатель <select id="metric"><option value="mean_growth_pct">Экономический рост</option><option value="new_projects">Новые проекты</option><option value="projects_matured">Созревшие проекты</option><option value="trade_usd_total">Торговый оборот</option><option value="capital_budget_total">Бюджетный капитал</option><option value="mean_reward">Внутренняя награда</option><option value="network_strength">Связность сети</option></select></label></div><div id="chart" class="chart" role="img" aria-label="График сценарных показателей"></div><div class="plot-legend"><span><i class="swatch blue"></i><span id="legendPrimary">Выбранная политика</span></span><span><i class="swatch red"></i><span id="legendCompare">Контрольная политика</span></span></div><p class="footnote">Траектории воспроизведены из итогового CSV V4.7. Линии не являются прогнозами реальной экономики.</p></section>
+      <section class="panel network-panel" id="countries"><div class="section-header"><div><span class="section-kicker">02 / ВЗАИМОДЕЙСТВИЕ</span><h2>Сеть восьми государств</h2></div><span class="side-caption">Исторические связи 2024</span></div><svg id="network" viewBox="0 0 480 350" aria-label="Схема стран и исторических торговых связей" role="img"></svg><p class="footnote">Схема отношений, не географическая карта. Линии показывают наблюдаемый двусторонний экспорт 2024 года; возможны пробелы в данных.</p></section>
+      <section class="panel actions-panel"><div class="section-header"><div><span class="section-kicker">03 / РЕШЕНИЯ</span><h2>Действия агентов</h2></div><span class="side-caption" id="actionPeriod">2025 · MAPPO</span></div><div id="actions" class="actions"></div><div class="country-insight" id="countryDetail"></div><p class="footnote">Шесть компонентов действий — исходное пространство V4.7, уровни 0–2. Это сохраненные решения моделей, а не предлагаемые пользователем команды.</p></section>
+      <section class="panel scenario-panel"><div class="section-header"><div><span class="section-kicker">04 / СЦЕНАРИЙ</span><h2>Контекст и показатели</h2></div></div><div id="scenarioDescription"></div><div class="report-metrics" id="reportMetrics"></div><div class="downloads"><button id="exportJson" class="secondary">↓ Состояние JSON</button><button id="exportCsv" class="secondary">↓ Траектория CSV</button></div></section>
+    </div>
+    <section id="methods" class="method-panel"><div><span class="section-kicker">НАУЧНАЯ ДОБРОСОВЕСТНОСТЬ</span><h2>Как читать результаты</h2><p>V4.7 — вычислительный политико-экономический эксперимент. Историческая база 2000–2025 использует собранные официальные данные с масками наблюдаемости, а будущие кризисы и институциональные эффекты являются синтетическими допущениями. Отобранная World Model использует инерцию для 8/8 показателей. Основная MAPPO не доказала реального преимущества интеграции; отрицательные результаты сохранены.</p></div><div class="method-facts"><span>Историческое состояние: <b>2024</b></span><span>Переходы: <b>2025–2050</b></span><span>Сценарии: <b>20</b></span><span>Состояния: <b>архив V4.7</b></span><span>Научная готовность: <b>ограничена</b></span></div><div class="doclinks"><a href="docs/STAGE3_HANDOFF_SPEC.md">Научный контракт ↗</a><a href="docs/V47_ACCEPTANCE.md">Акт приемки ↗</a><a href="research/results/data_manifest.json">Манифест источников ↗</a></div></section>
+  </main>
+  <footer><span>ЕВРАЗИЯ 2050 · Стадия 3</span><span>Статическое воспроизведение V4.7 · без серверного ИИ и переобучения</span></footer>
+</div>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/app.js"></script>
+</body>
+</html>

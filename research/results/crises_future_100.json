@@ -1,0 +1,1600 @@
+[
+  {
+    "id": 101,
+    "name": "Расширение расчётов в национальных валютах БРИКС и связанные с этим финансовые риски",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.55,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IND"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобное продолжение курса на дедолларизацию расчётов внутри БРИКС+"
+  },
+  {
+    "id": 102,
+    "name": "Долговой кризис ряда стран с формирующимся рынком",
+    "type": "economic",
+    "year_in_catalog": 2027,
+    "intensity": 0.7,
+    "duration": 2,
+    "affected": [
+      "ZAF",
+      "EGY",
+      "ARE"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция накопленной долговой нагрузки развивающихся экономик"
+  },
+  {
+    "id": 103,
+    "name": "Расширение вторичных санкций в отношении финансовых институтов БРИКС",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.75,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IRN"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение практики экстерриториальных ограничительных мер"
+  },
+  {
+    "id": 104,
+    "name": "Структурная безработица на фоне ускоренной автоматизации и внедрения ИИ",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.65,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IND",
+      "BRA",
+      "ZAF",
+      "IRN",
+      "ARE",
+      "ETH",
+      "EGY",
+      "IDN"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобный эффект технологического замещения труда в среднесрочной перспективе"
+  },
+  {
+    "id": 105,
+    "name": "Кризис ликвидности Нового банка развития БРИКС",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.5,
+    "duration": 1,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IND",
+      "BRA"
+    ],
+    "impact_dims_original": "deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Гипотетическое давление на институты развития БРИКС при неблагоприятной конъюнктуре"
+  },
+  {
+    "id": 106,
+    "name": "Циклический спад сырьевых котировок",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.6,
+    "duration": 2,
+    "affected": [
+      "BRA",
+      "ZAF",
+      "RUS"
+    ],
+    "impact_dims_original": "deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция исторической цикличности товарных рынков"
+  },
+  {
+    "id": 107,
+    "name": "Военно-политическое обострение вокруг Тайваня",
+    "type": "geopolitical",
+    "year_in_catalog": 2027,
+    "intensity": 0.9,
+    "duration": 2,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "words, images, deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение линии напряжённости, зафиксированной кризисом 15 (2022 г.)"
+  },
+  {
+    "id": 108,
+    "name": "Инцидент с участием военных судов в Южно-Китайском море",
+    "type": "geopolitical",
+    "year_in_catalog": 2026,
+    "intensity": 0.65,
+    "duration": 1,
+    "affected": [
+      "CHN",
+      "IDN"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобное продолжение споров о территориальной юрисдикции в регионе"
+  },
+  {
+    "id": 109,
+    "name": "Эскалация регионального конфликта на Ближнем Востоке с вовлечением Ирана",
+    "type": "geopolitical",
+    "year_in_catalog": 2026,
+    "intensity": 0.8,
+    "duration": 2,
+    "affected": [
+      "IRN",
+      "ARE",
+      "EGY"
+    ],
+    "impact_dims_original": "words, images, deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение линии напряжённости, зафиксированной кризисом 17 (2023-2024 гг.)"
+  },
+  {
+    "id": 110,
+    "name": "Очередной пакет ограничительных мер западных стран в отношении РФ",
+    "type": "geopolitical",
+    "year_in_catalog": 2027,
+    "intensity": 0.7,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобная экстраполяция санкционной динамики после 2022 г."
+  },
+  {
+    "id": 111,
+    "name": "Обострение пограничных разногласий между Индией и Китаем",
+    "type": "geopolitical",
+    "year_in_catalog": 2028,
+    "intensity": 0.6,
+    "duration": 1,
+    "affected": [
+      "IND",
+      "CHN"
+    ],
+    "impact_dims_original": "words, deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение существующего пограничного спора в Гималайском регионе"
+  },
+  {
+    "id": 112,
+    "name": "Волна политической нестабильности в странах Африканского Сахеля",
+    "type": "geopolitical",
+    "year_in_catalog": 2027,
+    "intensity": 0.55,
+    "duration": 2,
+    "affected": [
+      "ETH",
+      "EGY",
+      "ZAF"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция серии внутриполитических кризисов в регионе Сахеля"
+  },
+  {
+    "id": 113,
+    "name": "Плановая трансформация состава политико-экономических элит в РФ",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.7,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Теоретико-модельное допущение, основанное на цикличности элитной ротации (Турчин)"
+  },
+  {
+    "id": 114,
+    "name": "Плановая смена поколений в руководстве КНР",
+    "type": "elite",
+    "year_in_catalog": 2030,
+    "intensity": 0.6,
+    "duration": 2,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция институционализированного цикла обновления партийного руководства"
+  },
+  {
+    "id": 115,
+    "name": "Усиление регионального сепаратистского давления в Индии",
+    "type": "elite",
+    "year_in_catalog": 2028,
+    "intensity": 0.55,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение существующих региональных противоречий федеративного устройства Индии"
+  },
+  {
+    "id": 116,
+    "name": "Усиление политической поляризации в Бразилии",
+    "type": "elite",
+    "year_in_catalog": 2027,
+    "intensity": 0.55,
+    "duration": 1,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "words, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция электорального цикла и поляризации, зафиксированной в 2018-2023 гг."
+  },
+  {
+    "id": 117,
+    "name": "Вопросы преемственности власти в монархиях Персидского залива",
+    "type": "elite",
+    "year_in_catalog": 2031,
+    "intensity": 0.5,
+    "duration": 1,
+    "affected": [
+      "ARE"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Теоретико-модельное допущение, основанное на демографии правящих династий"
+  },
+  {
+    "id": 118,
+    "name": "Пик молодёжной безработицы в странах Африки южнее Сахары",
+    "type": "demographic",
+    "year_in_catalog": 2028,
+    "intensity": 0.7,
+    "duration": 3,
+    "affected": [
+      "ETH",
+      "EGY",
+      "ZAF"
+    ],
+    "impact_dims_original": "struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция демографического профиля региона (структурно-демографическая теория)"
+  },
+  {
+    "id": 119,
+    "name": "Дефицит трудовых ресурсов в КНР на фоне старения населения",
+    "type": "demographic",
+    "year_in_catalog": 2030,
+    "intensity": 0.6,
+    "duration": 3,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "struct, deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение зафиксированной тенденции старения населения КНР"
+  },
+  {
+    "id": 120,
+    "name": "Миграционные потоки, связанные с изменением климата (Юг-Север)",
+    "type": "demographic",
+    "year_in_catalog": 2029,
+    "intensity": 0.65,
+    "duration": 3,
+    "affected": [
+      "EGY",
+      "ETH",
+      "IDN"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобное усиление климатической миграции согласно прогнозам МОМ/ООН"
+  },
+  {
+    "id": 121,
+    "name": "Перегрузка городской инфраструктуры Индии на фоне урбанизации",
+    "type": "demographic",
+    "year_in_catalog": 2027,
+    "intensity": 0.5,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция темпов урбанизации Индии"
+  },
+  {
+    "id": 122,
+    "name": "Ускорение естественной убыли населения РФ",
+    "type": "demographic",
+    "year_in_catalog": 2029,
+    "intensity": 0.55,
+    "duration": 3,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение демографической динамики, фиксируемой Росстатом"
+  },
+  {
+    "id": 123,
+    "name": "Фрагментация международного регулирования ИИ (Запад vs БРИКС+)",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.55,
+    "duration": 2,
+    "affected": [
+      "CHN",
+      "RUS",
+      "IND"
+    ],
+    "impact_dims_original": "words, deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Правдоподобное расхождение регуляторных режимов США/ЕС и БРИКС+ по ИИ"
+  },
+  {
+    "id": 124,
+    "name": "Инцидент с критической инфраструктурой в результате кибератаки",
+    "type": "economic",
+    "year_in_catalog": 2027,
+    "intensity": 0.75,
+    "duration": 1,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IND",
+      "BRA",
+      "ZAF",
+      "IRN",
+      "ARE",
+      "ETH",
+      "EGY",
+      "IDN"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция зафиксированных инцидентов на энергосети и промышленные системы"
+  },
+  {
+    "id": 125,
+    "name": "Ужесточение экспортного контроля в отношении полупроводниковых технологий",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.65,
+    "duration": 2,
+    "affected": [
+      "CHN",
+      "IND"
+    ],
+    "impact_dims_original": "deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение практики технологических ограничений 2022-2025 гг."
+  },
+  {
+    "id": 126,
+    "name": "Инцидент с повреждением подводной кабельной инфраструктуры",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.5,
+    "duration": 1,
+    "affected": [
+      "RUS",
+      "CHN"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция зафиксированных случаев повреждения телекоммуникационных кабелей"
+  },
+  {
+    "id": 127,
+    "name": "Обострение водного дефицита в бассейне реки Нил",
+    "type": "environmental",
+    "year_in_catalog": 2028,
+    "intensity": 0.65,
+    "duration": 2,
+    "affected": [
+      "EGY",
+      "ETH"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Продолжение спора вокруг плотины Возрождения (GERD) и климатических изменений"
+  },
+  {
+    "id": 128,
+    "name": "Экстремальная волна жары в Южной Азии",
+    "type": "environmental",
+    "year_in_catalog": 2027,
+    "intensity": 0.6,
+    "duration": 2,
+    "affected": [
+      "IND",
+      "IDN"
+    ],
+    "impact_dims_original": "struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция климатических трендов согласно докладам МГЭИК"
+  },
+  {
+    "id": 129,
+    "name": "Инцидент с применением автономных систем вооружения",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.6,
+    "duration": 1,
+    "affected": [
+      "IRN",
+      "ARE"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Теоретико-модельное допущение на основе документированных прецедентов (Ливия, 2020 г.)"
+  },
+  {
+    "id": 130,
+    "name": "Инцидент, ограничивающий доступ к орбитальной спутниковой группировке",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.55,
+    "duration": 1,
+    "affected": [
+      "RUS",
+      "CHN"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Экстраполяция рисков засорения околоземного пространства и РЭБ"
+  },
+  {
+    "id": 131,
+    "name": "Финансовая турбулентность из-за ускоренного оттока портфельного капитала",
+    "type": "financial",
+    "year_in_catalog": 2026,
+    "intensity": 0.62,
+    "duration": 1,
+    "affected": [
+      "BRA",
+      "ZAF",
+      "EGY"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Реакция рынков на рост глобальной волатильности и изменение ставок."
+  },
+  {
+    "id": 132,
+    "name": "Внутриполитический кризис доверия после цифровой кампании дезинформации",
+    "type": "elite",
+    "year_in_catalog": 2027,
+    "intensity": 0.58,
+    "duration": 1,
+    "affected": [
+      "BRA",
+      "ZAF",
+      "IDN"
+    ],
+    "impact_dims_original": "words, images, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Политическая поляризация усиливается под воздействием цифровых платформ."
+  },
+  {
+    "id": 133,
+    "name": "Кризис продовольственной инфляции в странах-импортёрах",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.68,
+    "duration": 2,
+    "affected": [
+      "EGY",
+      "ETH",
+      "ARE"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Рост цен на продовольствие и логистические ограничения."
+  },
+  {
+    "id": 134,
+    "name": "Перебои в поставках критически важного медицинского сырья",
+    "type": "pandemic",
+    "year_in_catalog": 2027,
+    "intensity": 0.52,
+    "duration": 1,
+    "affected": [
+      "IND",
+      "CHN",
+      "BRA"
+    ],
+    "impact_dims_original": "deeds, struct, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Уязвимость фармацевтических цепочек поставок."
+  },
+  {
+    "id": 135,
+    "name": "Региональный кризис доверия к цифровым финансовым платформам",
+    "type": "financial",
+    "year_in_catalog": 2028,
+    "intensity": 0.57,
+    "duration": 1,
+    "affected": [
+      "ARE",
+      "IND",
+      "IDN"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сбой крупной платформы вызывает вторичные эффекты в цифровых платежах."
+  },
+  {
+    "id": 136,
+    "name": "Резкое усиление внешнего давления на транспортные коридоры Евразии",
+    "type": "geopolitical",
+    "year_in_catalog": 2029,
+    "intensity": 0.72,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "CHN",
+      "IRN"
+    ],
+    "impact_dims_original": "deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Давление на маршруты поставок и инфраструктурную связанность."
+  },
+  {
+    "id": 137,
+    "name": "Кризис водно-энергетического баланса в Северо-Восточной Африке",
+    "type": "environmental",
+    "year_in_catalog": 2030,
+    "intensity": 0.67,
+    "duration": 2,
+    "affected": [
+      "EGY",
+      "ETH"
+    ],
+    "impact_dims_original": "struct, deeds, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Наложение климатических и инфраструктурных ограничений."
+  },
+  {
+    "id": 138,
+    "name": "Падение доверия к наднациональным медийным нарративам",
+    "type": "elite",
+    "year_in_catalog": 2028,
+    "intensity": 0.49,
+    "duration": 1,
+    "affected": [
+      "RUS",
+      "CHN",
+      "BRA",
+      "ZAF"
+    ],
+    "impact_dims_original": "images, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Ослабление согласованности коммуникационных сообщений внутри блока."
+  },
+  {
+    "id": 139,
+    "name": "Локальный банковский стресс на фоне роста проблемной задолженности",
+    "type": "financial",
+    "year_in_catalog": 2029,
+    "intensity": 0.64,
+    "duration": 2,
+    "affected": [
+      "ZAF",
+      "EGY",
+      "BRA"
+    ],
+    "impact_dims_original": "deeds, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Рост NPL и снижение доступности кредита в уязвимых сегментах."
+  },
+  {
+    "id": 140,
+    "name": "Технологический разрыв в сфере ИИ и безопасных вычислений",
+    "type": "economic",
+    "year_in_catalog": 2031,
+    "intensity": 0.66,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "IND",
+      "ETH",
+      "EGY"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Неравномерный доступ к вычислительным ресурсам и ИИ-инфраструктуре."
+  },
+  {
+    "id": 141,
+    "name": "Резкая волна миграционного давления на городские агломерации",
+    "type": "demographic",
+    "year_in_catalog": 2031,
+    "intensity": 0.63,
+    "duration": 2,
+    "affected": [
+      "ARE",
+      "EGY",
+      "IDN"
+    ],
+    "impact_dims_original": "struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Комбинация климатических, трудовых и инфраструктурных факторов."
+  },
+  {
+    "id": 142,
+    "name": "Кризис легитимности региональных институтов безопасности",
+    "type": "geopolitical",
+    "year_in_catalog": 2032,
+    "intensity": 0.61,
+    "duration": 2,
+    "affected": [
+      "RUS",
+      "IRN",
+      "EGY",
+      "ETH"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Падение доверия к механизмам коллективной деэскалации."
+  },
+  {
+    "id": 143,
+    "name": "Сбой в цепочках поставок редкоземельных материалов для высоких технологий",
+    "type": "economic",
+    "year_in_catalog": 2032,
+    "intensity": 0.59,
+    "duration": 2,
+    "affected": [
+      "CHN",
+      "IND",
+      "BRA"
+    ],
+    "impact_dims_original": "deeds",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Повышенная конкуренция за материалы двойного назначения."
+  },
+  {
+    "id": 144,
+    "name": "Политико-экономический кризис адаптации к климатическим стандартам экспорта",
+    "type": "economic",
+    "year_in_catalog": 2033,
+    "intensity": 0.56,
+    "duration": 2,
+    "affected": [
+      "BRA",
+      "ZAF",
+      "IND",
+      "IDN"
+    ],
+    "impact_dims_original": "deeds, words, struct",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Новые климатические барьеры трансформируют экспортные ниши."
+  },
+  {
+    "id": 145,
+    "name": "Комбинированный шок социальной поляризации и элитного раскола",
+    "type": "elite",
+    "year_in_catalog": 2034,
+    "intensity": 0.71,
+    "duration": 2,
+    "affected": [
+      "BRA",
+      "RUS",
+      "IRN"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Наложение элитного конфликта на медийную и социальную поляризацию."
+  },
+  {
+    "id": 146,
+    "name": "Рост внешнего давления и санкционной уязвимости RUS",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для RUS."
+  },
+  {
+    "id": 147,
+    "name": "Волна элитного давления и дефицита легитимности RUS",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.78,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для RUS."
+  },
+  {
+    "id": 148,
+    "name": "Технологическое отставание и инфраструктурный разрыв RUS",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.62,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для RUS."
+  },
+  {
+    "id": 149,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации RUS",
+    "type": "elite",
+    "year_in_catalog": 2030,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для RUS."
+  },
+  {
+    "id": 150,
+    "name": "Деструктивный экономико-институциональный дисбаланс RUS",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.59,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для RUS."
+  },
+  {
+    "id": 151,
+    "name": "Рост внешнего давления и санкционной уязвимости CHN",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для CHN."
+  },
+  {
+    "id": 152,
+    "name": "Волна элитного давления и дефицита легитимности CHN",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.63,
+    "duration": 1,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для CHN."
+  },
+  {
+    "id": 153,
+    "name": "Технологическое отставание и инфраструктурный разрыв CHN",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.4,
+    "duration": 2,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для CHN."
+  },
+  {
+    "id": 154,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации CHN",
+    "type": "elite",
+    "year_in_catalog": 2031,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для CHN."
+  },
+  {
+    "id": 155,
+    "name": "Деструктивный экономико-институциональный дисбаланс CHN",
+    "type": "financial",
+    "year_in_catalog": 2030,
+    "intensity": 0.75,
+    "duration": 2,
+    "affected": [
+      "CHN"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для CHN."
+  },
+  {
+    "id": 156,
+    "name": "Рост внешнего давления и санкционной уязвимости IND",
+    "type": "economic",
+    "year_in_catalog": 2026,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для IND."
+  },
+  {
+    "id": 157,
+    "name": "Волна элитного давления и дефицита легитимности IND",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.61,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для IND."
+  },
+  {
+    "id": 158,
+    "name": "Технологическое отставание и инфраструктурный разрыв IND",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.75,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для IND."
+  },
+  {
+    "id": 159,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации IND",
+    "type": "elite",
+    "year_in_catalog": 2032,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для IND."
+  },
+  {
+    "id": 160,
+    "name": "Деструктивный экономико-институциональный дисбаланс IND",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.63,
+    "duration": 2,
+    "affected": [
+      "IND"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для IND."
+  },
+  {
+    "id": 161,
+    "name": "Рост внешнего давления и санкционной уязвимости BRA",
+    "type": "economic",
+    "year_in_catalog": 2027,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для BRA."
+  },
+  {
+    "id": 162,
+    "name": "Волна элитного давления и дефицита легитимности BRA",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.67,
+    "duration": 1,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для BRA."
+  },
+  {
+    "id": 163,
+    "name": "Технологическое отставание и инфраструктурный разрыв BRA",
+    "type": "economic",
+    "year_in_catalog": 2031,
+    "intensity": 0.67,
+    "duration": 2,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для BRA."
+  },
+  {
+    "id": 164,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации BRA",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для BRA."
+  },
+  {
+    "id": 165,
+    "name": "Деструктивный экономико-институциональный дисбаланс BRA",
+    "type": "financial",
+    "year_in_catalog": 2030,
+    "intensity": 0.83,
+    "duration": 2,
+    "affected": [
+      "BRA"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для BRA."
+  },
+  {
+    "id": 166,
+    "name": "Рост внешнего давления и санкционной уязвимости ZAF",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "ZAF"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для ZAF."
+  },
+  {
+    "id": 167,
+    "name": "Волна элитного давления и дефицита легитимности ZAF",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.7,
+    "duration": 2,
+    "affected": [
+      "ZAF"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для ZAF."
+  },
+  {
+    "id": 168,
+    "name": "Технологическое отставание и инфраструктурный разрыв ZAF",
+    "type": "economic",
+    "year_in_catalog": 2028,
+    "intensity": 0.73,
+    "duration": 2,
+    "affected": [
+      "ZAF"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для ZAF."
+  },
+  {
+    "id": 169,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации ZAF",
+    "type": "elite",
+    "year_in_catalog": 2030,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "ZAF"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для ZAF."
+  },
+  {
+    "id": 170,
+    "name": "Деструктивный экономико-институциональный дисбаланс ZAF",
+    "type": "financial",
+    "year_in_catalog": 2030,
+    "intensity": 0.86,
+    "duration": 2,
+    "affected": [
+      "ZAF"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для ZAF."
+  },
+  {
+    "id": 171,
+    "name": "Рост внешнего давления и санкционной уязвимости IRN",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.45,
+    "duration": 2,
+    "affected": [
+      "IRN"
+    ],
+    "impact_dims_original": "deeds, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по профилю external pressure / sanction severity для IRN."
+  },
+  {
+    "id": 172,
+    "name": "Волна элитного давления и дефицита легитимности IRN",
+    "type": "elite",
+    "year_in_catalog": 2029,
+    "intensity": 0.86,
+    "duration": 1,
+    "affected": [
+      "IRN"
+    ],
+    "impact_dims_original": "struct, words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по elite pressure и legitimacy proxy для IRN."
+  },
+  {
+    "id": 173,
+    "name": "Технологическое отставание и инфраструктурный разрыв IRN",
+    "type": "economic",
+    "year_in_catalog": 2029,
+    "intensity": 0.75,
+    "duration": 2,
+    "affected": [
+      "IRN"
+    ],
+    "impact_dims_original": "deeds, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по AI-tech gap proxy для IRN."
+  },
+  {
+    "id": 174,
+    "name": "Кризис доверия аудитории и нарративной рассинхронизации IRN",
+    "type": "elite",
+    "year_in_catalog": 2031,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "IRN"
+    ],
+    "impact_dims_original": "words, images",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по audience trust / narrative sync proxy для IRN."
+  },
+  {
+    "id": 175,
+    "name": "Деструктивный экономико-институциональный дисбаланс IRN",
+    "type": "economic",
+    "year_in_catalog": 2030,
+    "intensity": 0.67,
+    "duration": 2,
+    "affected": [
+      "IRN"
+    ],
+    "impact_dims_original": "deeds, struct, words",
+    "provenance": "synthetic_template_from_source_catalog",
+    "historical": false,
+    "note": "Сконструировано по значениям DPI/ECI для IRN."
+  },
+  {
+    "id": 2001,
+    "name": "Торговые затруднения на региональном рынке (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.35,
+    "duration": 1,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2002,
+    "name": "Удорожание трансграничной логистики (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.425,
+    "duration": 2,
+    "affected": [
+      "BLR",
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2003,
+    "name": "Временный дефицит финансирования инфраструктуры (гипотетический сценарий)",
+    "type": "financial",
+    "year_in_catalog": null,
+    "intensity": 0.5,
+    "duration": 3,
+    "affected": [
+      "KAZ",
+      "TJK"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2004,
+    "name": "Колебание денежных переводов (гипотетический сценарий)",
+    "type": "financial",
+    "year_in_catalog": null,
+    "intensity": 0.575,
+    "duration": 1,
+    "affected": [
+      "KGZ",
+      "TKM"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2005,
+    "name": "Энергетический инфраструктурный сбой (гипотетический сценарий)",
+    "type": "environmental",
+    "year_in_catalog": null,
+    "intensity": 0.65,
+    "duration": 2,
+    "affected": [
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2006,
+    "name": "Нарушение транспортного коридора (гипотетический сценарий)",
+    "type": "geopolitical",
+    "year_in_catalog": null,
+    "intensity": 0.725,
+    "duration": 3,
+    "affected": [
+      "TJK",
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2007,
+    "name": "Изменение условий трудовой мобильности (гипотетический сценарий)",
+    "type": "demographic",
+    "year_in_catalog": null,
+    "intensity": 0.8,
+    "duration": 1,
+    "affected": [
+      "TKM",
+      "BLR"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2008,
+    "name": "Нагрузка на водно-энергетическую инфраструктуру (гипотетический сценарий)",
+    "type": "environmental",
+    "year_in_catalog": null,
+    "intensity": 0.35,
+    "duration": 2,
+    "affected": [
+      "ARM",
+      "KAZ"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2009,
+    "name": "Координационный кризис совместных инвестиций (гипотетический сценарий)",
+    "type": "elite",
+    "year_in_catalog": null,
+    "intensity": 0.425,
+    "duration": 3,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2010,
+    "name": "Несогласие по условиям доступа к рынку (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.5,
+    "duration": 1,
+    "affected": [
+      "BLR",
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2011,
+    "name": "Технологическая модернизация логистики (гипотетический сценарий)",
+    "type": "technological",
+    "year_in_catalog": null,
+    "intensity": 0.575,
+    "duration": 2,
+    "affected": [
+      "KAZ",
+      "TJK"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2012,
+    "name": "Инфраструктурная цифровизация (гипотетический сценарий)",
+    "type": "technological",
+    "year_in_catalog": null,
+    "intensity": 0.65,
+    "duration": 3,
+    "affected": [
+      "KGZ",
+      "TKM"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2013,
+    "name": "Изменение спроса на промышленную продукцию (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.725,
+    "duration": 1,
+    "affected": [
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2014,
+    "name": "Рост стоимости внешних заимствований (гипотетический сценарий)",
+    "type": "financial",
+    "year_in_catalog": null,
+    "intensity": 0.8,
+    "duration": 2,
+    "affected": [
+      "TJK",
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2015,
+    "name": "Сбой импортных поставок оборудования (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.35,
+    "duration": 3,
+    "affected": [
+      "TKM",
+      "BLR"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2016,
+    "name": "Перераспределение транзитных потоков (гипотетический сценарий)",
+    "type": "geopolitical",
+    "year_in_catalog": null,
+    "intensity": 0.425,
+    "duration": 1,
+    "affected": [
+      "ARM",
+      "KAZ"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2017,
+    "name": "Сезонные ограничения сельскохозяйственного экспорта (гипотетический сценарий)",
+    "type": "environmental",
+    "year_in_catalog": null,
+    "intensity": 0.5,
+    "duration": 2,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2018,
+    "name": "Изменение структуры занятости (гипотетический сценарий)",
+    "type": "demographic",
+    "year_in_catalog": null,
+    "intensity": 0.575,
+    "duration": 3,
+    "affected": [
+      "BLR",
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2019,
+    "name": "Задержка совместного промышленного проекта (гипотетический сценарий)",
+    "type": "elite",
+    "year_in_catalog": null,
+    "intensity": 0.65,
+    "duration": 1,
+    "affected": [
+      "KAZ",
+      "TJK"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2020,
+    "name": "Новые требования к торговым процедурам (гипотетический сценарий)",
+    "type": "elite",
+    "year_in_catalog": null,
+    "intensity": 0.725,
+    "duration": 2,
+    "affected": [
+      "KGZ",
+      "TKM"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2021,
+    "name": "Кризис платежных расчетов (гипотетический сценарий)",
+    "type": "financial",
+    "year_in_catalog": null,
+    "intensity": 0.8,
+    "duration": 3,
+    "affected": [
+      "UZB"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2022,
+    "name": "Ускорение промышленной автоматизации (гипотетический сценарий)",
+    "type": "technological",
+    "year_in_catalog": null,
+    "intensity": 0.35,
+    "duration": 1,
+    "affected": [
+      "TJK",
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2023,
+    "name": "Нагрузка на здравоохранение и занятость (гипотетический сценарий)",
+    "type": "pandemic",
+    "year_in_catalog": null,
+    "intensity": 0.425,
+    "duration": 2,
+    "affected": [
+      "TKM",
+      "BLR"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2024,
+    "name": "Региональное сокращение частных инвестиций (гипотетический сценарий)",
+    "type": "financial",
+    "year_in_catalog": null,
+    "intensity": 0.5,
+    "duration": 3,
+    "affected": [
+      "ARM",
+      "KAZ"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  },
+  {
+    "id": 2025,
+    "name": "Совместное преодоление инфраструктурного кризиса (гипотетический сценарий)",
+    "type": "economic",
+    "year_in_catalog": null,
+    "intensity": 0.575,
+    "duration": 1,
+    "affected": [
+      "RUS"
+    ],
+    "impact_dims_original": "not_applicable",
+    "provenance": "synthetic_regional_template",
+    "historical": false,
+    "note": "Гипотетический региональный сценарий; количественные эффекты — допущения модели"
+  }
+]

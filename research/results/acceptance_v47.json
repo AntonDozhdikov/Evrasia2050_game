@@ -1,0 +1,53 @@
+{
+  "version": "V4.7",
+  "technical_pass": true,
+  "scientific_ready": false,
+  "checks": {
+    "v46_original_outputs_preserved": true,
+    "all_v46_modules": true,
+    "repeated_projects_no_phantom_cash": true,
+    "independent_economic_selection": true,
+    "precommitted_selection_before_audit": true,
+    "both_lora_retrained_full": true,
+    "eight_world_targets": true
+  },
+  "economy_regression": {
+    "passed": true,
+    "checks": {
+      "initial_project_cash_positive": true,
+      "duplicate_offers_rejected": true,
+      "duplicate_project_count_zero": true,
+      "duplicate_volume_zero": true,
+      "duplicate_project_cash_zero": true,
+      "no_duplicate_macro_project_term": true,
+      "lagged_maturity": true,
+      "reward_no_activity_terms": true,
+      "reward_exact_component_sum": true,
+      "budget_finite": true,
+      "no_free_idle_capital": true,
+      "eight_countries": true,
+      "action_heads_unchanged": true,
+      "repeat_and_neutral_same_realized_project_volume": true,
+      "no_phantom_cash_in_repeat": true
+    }
+  },
+  "selection_metric": "paired_economic_score_not_native_reward",
+  "selection_winner": "FRESH_V44_QD",
+  "selection_uncertainty": {
+    "scenario_cluster_bootstrap_95pct": [
+      0.06534115799751794,
+      0.07144304829175664
+    ],
+    "paired_mean_economic_score": 0.06868899623059017,
+    "selected_on_audit_data": false,
+    "confidence_interval_is_not_causal_evidence": true
+  },
+  "source_stage1_sha256": "fd314ae2678a8af97812632219a0722b1e8512a5ac33d98a2cc0c7cb22f920da",
+  "limitations": [
+    "2021-2025 forecast validation is already exposed",
+    "economic coefficients are assumed, not identified",
+    "policy superiority over economic baselines is not presumed",
+    "legacy policy checkpoint is from previous payoff rules",
+    "human research acceptance still required after FULL"
+  ]
+}

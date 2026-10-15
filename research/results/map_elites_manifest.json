@@ -1,0 +1,87 @@
+{
+  "version": "V4.4",
+  "algorithm": "state_gated_ME_MAP_Elites_DGM_inspired",
+  "evaluations_requested": 77,
+  "evaluations_actual": 77,
+  "early_stop_reason": "QD_ARCHIVE_PLATEAU",
+  "cells_possible": 36,
+  "filled_cells": 1,
+  "archive_diversification_axis": "project_years_not_trade_threshold",
+  "state_gates": [
+    "static",
+    "last_crisis",
+    "capital_shortage",
+    "elapsed_years"
+  ],
+  "validated_adaptive_candidates": 0,
+  "selected_promoted": false,
+  "independent_heldout_integrative": false,
+  "heldout": {
+    "reward": 12.352502881806686,
+    "projects": 0.0,
+    "agreements": 0.0,
+    "matured": 0.0,
+    "cash_out": 0.0,
+    "benefit": 0.0,
+    "profile_diversity": 7.0,
+    "diversification": 0.5021420580335996,
+    "terminal_trade": 363338851097.58997,
+    "late_projects": 0.0,
+    "late_agreements": 0.0,
+    "project_years": 0.0,
+    "crisis_steps": 13.5,
+    "mean_capital_budget": 5.781826858715713,
+    "net_project_cash": 0.0,
+    "min_reward": 9.045720474261543,
+    "project_years_min": 0,
+    "late_projects_min": 0,
+    "fingerprint_var": 0.022435897435897436
+  },
+  "heldout_crisis_action_difference": 0.003703703703703704,
+  "operator_success": {
+    "gaussian": [
+      1,
+      12
+    ],
+    "directed": [
+      1,
+      12
+    ],
+    "crossover": [
+      1,
+      12
+    ],
+    "differential": [
+      3,
+      22
+    ],
+    "restart": [
+      1,
+      12
+    ],
+    "conditional": [
+      1,
+      12
+    ],
+    "identity": [
+      2,
+      2
+    ]
+  },
+  "validation_seeds": [
+    7453,
+    7633
+  ],
+  "training_seeds": [
+    6453,
+    6589
+  ],
+  "heldout_seeds": [
+    9453,
+    9649
+  ],
+  "scientific_caution": "Synthetic MARL economics, no causal real-world integration claims",
+  "not_full_DGM": true,
+  "no_self_generated_code_execution": true,
+  "rollback_if_not_approved": true
+}

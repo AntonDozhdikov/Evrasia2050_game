@@ -1,0 +1,330 @@
+{
+  "version": "V4.7",
+  "manifest_type": "stage3_handoff",
+  "items": {
+    "src/eurasia_v47_qa.py": {
+      "sha256": "2af041f9a07abc72a4071b3f43174adaf7f38d550525f34e1575e1b893d55465",
+      "bytes": 5161
+    },
+    "src/eurasia_world_v44.py": {
+      "sha256": "6ccbab6fbd3755fd193a0e053f3ccb317872d95118485929d20ce0c871829438",
+      "bytes": 20636
+    },
+    "src/requirements-v4.txt": {
+      "sha256": "f5f9979e56471950cb2c1999ff05754aab095fc5523e072eecc8fff920425861",
+      "bytes": 196
+    },
+    "src/eurasia_progress.py": {
+      "sha256": "1150f489d626fd339d1ee2403a7acc3f460b3b6da9c7a4e98dff4a946d24024b",
+      "bytes": 5983
+    },
+    "src/eurasia_lora.py": {
+      "sha256": "a1b13abd2356c4163a820b40af57c99dfc2f938303f9f86792167353f3c0b788",
+      "bytes": 17391
+    },
+    "src/eurasia_marl_v42.py": {
+      "sha256": "f87eca3ef0e708b866edb25ff489b348663022e8e73a12a37e2ec441e8591dde",
+      "bytes": 4515
+    },
+    "src/eurasia_v46_guardrails.py": {
+      "sha256": "324e9ccf8f9aaa20ace9232d23b32c13972ebecad56e5a3e1de24ad396c880e2",
+      "bytes": 8376
+    },
+    "src/eurasia_marl_v44.py": {
+      "sha256": "0f8ec00d342451acfbee49f8a9b4f261bdb5fef46b4c5cb3d58807e78cf774c9",
+      "bytes": 28844
+    },
+    "src/eurasia_v45_qa.py": {
+      "sha256": "0cca92b66b8ceb4d8f1737a7f7e69b73271d97708caf2dcaf796c03444e6cf04",
+      "bytes": 4534
+    },
+    "src/eurasia_v45_panel.py": {
+      "sha256": "1d164d6cf263ba32e886fab20bf78e863f10600acc63dfebc91fd6256f944d98",
+      "bytes": 11703
+    },
+    "src/eurasia_marl_v43.py": {
+      "sha256": "ad6e6d12f1e985b4b839d9d638d4f3bb686236179b6a250aa64c53cbbc2058e2",
+      "bytes": 16235
+    },
+    "src/eurasia_world_v42.py": {
+      "sha256": "754f0ab9212839f6efb5d6595523c0c87d082b4442e85e74659f5b44a4f0eb21",
+      "bytes": 13108
+    },
+    "src/eurasia_world_v43.py": {
+      "sha256": "f8b322222e5ceaf4b679a8456296cfe78be5af6c6ee1a07bb3b54d5861e799ba",
+      "bytes": 17962
+    },
+    "src/eurasia_restore_qa.py": {
+      "sha256": "494feaf6a9b817e3b3db582ea7afefe0eb47f93001ea68349f18120b9b737fa0",
+      "bytes": 8890
+    },
+    "src/eurasia_diagnostics.py": {
+      "sha256": "10190060531674af9b41bc74f07ee1ae9bf3c0321a2f599da0e3eb2fe2252c91",
+      "bytes": 9313
+    },
+    "src/eurasia_runtime.py": {
+      "sha256": "bb96482d0834228699ddbdffbe49ff1a6345ad6243fbcd63e29496d48fc349ee",
+      "bytes": 57400
+    },
+    "src/eurasia_v45_finalize.py": {
+      "sha256": "ca6ea02dc0304ba9aeb86eaa6a12634af1f70298b96fa128250619c30c60839f",
+      "bytes": 13237
+    },
+    "src/eurasia_v4.py": {
+      "sha256": "86911c49f5b5e70f7626e558be8590c83f4acc80f10e3b562a74760d85754179",
+      "bytes": 30108
+    },
+    "runtime/world/per_target_estimators.joblib": {
+      "sha256": "0c2262eb783479b0fc96cc08dfaac3cc0c04be2bfcdb59aec78b507dfeadf8ae",
+      "bytes": 86
+    },
+    "runtime/world/per_target_manifest.json": {
+      "sha256": "466cfbf5f38239f9e9a8f33755da32f36f717aa9c6e0365e5cf07cb234cef085",
+      "bytes": 536
+    },
+    "runtime/world/scalers_and_state.json": {
+      "sha256": "1fb9b4bd6bf7c27307ec5b6abee495628873483660b98d5d74160ac897e018fd",
+      "bytes": 11936
+    },
+    "runtime/world/world_metrics.json": {
+      "sha256": "0a0acc4df87e6b493a644d5c1b842c4bfad86aa7225346310ccab86355612e8a",
+      "bytes": 5602
+    },
+    "runtime/world/v41_safe/world_0.pt": {
+      "sha256": "b0856c32fdbcc53ee8f57fb571844037d89272cc4a1caa6d57728c3484418146",
+      "bytes": 75277
+    },
+    "runtime/world/v41_safe/world_2.joblib": {
+      "sha256": "98a8e02ae57b549d6aff0614ba67209e0d52b296865ff4f19b3c987bd15ef2b1",
+      "bytes": 143035
+    },
+    "runtime/world/v41_safe/world_1.joblib": {
+      "sha256": "8b3d014f95904494e7d1f329e53ac76fca51714ae89803544ed859181e409b18",
+      "bytes": 169786
+    },
+    "runtime/world/v41_safe/world_metrics.json": {
+      "sha256": "1dbd6e1a541b8762d8e2c665380ecc76bf193899f3ce4d494d57a651be030ff3",
+      "bytes": 4404
+    },
+    "runtime/world/v41_safe/scalers_and_state.json": {
+      "sha256": "1fb9b4bd6bf7c27307ec5b6abee495628873483660b98d5d74160ac897e018fd",
+      "bytes": 11936
+    },
+    "runtime/world/v45_global_panel/global_panel_world.joblib": {
+      "sha256": "fd7a4d0c45489e7fecbbe28ddc947edfed2e3b5773e6b2e3fce8edd285327365",
+      "bytes": 8575
+    },
+    "runtime/world/v45_global_panel/historical_test_by_year.csv": {
+      "sha256": "e9c248de5e0e25c1c07db72425d71e43906e2083b2d80aca289dd4dd702005bf",
+      "bytes": 250
+    },
+    "runtime/world/v45_global_panel/stage2_manifest.json": {
+      "sha256": "b07560576d46f7207415a32f0c50c954d89adf17bda069d5d29dec233edff04c",
+      "bytes": 3506
+    },
+    "runtime/world/v45_global_panel/selection_by_target.csv": {
+      "sha256": "af875af60e2775801904c3a2c8e49586dd134830d2758b05e37eabd3fd34d127",
+      "bytes": 869
+    },
+    "runtime/world/v45_global_panel/oof_2017_2019.csv": {
+      "sha256": "63eb059c23daeb6a05156d19e6b206a3adf93dbbbaefefa8b344852c28e14401",
+      "bytes": 18771
+    },
+    "runtime/world/v45_global_panel/early_tuning.csv": {
+      "sha256": "ffd395af3e10c576971b6bca2b6c395dc4630a0ab71d8914b8728e89eda5c033",
+      "bytes": 622
+    },
+    "runtime/game_input_tables/game_country_state.csv": {
+      "sha256": "978607bcd79db8e2b7711500bcca2cfb8b25c2abe4baca7981550d27ebe15fe6",
+      "bytes": 69628
+    },
+    "runtime/game_input_tables/dyad_year.csv": {
+      "sha256": "a95b4dd845f8e7e31abc6d72226fc26618c1e453ef26ec6e5817851418322389",
+      "bytes": 235304
+    },
+    "runtime/game_input_tables/game_dyads.csv": {
+      "sha256": "584209507e32d5fd478230a2185dedff36fa941e6b5a8caf85700013246c8d4c",
+      "bytes": 90414
+    },
+    "runtime/game_input_tables/game_global.csv": {
+      "sha256": "e42cce90179d8620a340b4a9e532c5a37162f178b080805d19a6599353d6627c",
+      "bytes": 1594
+    },
+    "runtime/lora_crisis/train_loss.csv": {
+      "sha256": "e7e6032721eb4c4925b74a2c9a4ee747b44a816a24e0939611c518b0af7cdd8e",
+      "bytes": 3837
+    },
+    "runtime/lora_crisis/heldout_examples.json": {
+      "sha256": "998584f05740947da7137b1889ec027c4f0f30c62acb2ac2b462e38d53ac7e86",
+      "bytes": 3093
+    },
+    "runtime/lora_crisis/adapter_model.safetensors": {
+      "sha256": "1c19cc0329e383180a168fdb96d9b0f581ba6fb0e5ecdfb475fb4e170e3b103c",
+      "bytes": 11815504
+    },
+    "runtime/lora_crisis/adapter_config.json": {
+      "sha256": "94447b65cef6ba28e90698b6c572ac7c772d6db0d560a77a87c29e5a422c76ac",
+      "bytes": 1091
+    },
+    "runtime/lora_crisis/README.md": {
+      "sha256": "08fd2424993bc7896df52c995f0d995942e04ebffef3c407b1709f046201cfcb",
+      "bytes": 5180
+    },
+    "runtime/lora_crisis/quality.json": {
+      "sha256": "66b04c3694efff8efe27794b8f8dc13fcc6f4e7a86fc89bf0f451e3471d456ca",
+      "bytes": 388
+    },
+    "runtime/lora_interpreter/train_loss.csv": {
+      "sha256": "dc7cc99040234a451420e2f61944401f0f7a0f0ba68a9a58c97a1982ac507952",
+      "bytes": 3973
+    },
+    "runtime/lora_interpreter/heldout_examples.json": {
+      "sha256": "667550a11a8ba7e2918d7fd92b242cfbb9c367feea5826d33e13236b86ab8b38",
+      "bytes": 3997
+    },
+    "runtime/lora_interpreter/adapter_model.safetensors": {
+      "sha256": "e919d21a99524857e9cca371a4ae80b569eb46ba7883087b51f308edfcdf0d30",
+      "bytes": 11815504
+    },
+    "runtime/lora_interpreter/adapter_config.json": {
+      "sha256": "94447b65cef6ba28e90698b6c572ac7c772d6db0d560a77a87c29e5a422c76ac",
+      "bytes": 1091
+    },
+    "runtime/lora_interpreter/README.md": {
+      "sha256": "08fd2424993bc7896df52c995f0d995942e04ebffef3c407b1709f046201cfcb",
+      "bytes": 5180
+    },
+    "runtime/lora_interpreter/quality.json": {
+      "sha256": "7744dc2d38db7ea219dd4e0aca4df91c6d38994e7b2634c0313e2da4a2dacc1a",
+      "bytes": 393
+    },
+    "runtime/marl/v45_archive/paired_selection.csv": {
+      "sha256": "b40d62bee2e11976a23297234162227d8cc061fb73a4d14022d230d63c368391",
+      "bytes": 3852
+    },
+    "runtime/marl/v45_archive/selection_protocol_precommit.json": {
+      "sha256": "0921029024dcadf715c7a53100ff1809461c2ae7a183d320910ffd21ee2394a9",
+      "bytes": 1112
+    },
+    "runtime/marl/v45_archive/post_selection_audit.csv": {
+      "sha256": "d6062fa26ea6d8109c6f8526193199ec7f093d1e0fd81f2dd3d4829ca07d251b",
+      "bytes": 3888
+    },
+    "runtime/marl/v45_archive/selected_policy_v45.pt": {
+      "sha256": "4a1daab5cce666c50487206e16612a815f8d481e1ea5e099784943c7dcbbbb9c",
+      "bytes": 486604
+    },
+    "runtime/marl/v45_archive/promotion_manifest.json": {
+      "sha256": "852674d2b4b3b511efb96843f619944ec56f6547d2a74ccdcb780f4076f506bc",
+      "bytes": 1657
+    },
+    "runtime/marl/v45_archive/selection_uncertainty.json": {
+      "sha256": "e58e670171aa546c787257aa5ecb4cdebb070f6f04b50ca6b853ac62ba17638c",
+      "bytes": 238
+    },
+    "runtime/marl/v45_archive/independent_economic_baselines.csv": {
+      "sha256": "b82983224dac109dc2ca5f6326bf3150ebe8baeb20b0f5cbc8b83394036b748c",
+      "bytes": 2160
+    },
+    "runtime/marl/v45_archive/paired_differences.csv": {
+      "sha256": "9a8742ec9c99e7cab1e351319b40932efddc2abe23599c14a3955d9f92a1a166",
+      "bytes": 2204
+    },
+    "runtime/marl/v45_archive/frozen_stage1_immutable.pt": {
+      "sha256": "4a7394ed2e7b496cc2507e1a72c79b66de4b118300d76e49081d079882bab514",
+      "bytes": 485905
+    },
+    "runtime/marl/v45_archive/post_selection_paired_deltas.csv": {
+      "sha256": "7d9ffb31aa6e3a6e68f3856f15f79e9ae8fbfed5528987acac385d0c2ada78c5",
+      "bytes": 2221
+    },
+    "runtime/marl/v45_archive/selected_declarative_config.json": {
+      "sha256": "31132d79c31107c7723d4aa16c83320e9fcd1a13696f02c2b60b716003f7b88c",
+      "bytes": 13521
+    },
+    "runtime/marl/v45_archive/crisis_response.csv": {
+      "sha256": "54539ffa9104e711ee9a33fcba74bfceb5accd079fed1c8fddcb5174d62f3afa",
+      "bytes": 742
+    },
+    "runtime/marl/v45_archive/fresh_post_evolution_v44.pt": {
+      "sha256": "0f9e6a56bed4c8f8dda67d23f133112630f42a9477fc2883651fc582a7d06d9d",
+      "bytes": 486668
+    },
+    "runtime/marl/mappo.pt": {
+      "sha256": "4a1daab5cce666c50487206e16612a815f8d481e1ea5e099784943c7dcbbbb9c",
+      "bytes": 486604
+    },
+    "runtime/marl/quality_diversity_offsets.npz": {
+      "sha256": "de66e3ebcabddc8c8e9fc4c1f85a579f14d0543b45e09cfdff1fa4e81e1e0941",
+      "bytes": 2419
+    },
+    "runtime/integration_contract.json": {
+      "sha256": "7c4b95caf04582b5522c2cbae641cfaef82d2c5dd4c0f15e44c781a932441e9b",
+      "bytes": 2465
+    },
+    "runtime/acceptance_v47.json": {
+      "sha256": "d213b5412f6d5b1591113c42f48b4261eb64d9df80ddfbe26360a7f217051bee",
+      "bytes": 1863
+    },
+    "runtime/v47_economic_regression.json": {
+      "sha256": "53e5e8542af7916c0a7f10887ec6bb474a2734724067b8a98dde66aece6ae1df",
+      "bytes": 11190
+    },
+    "runtime/v47_structural_regression.json": {
+      "sha256": "763c20aefa959a04fd7f0be96fef2de37bdf873b2c62c946f079bc79b4114781",
+      "bytes": 381
+    },
+    "runtime/input_data_audit.json": {
+      "sha256": "1f849e8847c5df8372387b331f00cad16f025eede2b2e4a1bc4067b61d65145c",
+      "bytes": 458
+    },
+    "runtime/scenario_trajectories_2025_2050.csv": {
+      "sha256": "a14904f5e1d5daf952cd4d278c85184122175934fa115f7664454a131712228e",
+      "bytes": 1080226
+    },
+    "runtime/agent_actions.csv": {
+      "sha256": "416ba94ba437005c583fed4f5adcbc313d121918af7bdc7fed8c77b5fd4f54a6",
+      "bytes": 1884587
+    },
+    "runtime/stress_test_metrics.csv": {
+      "sha256": "2c31272f2eed3d3a3184d4a230dace4050bf60eddc9a06666acfcfc5fde17888",
+      "bytes": 14386
+    },
+    "runtime/marl/map_elites_manifest.json": {
+      "sha256": "fd11caf05952b00e4fbc157192d58998fc622401cc8e0f96659b67a1680dd81c",
+      "bytes": 1836
+    },
+    "runtime/world/heldout_predictions.csv": {
+      "sha256": "e23a2de68e87b0dc0e11a93e7157b04813ca7a433a25999b4a0acc006c050139",
+      "bytes": 6630
+    },
+    "runtime/metadata/scenarios_20.json": {
+      "sha256": "276869536c44efc806f52ec0dbfe3b7d9f5a16cee3c7acea9755505acf02a5bc",
+      "bytes": 6913
+    },
+    "runtime/metadata/crises_historical_unverified.json": {
+      "sha256": "2c3974ccfd671ad2ce16861d172d4c26c3010c29ba78a014a433af678ddd795a",
+      "bytes": 11397
+    },
+    "runtime/metadata/crises_future_100.json": {
+      "sha256": "b42de17f47d9c55eee4f829d3dc75e9672330126ab29532397f6c67176714ccd",
+      "bytes": 55857
+    },
+    "reports/STAGE3_HANDOFF_SPEC.md": {
+      "sha256": "d365b24ca4c49036b4ba4748b9ccb4ef44f534c7c01ed77856ec086672092151",
+      "bytes": 6052
+    },
+    "reports/АКТ_ПРИЕМКИ_V47.md": {
+      "sha256": "6f69c864bc13423573d09a81ef5ed666ca6149fb413567e4a0be3900f0c8b50a",
+      "bytes": 8989
+    },
+    "reports/independent_v47_audit.json": {
+      "sha256": "18a279c6434a610c72141c53a36678dc06531d119ebed9103d9a421bdd062d48",
+      "bytes": 7913
+    },
+    "reports/independent_checks.py": {
+      "sha256": "e4ffeccaae8d3d34b3811a3495c0f1cb1afd6a3c3e8841fc765ce3a80d2109ec",
+      "bytes": 5061
+    }
+  }
+}
