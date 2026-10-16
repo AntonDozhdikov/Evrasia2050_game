@@ -44,6 +44,7 @@
       <h3 class="party-subheading"><span class="step-number">1</span> Выберите государства <small>Можно управлять сразу несколькими</small></h3>
       <div id="partyCountries" class="party-countries"></div>
       <div id="partyContext" class="party-context"></div>
+      <section id="partyTurnIntelligence" class="turn-intelligence" aria-label="Обстановка перед ходом" aria-live="polite"><p>Загрузка сведений перед ходом…</p></section>
       <div class="party-actions-header"><h3><span class="step-number">2</span> Определите решения <span class="decision-year-label">на выбранный год</span></h3><span id="partyCount"></span></div><div id="partyCountryTabs" class="party-tabs" role="tablist" aria-label="Решения управляемых государств"></div>
       <div id="partyActions" class="party-action-grid"></div>
       <div class="party-buttons"><div class="party-buttons-primary"><button type="button" class="primary" id="partySave">Сохранить год</button><button type="button" class="secondary" id="partyNext">Следующий год →</button><button type="button" class="primary party-calc-cta" id="partyCalculate">Рассчитать итоги <span aria-hidden="true">↗</span></button></div><details class="party-file-options"><summary>Управление партиями <span aria-hidden="true">⌄</span></summary><div><button type="button" class="secondary" id="partyExport">Скачать партию</button><button type="button" class="secondary" id="partyImport">Загрузить партию</button><button type="button" class="secondary" id="partyNew">Новая партия</button></div>
@@ -74,6 +75,7 @@
         <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
         <details class="result-details" id="partyAllMetrics"><summary>Все 21 показатель <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
         <details class="result-details" id="partyCountryMetrics"><summary>Результаты восьми стран <span>Оценка каждой страны по стратегиям</span></summary><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div></details>
+        <section class="controlled-results" id="partyControlledResults" aria-label="Индивидуальные результаты управляемых государств"><h3>Ваши государства: отдельные итоги и сравнение</h3><p>Результаты ваших решений для каждой управляемой страны сравниваются с полностью автоматическим прохождением того же сценария.</p><div id="partyControlledSummary"></div></section>
         <section class="country-details" id="partyCountryDetails">
           <h3>Результаты отдельных государств</h3>
           <p>Динамика экономики и результат решений каждой страны. Показатели являются модельными оценками, а не прогнозом.</p>
@@ -138,6 +140,6 @@
   </main>
   <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
 </div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/policy_v47.js"></script><script src="assets/adaptive_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/party_results.js"></script><script src="assets/ux_v2.js"></script>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/policy_v47.js"></script><script src="assets/adaptive_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/metric_units.js"></script><script src="assets/party_results.js"></script><script src="assets/party_turn.js"></script><script src="assets/ux_v2.js"></script>
 </body>
 </html>
