@@ -16,19 +16,19 @@ const METRICS=[
  ['unemployment','Безработица','%',-1,'unemployment_pct'],
  ['population','Годовое изменение населения','%',0,'population_growth_pct'],
  ['remittances','Денежные переводы к ВВП','%',0,'remittances_pct'],
- ['projects','Новые совместные проекты','',0,'new_projects'],
- ['matured','Проекты, достигшие отдачи','',0,'projects_matured'],
- ['agreements','Новые соглашения','',0,'new_agreements'],
- ['mobility','Соглашения о трудовой мобильности','',0,'mobility_agreements'],
+ ['projects','Новые совместные проекты за 26 лет','шт.',0,'new_projects'],
+ ['matured','Проекты, достигшие отдачи за 26 лет','шт.',0,'projects_matured'],
+ ['agreements','Новые соглашения за 26 лет','шт.',0,'new_agreements'],
+ ['mobility','Соглашения о трудовой мобильности за 26 лет','шт.',0,'mobility_agreements'],
  ['expenses','Инвестиционные расходы','усл. ед.',0,'project_cash_out'],
  ['benefits','Проектные поступления','усл. ед.',0,'project_benefit_current'],
  ['net','Чистая проектная отдача','усл. ед.',1,'net_annual'],
- ['trade','Торговый оборот в 2050 году','млрд долл.',1,'trade_usd_total'],
+ ['trade','Исходящая торговля восьми стран в 2050 году','млрд долл.',1,'trade_usd_total'],
  ['budget','Остаток общего капитала в 2050 году','усл. ед.',1,'capital_budget_total'],
- ['network','Изменение торговой сети','индекс',0,'network_strength'],
+ ['network','Объём торговли к уровню 2024 года','коэф.',0,'network_strength'],
  ['concentration','Сосредоточенность торговых потоков','индекс',0,'trade_concentration'],
- ['reward','Внутренняя оценка решений','усл. ед.',1,'mean_reward'],
- ['crises','Сумма годовых кризисных воздействий','',0,'crises_active']
+ ['reward','Среднегодовая модельная оценка решений','усл. ед.',1,'mean_reward'],
+ ['crises','Сумма годовых активных кризисов за 26 лет','кризисо-лет',0,'crises_active']
 ];
 const keys=['PLAYER','MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL'];
 const isAdaptive=p=>p.startsWith('ADAPTIVE_MAPPO');
@@ -131,7 +131,7 @@ function renderAll(){
  ['Лучше всех по показателям',better+' из '+performance.length],
  ['Среднегодовой рост ВВП',fmt(player.growth)+'%'],
  ['Чистая отдача проектов',fmt(player.net)+' усл. ед.'],
- ['Торговля к 2050 году',fmt(player.trade/1e9,1)+' млрд долл.']
+ ['Исходящая торговля восьми стран к 2050 году',fmt(U.countryTrade(player.trade),1)+' млрд долл.']
  ].map(([title,value])=>'<div class="player-kpi"><span>'+safe(title)+'</span><strong>'+safe(value)+'</strong></div>').join('');
  $('partyResultHead').innerHTML='<tr><th>Показатель</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
  $('partyResultRows').innerHTML=METRICS.map(([key,label,unit,dir])=>{
