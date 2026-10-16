@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Проверка редактора</title></head>
+<body><p id="status">ОЖИДАНИЕ</p><iframe id="editor" src="../editor.html" style="width:1000px;height:700px;border:0"></iframe>
+<script>
+(function(){
+'use strict';
+const status=document.getElementById('status'),frame=document.getElementById('editor');
+const expect=(yes,why)=>{if(!yes)throw Error(why)};
+frame.addEventListener('load',()=>setTimeout(()=>{
+ try{
+  const d=frame.contentDocument,w=frame.contentWindow;
+  expect(d.getElementById('text-editor'),'Редактор не найден');
+  expect(d.getElementById('textKind').querySelectorAll('option').length===5,'Утеряны разделы редактора');
+  const kind=d.getElementById('textKind');kind.value='page';kind.dispatchEvent(new Event('change',{bubbles:true}));
+  const item=d.getElementById('textItem');item.value='start';item.dispatchEvent(new Event('change',{bubbles:true}));
+  const field=d.querySelector('textarea[data-edit-key="text"]');
+  expect(field&&field.value.includes('26 лет решений'),'В редакторе устаревшее вступительное пояснение');
+  const changed='Проверка: текст первого экрана сохранен в редакторе.';
+  field.value=changed;d.getElementById('textApply').click();
+  const saved=JSON.parse(w.localStorage.getItem('evrasia2050:editorial:v1'));
+  expect(saved.page.start.text===changed,'Редактор не сохранил текст');
+  const game=document.createElement('iframe');game.style.width='1000px';game.style.height='700px';
+  game.addEventListener('load',()=>setTimeout(()=>{
+   try{
+    const g=game.contentDocument;
+    expect(!g.getElementById('text-editor'),'Редактор попал в игровую страницу');
+    expect(g.querySelector('.hero-caption').textContent===changed,'Редактор не изменяет пояснение первого экрана');
+    status.textContent='PASS EDITOR: отдельная страница, пять разделов, сохранение и отображение правки в игре';
+   }catch(e){status.textContent='FAIL EDITOR: '+e.message;}
+  },180));
+  game.src='../index.html';document.body.appendChild(game);
+ }catch(e){status.textContent='FAIL EDITOR: '+e.message;}
+},180));
+setTimeout(()=>{if(status.textContent==='ОЖИДАНИЕ')status.textContent='FAIL EDITOR: превышено время загрузки';},9500);
+})();
+</script></body></html>
