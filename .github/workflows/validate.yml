@@ -40,11 +40,18 @@ jobs:
           echo "Редактор и публикация текстов в игре: тест пройден"
 
       - name: Проверить опубликованный адрес /play_the_game
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
         run: |
           set -eu
           URL=https://antondozhdikov.github.io/Evrasia2050_game/play_the_game
-          curl -fLsS --retry 4 --retry-delay 3 "$URL" > /tmp/eurasia-public-game.html
+          # GitHub Pages публикуется отдельным процессом. Проверяем новый адрес после его появления.
+          for attempt in $(seq 1 48); do
+            if curl -fLsS --max-time 20 "$URL" > /tmp/eurasia-public-game.html 2>/dev/null &&
+               grep -Fq 'id="party-planner"' /tmp/eurasia-public-game.html; then
+              break
+            fi
+            sleep 5
+          done
           grep -Fq 'id="party-planner"' /tmp/eurasia-public-game.html
           grep -Fq 'assets/engine_v47.js' /tmp/eurasia-public-game.html
           curl -fLsS --retry 4 --retry-delay 3 https://antondozhdikov.github.io/Evrasia2050_game/ > /tmp/eurasia-old-entry.html
