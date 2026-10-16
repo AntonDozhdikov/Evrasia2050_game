@@ -46,10 +46,21 @@
       <div id="partyContext" class="party-context"></div>
       <div class="party-actions-header"><h3><span class="step-number">2</span> Определите решения <span class="decision-year-label">на выбранный год</span></h3><span id="partyCount"></span></div><div id="partyCountryTabs" class="party-tabs" role="tablist" aria-label="Решения управляемых государств"></div>
       <div id="partyActions" class="party-action-grid"></div>
-      <div class="party-buttons"><div class="party-buttons-primary"><button type="button" class="primary" id="partySave">Сохранить год</button><button type="button" class="secondary" id="partyNext">Следующий год →</button><button type="button" class="primary party-calc-cta" id="partyCalculate">Рассчитать итоги <span aria-hidden="true">↗</span></button></div><details class="party-file-options"><summary>Управление партиями <span aria-hidden="true">⌄</span></summary><div><button type="button" class="secondary" id="partyExport">Скачать партию</button><button type="button" class="secondary" id="partyImport">Загрузить партию</button><button type="button" class="secondary" id="partyNew">Новая партия</button></div></details>
+      <div class="party-buttons"><div class="party-buttons-primary"><button type="button" class="primary" id="partySave">Сохранить год</button><button type="button" class="secondary" id="partyNext">Следующий год →</button><button type="button" class="primary party-calc-cta" id="partyCalculate">Рассчитать итоги <span aria-hidden="true">↗</span></button></div><details class="party-file-options"><summary>Управление партиями <span aria-hidden="true">⌄</span></summary><div><button type="button" class="secondary" id="partyExport">Скачать партию</button><button type="button" class="secondary" id="partyImport">Загрузить партию</button><button type="button" class="secondary" id="partyNew">Новая партия</button></div>
+<div class="named-saves"><label for="partySlots">Именованные партии <select id="partySlots" aria-label="Именованные партии"></select></label><span id="partySlotCount"></span>
+<div class="named-save-actions"><button type="button" class="secondary" id="partySlotSave">Сохранить под именем</button><button type="button" class="secondary" id="partySlotLoad">Открыть</button><button type="button" class="secondary" id="partySlotDelete">Удалить</button></div>
+<p>До 20 партий в одном браузере. Для переноса между устройствами используйте файл партии.</p></div></details>
         <input type="file" id="partyFile" accept="application/json,.json" hidden>
       </div>
       <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
+      <section class="year-preview-section" aria-label="Последствия текущего года">
+        <div><h3>Последствия решений по годам</h3><p>Просмотрите расчёт за выбранный год с учётом предшествующих решений и кризисов. Остальные годы до 2050 года рассчитываются по стратегии.</p></div>
+        <button id="partyPreviewYear" type="button" class="secondary">Показать последствия выбранного года</button>
+        <p id="partyYearPreviewStatus" role="status" aria-live="polite"></p>
+        <div id="partyYearPreviewContent" hidden><div class="year-preview-metrics" id="partyYearNumbers"></div>
+         <div class="year-preview-crises" id="partyYearCrisis"></div><div class="year-preview-countries" id="partyYearCountries"></div>
+        </div>
+      </section>
     </section>
 
     <section id="results" class="results-heading">
@@ -63,7 +74,16 @@
         <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
         <details class="result-details" id="partyAllMetrics"><summary>Все 21 показатель <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
         <details class="result-details" id="partyCountryMetrics"><summary>Результаты восьми стран <span>Оценка каждой страны по стратегиям</span></summary><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div></details>
-        <p class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. Для обученных стратегий использованы сохраненные решения исходного исследования; переговорная и нейтральная стратегии действуют по собственным правилам. Место в таблице определяется средней оценкой решений в модели; остальные показатели сравниваются отдельно. Новые партии используют собственную воспроизводимую последовательность случайных отклонений.</p>
+        <section class="country-details" id="partyCountryDetails">
+          <h3>Результаты отдельных государств</h3>
+          <p>Динамика экономики и результат решений каждой страны. Показатели являются модельными оценками, а не прогнозом.</p>
+          <div class="country-details-controls"><label>Государство <select id="partyCountryDetailSelect"></select></label>
+          <label>Показатель <select id="partyCountryMetric"><option value="growth">Рост ВВП, %</option><option value="reward">Оценка решений, усл. ед.</option><option value="budget">Доступный капитал, усл. ед.</option><option value="trade_usd">Экспорт в модели, млрд долл.</option></select></label>
+          <label>Сравнение <select id="partyCountryBaseline"></select></label></div>
+          <div id="partyCountryDetailChart" class="player-chart"></div>
+          <details class="result-details" id="partyCountryYearTable"><summary>Таблица по годам <span>2025–2050 для выбранной страны</span></summary><div class="player-result-table"><table><thead><tr><th>Год</th><th>Рост ВВП — игрок, %</th><th>Рост ВВП — сравнение, %</th><th>Оценка — игрок</th><th>Оценка — сравнение</th></tr></thead><tbody id="partyCountryDetailRows"></tbody></table></div></details>
+        </section>
+        <p id="partyResultProvenance" class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. MAPPO и MAPPO_GREEDY воспроизводят архивные последовательности решений, без адаптации к текущим действиям игрока. BARGAIN пересчитывается по состоянию среды, NEUTRAL сохраняет нейтральный курс. Незаданные игроком годы рассчитываются автоматически. Место в таблице определяется оценкой модели, а не прогнозом будущего.</p>
         <button id="partyDownloadResults" type="button" class="secondary">Скачать результаты сравнения</button>
       </div>
     </section>
