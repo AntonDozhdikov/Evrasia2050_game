@@ -246,7 +246,10 @@ function previewYear(){
   const events=crisesForYear(scenario,year);
   $('partyYearCrisis').innerHTML='<b>Действующие кризисы:</b> '+(events.length?events.map(safe).join('; '):'нет активных кризисов')+'.';
   $('partyYearCountries').innerHTML='<table><thead><tr><th>Государство</th><th>Рост ВВП</th><th>Капитал</th><th>Оценка решений</th><th>Тип действий</th></tr></thead><tbody>'+
-   h.country_stats.map((row,i)=>'<tr><th>'+safe(M.countryNames[row.country])+'</th><td>'+fmt(row.growth,2)+' %</td><td>'+fmt(row.budget,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+((saved[row.country]&&p.controlled.includes(row.country))?'Игрок':'Стратегия')+'</td></tr>').join('')+'</tbody></table>';
+   h.country_stats.map((row,i)=>'<tr><th>'+safe(M.countryNames[row.country])+'</th><td>'+fmt(row.growth,2)+' %</td><td>'+fmt(row.budget,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+((saved[row.country]&&p.controlled.includes(row.country))?'Игрок':safe(NAMES[p.policy]))+'</td></tr>').join('')+'</tbody></table>'+
+   '<details class="year-decision-details" open><summary>Шесть решений каждой страны за '+year+' год</summary><div class="year-decisions-scroll"><table><thead><tr><th>Государство</th>'+G.actionDescriptions.map(a=>'<th>'+safe(a.name)+'</th>').join('')+'</tr></thead><tbody id="partyYearActionRows">'+
+   h.actions.map((row,i)=>'<tr><th>'+safe(M.countryNames[D.countries[i]])+'</th>'+row.map((level,k)=>'<td title="'+safe(G.actionDescriptions[k].levels[level])+'">'+level+' — '+safe(G.actionDescriptions[k].levels[level])+'</td>').join('')+'</tr>').join('')+
+   '</tbody></table></div><p>Действия с пометкой «Стратегия» вычислены из исходной обученной политики, из архива или по правилам выбранного режима. Решения под управлением игрока берутся из сохранения.</p></details>';
   output.hidden=false;
  }catch(e){output.hidden=true;status.textContent='Не удалось показать последствия года: '+e.message;}
 }
