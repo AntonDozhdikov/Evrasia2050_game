@@ -208,3 +208,18 @@ footer{padding:13px 6px 20px;color:#71859a}
 .quick-start-button:hover{background:#d5eaff}
 .quick-start-line>span{font-size:11px;color:#668099}
 @media(max-width:490px){.quick-start-line{align-items:flex-start;flex-direction:column;gap:5px}}
+
+/* Узкие экраны: график следует ширине контейнера, а дублирующая кнопка не сжимает шапку. */
+.player-chart svg{width:100%;min-width:0}
+@media(max-width:360px){.topbar{gap:8px}.header-play{display:none!important}.brand{min-width:0}}
+
+/* На узком телефоне доступная ширина меньше 320 px из-за полосы прокрутки. */
+.shell{min-width:0;width:100%}
+@media(max-width:360px){
+ .result-details>summary{flex-wrap:wrap;column-gap:5px}
+ .result-details>summary span{flex-basis:100%;margin-left:0;order:3}
+ .result-details>summary:after{margin-left:auto}
+ .quick-start-button{max-width:100%;white-space:normal;text-align:left}
+}
+
+@media(max-width:360px){.hero-steps{grid-template-columns:minmax(0,1fr)}.hero-steps>div{min-width:0}}

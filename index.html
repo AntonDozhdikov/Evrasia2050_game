@@ -55,12 +55,12 @@
       <span class="section-kicker">РЕЗУЛЬТАТ ВАШИХ РЕШЕНИЙ</span><h2>Кто справился лучше?</h2><p>Сравните свою партию с решениями других стратегий. Результат покажет сильные стороны и цену выбранного курса.</p>
     </section>
     <section id="partyResults" class="player-results" aria-label="Расчет игрока и сравнение стратегий">
-      <div class="player-result-intro"><h3>Итоги вашей партии</h3><p id="partyResultsStatus">Сохраните решения государств и нажмите «Рассчитать итог партии».</p></div>
+      <div class="player-result-intro"><h3>Итоги вашей партии</h3><p id="partyResultsStatus">Выберите решения хотя бы на один год и нажмите «Рассчитать итоги».</p></div>
       <div id="partyResultsContent" hidden>
         <div class="player-results-kpis" id="partyResultKpis"></div><div id="partyStrengths" class="player-insights" aria-live="polite"></div>
         <div class="player-chart-toolbar"><label>Что сравниваем <select id="partyResultMetric"></select></label></div><div id="partySeriesChoices" class="player-series-choices" aria-label="Линии графика"></div>
         <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
-        <details class="result-details" id="partyAllMetrics"><summary>Все 21 показателя <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
+        <details class="result-details" id="partyAllMetrics"><summary>Все 21 показатель <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
         <details class="result-details" id="partyCountryMetrics"><summary>Результаты восьми стран <span>Оценка каждой страны по стратегиям</span></summary><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div></details>
         <p class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. Для обученных стратегий использованы сохраненные решения исходного исследования; переговорная и нейтральная стратегии действуют по собственным правилам. Место в таблице определяется средней оценкой решений в модели; остальные показатели сравниваются отдельно. Новые партии используют собственную воспроизводимую последовательность случайных отклонений.</p>
         <button id="partyDownloadResults" type="button" class="secondary">Скачать результаты сравнения</button>
@@ -98,11 +98,11 @@
     <details id="methods" class="method-panel method-compact"><summary>Как играть <span>Три коротких шага и пояснение расчетов</span></summary><div class="method-inner">
       <div class="method-heading"><span class="section-kicker">ПРАВИЛА</span><h2>Как устроена игра</h2><p>Выбирайте страны и их решения по годам. Готовые результаты эксперимента позволяют сравнить стратегии, инвестиции, переговоры и реакцию государств на кризисы.</p></div>
       <div class="howto-grid">
-        <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» используют оставшиеся кризисы и предназначены для следующей версии с расчетом новых партий. Номер расчета определяет вариант исходных условий.</p></div>
+        <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» объединяют оставшиеся кризисы по четыре события и доступны в новых партиях. Номер расчета определяет вариант исходных условий.</p></div>
         <div><b>2. Сопоставьте решения</b><p>Укажите две стратегии и интересующий год. Графики покажут различия в экономическом росте, количестве проектов и торговле.</p></div>
         <div><b>3. Изучите действия государств</b><p>Выберите страну, чтобы увидеть ее шесть решений за год. На отдельной схеме представлены известные торговые связи за 2024 год.</p></div>
       </div>
-      <div class="method-limit"><strong>О результатах</strong><p>Экономические графики относятся к двадцати рассчитанным сценариям исследования. Для «Диких карт» подготовлены кризисные события. Их экономические последствия будут доступны после подключения расчета новых партий.</p></div>
+      <div class="method-limit"><strong>О результатах</strong><p>Архивные графики показывают двадцать исходных сценариев исследования. В новой партии движок V4.7 рассчитывает также «Дикие карты» с переговорной и нейтральной стратегиями. Обученные стратегии сравниваются только при сохраненных исходных условиях.</p></div>
     </div></details>
     <section id="reference" class="reference-panel">
       <div class="reference-heading"><span class="section-kicker">СПРАВОЧНИК ИГРЫ</span><h2>Условия и правила</h2></div>

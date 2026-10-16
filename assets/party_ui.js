@@ -63,6 +63,7 @@ function render(){
 function onCountriesChange(input){
  const choices=Array.from($('partyCountries').querySelectorAll('input:checked')).map(x=>x.value);
  if(!choices.length){input.checked=true;line('В партии требуется хотя бы одна управляемая страна.',false);return;}
+ if(!savePendingIfAny()){render();return;}
  party=Core.control(party,choices);if(!store())line('Хранилище браузера недоступно. Скачайте файл партии.',false);render();
 }
 function decisionsForYear(){
@@ -83,9 +84,24 @@ function saveYear(){
   return true;
  }catch(e){line(e.message,false);return false;}
 }
-function showYear(e){party=Core.goto(party,Number(e.target.value));store();render();}
+function hasPendingDecisions(){
+ const rows=decisionsForYear(),saved=party.years[party.year]||{};
+ return party.controlled.some(country=>{
+  const values=rows[country],previous=saved[country]||baseline(country,party.year);
+  return values&&values.some((level,i)=>level!==previous[i]);
+ });
+}
+function savePendingIfAny(){return !hasPendingDecisions()||saveYear();}
+function showYear(e){
+ const year=Number(e.target.value);
+ if(!savePendingIfAny()){render();return;}
+ party=Core.goto(party,year);store();render();
+}
 function changeScenario(){
- if(Object.keys(party.years).length&&!confirm('Новые условия начнут отдельную партию. Сохраненные решения текущей партии будут заменены. Продолжить?')){render();return;}
+ if((Object.keys(party.years).length||hasPendingDecisions())&&!confirm('Новые условия начнут отдельную партию. Все решения текущей партии будут заменены. Продолжить?')){
+  $('partyScenario').value=party.scenario;$('partyPolicy').value=party.policy;$('partySeed').value=party.seed;
+  return;
+ }
  const scenario=$('partyScenario').value,policy=$('partyPolicy').value,seed=Number($('partySeed').value);
  try{
   let q=Core.setScenario(party,scenario,policy,seed);
@@ -99,6 +115,7 @@ function download(payload,name){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function exportParty(){
+ if(!savePendingIfAny())return;
  Core.validate(party);
  let out=Core.clone(party);
  if(party.scenario.startsWith('W')){
@@ -131,15 +148,16 @@ $('partyNext').addEventListener('click',()=>{if(saveYear()&&party.year<2050){par
 $('partyExport').addEventListener('click',exportParty);
 $('partyImport').addEventListener('click',()=>$('partyFile').click());
 $('partyFile').addEventListener('change',e=>importParty(e.target.files[0]));
-$('partyNew').addEventListener('click',()=>{if(!Object.keys(party.years).length||confirm('Начать новую партию? Все записанные решения текущей партии будут заменены.')){let selected=party.controlled.slice();party=Core.control(Core.make(),selected);lastCountry=selected[0];store();render();line('Новая партия создана.');}});
+$('partyNew').addEventListener('click',()=>{if((!Object.keys(party.years).length&&!hasPendingDecisions())||confirm('Начать новую партию? Все решения текущей партии будут заменены.')){let selected=party.controlled.slice();party=Core.control(Core.make(),selected);lastCountry=selected[0];store();render();line('Новая партия создана.');}});
 const quick=$('uxQuickStart');
 if(quick)quick.addEventListener('click',()=>{
- if(Object.keys(party.years).length&&!confirm('Быстрый старт создаст новую партию. Скачайте сохраненные решения, если они вам нужны. Продолжить?'))return;
+ if((Object.keys(party.years).length||hasPendingDecisions())&&!confirm('Быстрый старт создаст новую партию. Скачайте сохраненные решения, если они вам нужны. Продолжить?'))return;
  party=Core.control(Core.make({scenario:'S01',policy:'BARGAIN',seed:163}),['RUS']);
  lastCountry='RUS';store();render();
  line('Россия выбрана. Определите решения на 2025 год — и начните игру.');
  $('partyActions').scrollIntoView({behavior:'smooth',block:'center'});
 });
 window.addEventListener('eurasia:texts-updated',render);
+window.EurasiaPartyUI={saveCurrentYear:saveYear};
 restore();render();
 })();
