@@ -251,3 +251,11 @@ footer{padding:13px 6px 20px;color:#71859a}
 .country-details .player-chart svg{width:100%;height:auto}
 @media(max-width:760px){.year-preview-metrics{grid-template-columns:1fr 1fr}.country-details-controls{grid-template-columns:1fr}}
 @media(max-width:360px){.year-preview-metrics{grid-template-columns:1fr}.named-save-actions button{flex:1 1 100%}}
+
+/* Stage 3 — explain actions actually chosen by each country in the annual policy simulation. */
+.year-decision-details{margin:12px 0 0;border:1px solid #d8e5f3;border-radius:8px;background:#fff;padding:10px}
+.year-decision-details>summary{cursor:pointer;font-size:13px;font-weight:800;color:#244969;padding:4px}
+.year-decisions-scroll{width:100%;max-width:100%;overflow-x:auto;margin-top:6px}
+.year-decisions-scroll table{border-collapse:collapse;min-width:820px;font-size:11px}
+.year-decisions-scroll th,.year-decisions-scroll td{white-space:normal;min-width:90px;vertical-align:top;padding:7px;border-bottom:1px solid #e0eaf6}
+.year-decision-details>p{padding:8px 3px}
