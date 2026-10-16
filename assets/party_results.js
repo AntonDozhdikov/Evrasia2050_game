@@ -32,7 +32,7 @@ const METRICS=[
 ];
 const keys=['PLAYER','MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL'];
 const NAMES={PLAYER:'Игрок',MAPPO_GREEDY:'ИИ: наиболее вероятные решения',MAPPO:'ИИ: вероятностные решения',BARGAIN:'Переговоры по правилам',NEUTRAL:'Без новых инициатив'};
-const colors={PLAYER:'#135cbd',MAPPO_GREEDY:'#8e42ab',MAPPO:'#16877f',BARGAIN:'#d44f63',NEUTRAL:'#65738f'};
+const colors={PLAYER:'#155bb9',MAPPO_GREEDY:'#8543a9',MAPPO:'#008578',BARGAIN:'#d44d62',NEUTRAL:'#687993'};
 let computation=null,activeSeries=[];
 function normalize(value,key){
  return key==='trade' ? value/1e9:value;
@@ -81,7 +81,7 @@ function calculate(){
   for(const policy of available)runs[policy]=Engine.run({...settings,policy});
   const summaries=Object.fromEntries(Object.entries(runs).map(([k,v])=>[k,Engine.summary(v)]));
   computation={party:p,scenario,runs,summaries,available:['PLAYER',...available]};
-  const best=available.slice().sort((a,b)=>summaries[b].reward-summaries[a].reward)[0];activeSeries=['PLAYER',best];
+  activeSeries=['PLAYER',available.slice().sort((a,b)=>summaries[b].reward-summaries[a].reward)[0]];
   $('partyResultsContent').hidden=false;
   $('partyResultMetric').innerHTML=METRICS.map(([id,label])=>'<option value="'+id+'">'+safe(label)+'</option>').join('');
   $('partyResultMetric').value='growth';
@@ -105,9 +105,9 @@ function renderAll(){
  $('partyResultKpis').innerHTML=[
  ['Ваш результат',place+' место из '+c.available.length],
  ['Лучше всех по показателям',better+' из '+performance.length],
- ['Средний рост ВВП',fmt(player.growth)+'%'],
+ ['Среднегодовой рост ВВП',fmt(player.growth)+'%'],
  ['Чистая отдача проектов',fmt(player.net)+' усл. ед.'],
- ['Торговля в 2050 году',fmt(player.trade/1e9,1)+' млрд 
+ ['Торговля к 2050 году',fmt(player.trade/1e9,1)+' млрд долл.']
  ].map(([title,value])=>'<div class="player-kpi"><span>'+safe(title)+'</span><strong>'+safe(value)+'</strong></div>').join('');
  $('partyResultHead').innerHTML='<tr><th>Показатель</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
  $('partyResultRows').innerHTML=METRICS.map(([key,label,unit,dir])=>{
@@ -115,13 +115,11 @@ function renderAll(){
   const ranked=dir?values.reduce((best,v,i)=>dir*v>dir*values[best]?i:best,0):-1;
   return '<tr><th>'+safe(label)+'</th>'+values.map((v,i)=>'<td class="'+(i===0?'player-cell ':'')+(ranked===i?'metric-winner':'')+'">'+fmt(v,key==='trade'?2:3)+(unit?' <small>'+safe(unit)+'</small>':'')+'</td>').join('')+'</tr>';
  }).join('');
- const strengths=performance.slice().sort((a,b)=>(b.better?1:0)-(a.better?1:0)|| Math.abs(b.delta)-Math.abs(a.delta));
- const bestStrengths=strengths.filter(x=>x.better).slice(0,2);
+ const strengths=performance.filter(x=>x.better).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,2);
  const gaps=performance.filter(x=>!x.better).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,2);
- const insightHTML=(title,rows,empty,type)=>'<div class="insight-block '+type+'"><span class="insight-heading">'+title+'</span><ul>'+
- (rows.length?rows.map(x=>'<li><strong>'+safe(x.label)+'</strong><small>'+safe((x.delta>0?'+':'')+fmt(x.delta,2)+(x.unit?' '+x.unit:'')+' к лучшей стратегии')+'</small></li>').join(''):'<li><strong>'+empty+'</strong></li>')+'</ul></div>';
- $('partyStrengths').innerHTML=insightHTML('Сильные стороны',bestStrengths,'Преимущества появятся по мере изменения решений.','positive')+
- insightHTML('Что стоит улучшить',gaps,'Существенных отставаний нет.','negative');
+ const rows=(items,empty)=>items.length?items.map(x=>'<li><b>'+safe(x.label)+'</b><span>'+safe((x.delta>0?'+':'')+fmt(x.delta,2)+(x.unit?' '+x.unit:'')+' относительно лучшей стратегии')+'</span></li>').join(''):'<li>'+empty+'</li>';
+ $('partyStrengths').innerHTML='<div class="player-insight good"><strong>Где вы впереди</strong><ul>'+rows(strengths,'Пока нет показателей с лучшим результатом.')+'</ul></div>'+
+ '<div class="player-insight needs-work"><strong>Что можно улучшить</strong><ul>'+rows(gaps,'По основным показателям отставаний нет.')+'</ul></div>';
  const countries=D.countries;
  $('partyCountryHead').innerHTML='<tr><th>Государство</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
  $('partyCountryRows').innerHTML=countries.map((country,i)=>'<tr><th>'+safe(M.countryNames[country])+(c.party.controlled.includes(country)?' <small>игрок</small>':'')+'</th>'+head.map((k,j)=>'<td class="'+(j===0?'player-cell':'')+'">'+fmt(c.runs[k].returns[i],3)+'</td>').join('')+'</tr>').join('');
@@ -132,73 +130,34 @@ function renderChart(){
  const c=computation,metric=METRICS.find(m=>m[0]===$('partyResultMetric').value)||METRICS[0];
  const legend=$('partySeriesChoices');
  legend.innerHTML=c.available.map(key=>'<button type="button" class="series-toggle '+(activeSeries.includes(key)?'selected':'')+'" data-series="'+key+'" aria-pressed="'+String(activeSeries.includes(key))+'"><i style="background:'+colors[key]+'"></i>'+safe(NAMES[key])+'</button>').join('');
- legend.querySelectorAll('button[data-series]').forEach(button=>button.addEventListener('click',()=>{
-  const key=button.dataset.series;
+ legend.querySelectorAll('button[data-series]').forEach(btn=>btn.addEventListener('click',()=>{
+  const key=btn.dataset.series;
   if(activeSeries.includes(key)){if(activeSeries.length===1)return;activeSeries=activeSeries.filter(x=>x!==key);}
   else activeSeries=[...activeSeries,key];
   renderChart();
  }));
  const keys=c.available.filter(k=>activeSeries.includes(k));
- const series=keys.map(key=>({key,values:c.runs[key].history.map(row=>metricAnnual(row,metric[4]))}));
- const vals=series.flatMap(a=>a.values);const rawMin=Math.min(...vals),rawMax=Math.max(...vals);
+ const data=keys.map(key=>({key,values:c.runs[key].history.map(row=>metricAnnual(row,metric[4]))}));
+ const vals=data.flatMap(a=>a.values),rawMin=Math.min(...vals),rawMax=Math.max(...vals);
  const discrete=['projects','matured','agreements','mobility','crises'].includes(metric[0]);
- const pad=Math.max((rawMax-rawMin)*.12,discrete?.65:.04);
- const lo=discrete?Math.max(0,Math.floor(rawMin-pad)):Math.min(0,rawMin-pad);
- const hi=discrete?Math.max(lo+1,Math.ceil(rawMax+pad)):Math.max(lo+.01,rawMax+pad);
- const W=1060,H=342,ox=74,oy=21,iw=W-ox-26,ih=H-oy-43;
- const X=i=>ox+i*iw/25,Y=v=>oy+(hi-v)/(hi-lo)*ih;
- const ticks=Array.from({length:5},(_,i)=>lo+(hi-lo)*i/4);
- const grid=ticks.map(v=>'<line x1="'+ox+'" x2="'+(W-18)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#cedbeb" stroke-width="1"/>'+
- '<text x="'+(ox-12)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="13" fill="#445c78">'+fmt(v,discrete?0:2)+'</text>').join('');
- const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(H-10)+'" text-anchor="middle" font-size="13" fill="#415876">'+y+'</text>').join('');
- const lines=series.sort((a,b)=>a.key==='PLAYER'?1:b.key==='PLAYER'?-1:0).map(s=>{
-  const prominent=s.key==='PLAYER';
-  const points=s.values.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ');
-  const dots=[0,5,10,15,20,25].map(i=>'<circle cx="'+X(i)+'" cy="'+Y(s.values[i])+'" r="'+(prominent?4.8:3.6)+'" fill="#fff" stroke="'+colors[s.key]+'" stroke-width="'+(prominent?3:2)+'"/>').join('');
-  return '<polyline points="'+points+'" fill="none" stroke="'+colors[s.key]+'" stroke-width="'+(prominent?4.5:3)+'" stroke-linejoin="round" stroke-linecap="round" '+(s.key==='NEUTRAL'?'stroke-dasharray="9 6"':'')+'/>'+dots;
+ const padding=Math.max((rawMax-rawMin)*0.12,discrete?0.65:0.04);
+ const low=discrete?Math.max(0,Math.floor(rawMin-padding)):Math.min(0,rawMin-padding);
+ const high=discrete?Math.max(low+1,Math.ceil(rawMax+padding)):Math.max(low+0.01,rawMax+padding);
+ const width=1060,height=344,left=75,top=24,pw=960,ph=274;
+ const X=i=>left+i*pw/25,Y=v=>top+(high-v)/(high-low)*ph;
+ const grid=Array.from({length:5},(_,i)=>{
+  const v=low+(high-low)*i/4,y=Y(v);
+  return '<line x1="'+left+'" x2="'+(width-20)+'" y1="'+y+'" y2="'+y+'" stroke="#cedaea" stroke-width="1"/>'+
+  '<text x="'+(left-12)+'" y="'+(y+4)+'" text-anchor="end" font-size="13" fill="#36506c">'+fmt(v,discrete?0:2)+'</text>';
  }).join('');
- $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+'</div><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+safe(metric[1])+', сравнение за 2025–2050 годы"><title>'+safe(metric[1])+' — 2025–2050</title>'+grid+years+lines+'</svg>';
-}
-function exportJSON(){
- if(!computation)return;
- const data={party:computation.party,scenario:computation.scenario,metrics:METRICS.map(m=>m.slice(0,4)),
-  outcomes:computation.runs,summary:computation.summaries,provenance:{base:'V4.7',source:'2024 Stage1',engine:'JS conditional port of EurasiaEnv',reproducible:true,
-  policy_mode:'MAPPO archive actions replayed; NEUTRAL and BARGAIN computed from scenario',
-  random_stream:'browser seeded random stream rather than NumPy PCG64'}};
- const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
- const url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='evrazia2050_itogi_'+data.party.scenario+'_'+data.party.seed+'.json';
- document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-$('partyCalculate').addEventListener('click',calculate);
-$('partyResultMetric').addEventListener('change',()=>{if(computation)renderChart();});
-$('partyDownloadResults').addEventListener('click',exportJSON);
-})();
-]
- ].map(([title,value])=>'<div class="player-kpi"><span>'+safe(title)+'</span><strong>'+safe(value)+'</strong></div>').join('');
- $('partyResultHead').innerHTML='<tr><th>Показатель</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
- $('partyResultRows').innerHTML=METRICS.map(([key,label,unit,dir])=>{
-  const values=head.map(k=>{let v=c.summaries[k][key];if(key==='trade')v/=1e9;return v;});
-  const ranked=dir?values.reduce((best,v,i)=>dir*v>dir*values[best]?i:best,0):-1;
-  return '<tr><th>'+safe(label)+'</th>'+values.map((v,i)=>'<td class="'+(i===0?'player-cell ':'')+(ranked===i?'metric-winner':'')+'">'+fmt(v,key==='trade'?2:3)+(unit?' <small>'+safe(unit)+'</small>':'')+'</td>').join('')+'</tr>';
+ const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(height-9)+'" text-anchor="middle" font-size="13" fill="#36506c">'+y+'</text>').join('');
+ const lines=data.sort((a,b)=>a.key==='PLAYER'?1:b.key==='PLAYER'?-1:0).map(row=>{
+  const player=row.key==='PLAYER';
+  const coords=row.values.map((v,i)=>X(i).toFixed(2)+','+Y(v).toFixed(2)).join(' ');
+  const markers=[0,5,10,15,20,25].map(i=>'<circle cx="'+X(i)+'" cy="'+Y(row.values[i])+'" r="'+(player?4.6:3.3)+'" fill="#fff" stroke="'+colors[row.key]+'" stroke-width="'+(player?3:2)+'"/>').join('');
+  return '<polyline points="'+coords+'" fill="none" stroke="'+colors[row.key]+'" stroke-width="'+(player?4.5:3)+'" stroke-linecap="round" stroke-linejoin="round" '+(row.key==='NEUTRAL'?'stroke-dasharray="9 6"':'')+'/>'+markers;
  }).join('');
- const countries=D.countries;
- $('partyCountryHead').innerHTML='<tr><th>Государство</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
- $('partyCountryRows').innerHTML=countries.map((country,i)=>'<tr><th>'+safe(M.countryNames[country])+(c.party.controlled.includes(country)?' <small>игрок</small>':'')+'</th>'+head.map((k,j)=>'<td class="'+(j===0?'player-cell':'')+'">'+fmt(c.runs[k].returns[i],3)+'</td>').join('')+'</tr>').join('');
- renderChart();
-}
-function renderChart(){
- const c=computation,metric=METRICS.find(m=>m[0]===$('partyResultMetric').value)||METRICS[0];
- const series=c.available.map(key=>({key,values:c.runs[key].history.map(row=>metricAnnual(row,metric[4]))}));
- const vals=series.flatMap(s=>s.values),min=Math.min(...vals),max=Math.max(...vals),spread=Math.max(1e-7,max-min);
- const low=min-spread*.11,high=max+spread*.11;
- const W=900,H=330,ox=62,oy=20,iw=W-ox-22,ih=H-oy-43;
- const X=k=>ox+k*iw/25,Y=v=>oy+(high-v)/(high-low)*ih;
- const lines=series.map(s=>'<polyline points="'+s.values.map((v,i)=>X(i).toFixed(2)+','+Y(v).toFixed(2)).join(' ')+'" fill="none" stroke="'+colors[s.key]+'" stroke-width="'+(s.key==='PLAYER'?4:2)+'" stroke-linecap="round"/>').join('');
- const grid=Array.from({length:5},(_,i)=>{const v=low+(high-low)*i/4,y=Y(v);return '<line x1="'+ox+'" y1="'+y+'" x2="'+(W-22)+'" y2="'+y+'" stroke="#e4eaf2"/><text x="'+(ox-8)+'" y="'+(y+4)+'" text-anchor="end" fill="#72869c" font-size="11">'+fmt(v,2)+'</text>';}).join('');
- const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(H-14)+'" text-anchor="middle" fill="#72869c" font-size="12">'+y+'</text>').join('');
- const legend=series.map(s=>'<span><i style="background:'+colors[s.key]+'"></i>'+safe(NAMES[s.key])+'</span>').join('');
- $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+'</div><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Годовые значения показателя"><g>'+grid+years+lines+'</g></svg><div class="player-chart-legend">'+legend+'</div>';
+ $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+'</div><svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+safe(metric[1])+': сравнение 2025–2050 годов"><title>'+safe(metric[1])+': 2025–2050</title>'+grid+years+lines+'</svg>';
 }
 function exportJSON(){
  if(!computation)return;
