@@ -37,7 +37,7 @@
     change(input,level);
    }
   }
-  if(year<2050)d.getElementById('partyNext').click();
+  if(year<2025+cfg.years-1)d.getElementById('partyNext').click();
   else d.getElementById('partySave').click();
  }
  function calculated(d,strategies){
@@ -149,8 +149,8 @@
    assert(JSON.stringify(party(w))===backup,'Загрузка файла восстанавливает прежнюю партию');
    const bad=new w.File(['{"invalid":true}'],'bad.json',{type:'application/json'}),dt=new w.DataTransfer();dt.items.add(bad);
    input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));
-   await wait(350);
-   assert(d.getElementById('partyMessage').textContent.includes('Загрузка отклонена'),'Некорректное сохранение отклоняется');
+   for(let n=0;n<24&&!d.getElementById('partyMessage').textContent.includes('Загрузка отклонена');n++)await wait(100);
+   assert(d.getElementById('partyMessage').textContent.includes('Загрузка отклонена'),'Некорректное сохранение отклоняется: '+d.getElementById('partyMessage').textContent);
    assert(JSON.stringify(party(w))===backup,'Ошибочный импорт не портит текущую партию');
   }
   assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Метка игрока не изменилась');
