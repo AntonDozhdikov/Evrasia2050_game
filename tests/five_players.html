@@ -163,7 +163,8 @@
    const file=new w.File([backup],'saved-party.json',{type:'application/json'});
    const input=d.getElementById('partyFile'),transfer=new w.DataTransfer();transfer.items.add(file);
    input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));
-   await wait(350);
+   const validImport=await w.EurasiaPartyUI.importFinished;
+   assert(validImport===true,'Корректный файл обработан успешно');
    assert(JSON.stringify(party(w))===backup,'Загрузка файла восстанавливает прежнюю партию');
    const bad=new w.File(['{"invalid":true}'],'bad.json',{type:'application/json'}),dt=new w.DataTransfer();dt.items.add(bad);
    input.files=dt.files;
@@ -171,7 +172,8 @@
    const badFileName=input.files[0]?.name, badFileSize=input.files[0]?.size;
    input.addEventListener('change',()=>eventTriggered++,{once:true});
    input.dispatchEvent(new Event('change',{bubbles:true}));
-   for(let n=0;n<24&&!d.getElementById('partyMessage').textContent.includes('Загрузка отклонена');n++)await wait(100);
+   const invalidImport=await w.EurasiaPartyUI.importFinished;
+   assert(invalidImport===false,'Повреждённый файл возвращает отказ импорта');
    details.invalidImportDebug={eventTriggered,badFileName,badFileSize,
     currentFile:input.files[0]?.name,message:d.getElementById('partyMessage').textContent,
     coreValidateTest:(()=>{try{w.EurasiaParty.validate({invalid:true});return 'accepted';}catch(e){return e.message;}})()};
