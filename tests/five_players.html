@@ -59,7 +59,7 @@
   assert(d.title.includes('Евразия'),'Открыта игра');
   w.localStorage.setItem('qa-five-player-marker',String(id));
   assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Персональный браузерный профиль');
-  assert(party(w).controlled.join(',')==='RUS','Начальные данные партии независимы');
+  assert(!party(w)&&d.querySelector('#partyCountries input[value="RUS"]').checked,'Новая партия начинается с России без старых сохранений');
   const cfg={
    1:{scenario:'S01',policy:'BARGAIN',seed:163,countries:['RUS'],years:26,strategies:5},
    2:{scenario:'S05',policy:'BARGAIN',seed:381,countries:['RUS','BLR','KAZ'],years:26,strategies:5},
