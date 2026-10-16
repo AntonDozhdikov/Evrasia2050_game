@@ -40,5 +40,10 @@ W.generate(731206);assert.notEqual(JSON.stringify(W.getSets()),first);
 const html=read('index.html');
 for(const filename of ['assets/data.js','assets/guide.js','assets/editorial_ru.js','assets/wildcards.js','assets/app.js','assets/guide_ui.js'])
  assert.ok(html.includes('src="'+filename+'"'),'Не подключен '+filename);
-assert.ok(html.includes('data-guide-tab="wildcards"'));
+assert.ok(html.includes('data-guide-detail="wildcards"'));
+assert.ok(html.includes('src="assets/engine_v47.js"'));
+assert.ok(html.includes('src="assets/party_results.js"'));
+assert.ok(!html.includes('id="text-editor"'));
+assert.ok(html.includes('id="partyCalculate"'));
+
 console.log('Проверено: 20 исходных сценариев, 10 «Диких карт», 100 событий без повторов, русские описания и воспроизводимая жеребьевка.');
