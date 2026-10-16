@@ -7,7 +7,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'
 const used=new Set(D.scenarios.flatMap(s=>s.crisis_ids));
 const available=Object.values(G.crisisCatalog).filter(c=>!used.has(Number(c.id))).sort((a,b)=>Number(a.id)-Number(b.id));
 const titles=['Неожиданный поворот','Цепочка событий','Новые ограничения','Сложная развилка'];
-const names=['Дикая карта I','Дикая карта II','Дикая карта III','Дикая карта IV'];
+const names=['Дикая карта № 1','Дикая карта № 2','Дикая карта № 3','Дикая карта № 4'];
 let seed=(Date.now()>>>0)||1,sets=[],container=null;
 function random(n){return function(){let t=n+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;};}
 function shuffle(list,rng){let a=[...list];for(let i=a.length-1;i>0;i--){let j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -26,8 +26,18 @@ function generate(newSeed){
   others.push({id:'W'+String(k+1).padStart(2,'0'),name:names[k],subtitle:titles[k],events:row});
  }
  if(new Set(selected).size!==12||selected.some(x=>used.has(Number(x))))throw Error('Нарушена уникальность неиспользованных событий');
- sets=others;return sets;
+ sets=others;updatePicker();return sets;
 }
+
+function updatePicker(){
+ const select=document.getElementById('wildcardPicker'),label=document.getElementById('wildcardSummary');
+ if(!select||!label)return;
+ const value=select.value,chosen=sets.find(x=>x.id===value);
+ if(!chosen){label.textContent='Четыре случайных сочетания ранее неиспользованных кризисов. Их экономические последствия пока не рассчитаны.';return;}
+ const pieces=chosen.events.map((x,i)=>(2026+i*4)+' — '+x.name);
+ label.textContent=chosen.name+': '+pieces.join('; ')+'. Новые расчеты для этого сочетания пока отсутствуют; графики выше по-прежнему относятся к основному сценарию.';
+}
+
 function save(){
  const payload={description:'Четыре сценария «Дикие карты» для будущего игрового движка «Евразия 2050»',status:'предварительные условия; новые расчеты V4.7 для них пока отсутствуют',base_research:'V4.7',seed,source_unused_events:available.length,
   scenarios:sets.map(s=>({id:s.id,name:s.name,events:s.events.map((c,i)=>({id:Number(c.id),name:c.name,type:c.type,intensity:c.intensity,duration:c.duration,affected:c.affected,start_year:2026+i*4}))}))};
@@ -44,8 +54,9 @@ function render(node){
  '<p class="wild-warning"><strong>Пока без расчета последствий.</strong> Для этих сочетаний нет сохраненных траекторий V4.7. Их нельзя сопоставлять с графиками двадцати рассчитанных сценариев. Расчет будет доступен после переноса игрового движка.</p><div class="guide-grid">'+cards+'</div>';
  node.querySelector('#wildRegen').addEventListener('click',()=>{generate((Date.now()+Math.floor(Math.random()*1000000))>>>0);render(node);});
  node.querySelector('#wildApply').addEventListener('click',()=>{const n=Number(node.querySelector('#wildSeed').value);if(Number.isInteger(n)&&n>0&&n<=4294967295){generate(n);render(node);}else{node.querySelector('#wildSeed').setCustomValidity('Введите целое число от 1 до 4294967295');node.querySelector('#wildSeed').reportValidity();node.querySelector('#wildSeed').setCustomValidity('');}});
- node.querySelector('#wildSave').addEventListener('click',save);
+ node.querySelector('#wildSave').addEventListener('click',save);updatePicker();
 }
 generate(seed);
+const picker=document.getElementById('wildcardPicker');if(picker)picker.addEventListener('change',updatePicker);updatePicker();
 window.EURASIA_WILDCARDS={render,generate,getSets:()=>sets.map(s=>({id:s.id,crisis_ids:s.events.map(x=>Number(x.id))})),getAvailableIds:()=>available.map(x=>Number(x.id)),getSeed:()=>seed};
 })();
