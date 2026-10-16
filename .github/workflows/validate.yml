@@ -11,41 +11,10 @@ jobs:
     steps:
       - name: Получить проект
         uses: actions/checkout@v4
-      - name: Stage 3 archive and dependency probe
+      - name: Проверить воспроизводимость экспортированных весов MAPPO
         run: |
-          python3 - <<'PY'
-          import zipfile,importlib.util
-          path='research/frozen/EURASIA_STAGE3_HANDOFF_V47.zip'
-          with zipfile.ZipFile(path) as z:
-              files=z.infolist()
-              print('STAGE3_ZIP_FILES',len(files))
-              for f in files:
-                  if any(x in f.filename.lower() for x in ['mappo.pt','checkpoint','marl','input_tables','v47_economic','prep','meta.json','manifest']):
-                      print('STAGE3_ZIP',f.filename,f.file_size)
-          for package in ['torch','numpy','pandas','safetensors']:
-              print('STAGE3_DEP',package,bool(importlib.util.find_spec(package)))
-          import pickletools,collections
-          with zipfile.ZipFile(path) as z:
-              for f in z.infolist():
-                  if f.filename.endswith('.json') and any(q in f.filename for q in ['metadata','manifest','world_metrics']):
-                      print('STAGE3_JSON',f.filename,f.file_size)
-                  if f.filename.startswith('runtime/world/') and f.file_size<200000:
-                      print('STAGE3_WORLD',f.filename,f.file_size)
-              raw=z.read('runtime/marl/mappo.pt')
-              from io import BytesIO
-              with zipfile.ZipFile(BytesIO(raw)) as ck:
-                  files=ck.namelist()
-                  print('STAGE3_PT_FILES',len(files),files[:12])
-                  pkl=next(x for x in files if x.endswith('data.pkl'))
-                  globals=[(p.arg) for p,_,_ in pickletools.genops(ck.read(pkl)) if p.name=='GLOBAL']
-                  print('STAGE3_PT_GLOBALS',sorted(set(globals)))
-                  print('STAGE3_PT_BYTES',len(ck.read(pkl)))
-              import json
-              state=json.loads(z.read('runtime/world/scalers_and_state.json'))
-              print('STAGE3_STATE_KEYS',list(state))
-              for kk,v in state.items():
-                  print('STAGE3_STATE_FIELD',kk,str(v)[:380])
-          PY
+          python3 tools/stage3/export_actor.py
+          git diff --exit-code -- assets/policy_v47.js
       - name: Проверить JavaScript
         run: |
           node --check assets/engine_v47.js
