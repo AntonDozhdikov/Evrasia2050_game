@@ -74,15 +74,16 @@ function renderReference(v){
 var box=$('referenceContent'),html='';
 var key=selectedTab+'|'+(selectedTab==='scenarios'?v.scenario:selectedTab==='strategies'?v.policy:selectedTab==='crises'?(v.scenario+'|'+v.year+'|'+crisisFilter):'fixed');
 if(key===lastReferenceKey)return;lastReferenceKey=key;
+if(selectedTab==='wildcards'){window.EURASIA_WILDCARDS.render(box);return;}
 if(selectedTab==='scenarios'){
 html='<p class="reference-intro">Каждый сценарий задает собственную последовательность трех кризисных событий. Выберите сценарий, чтобы сопоставить действия стран и результаты разных стратегий.</p><div class="guide-grid">';
 D.scenarios.forEach(function(s){
 var t=G.scenarioDescriptions[s.scenario_id],chosen=s.scenario_id===v.scenario;
-html+='<article class="guide-card '+(chosen?'selected-guide':'')+'"><span class="guide-code">'+escape(s.scenario_id)+' · '+escape(s.group)+'</span><h3>'+escape(s.name)+'</h3><p><strong>'+escape(t.short)+'</strong></p><p>'+escape(t.details)+'</p><p class="guide-list"><b>Предусмотренные события:</b> '+s.crisis_ids.map(function(id,i){return escape(item(id).name)+' — с '+(2026+4*i)+' г.';}).join('; ')+'</p><button type="button" class="small-guide-action" data-choose-scenario="'+s.scenario_id+'">'+(chosen?'Выбран':'Выбрать сценарий')+'</button></article>';
+html+='<article class="guide-card '+(chosen?'selected-guide':'')+'"><span class="guide-code">'+escape(s.scenario_id)+' · '+escape(s.group)+'</span><h3>'+escape(G.scenarioTitles[s.scenario_id]||s.name)+'</h3><p><strong>'+escape(t.short)+'</strong></p><p>'+escape(t.details)+'</p><p class="guide-list"><b>Предусмотренные события:</b> '+s.crisis_ids.map(function(id,i){return escape(item(id).name)+' — с '+(2026+4*i)+' г.';}).join('; ')+'</p><button type="button" class="small-guide-action" data-choose-scenario="'+s.scenario_id+'">'+(chosen?'Выбран':'Выбрать сценарий')+'</button></article>';
 });
 html+='</div>';
 }else if(selectedTab==='strategies'){
-html='<p class="reference-intro">В исследовании сравниваются два режима обученной MAPPO и две контрольные стратегии. Все варианты используют одну экономическую среду.</p><div class="guide-grid">';
+html='<p class="reference-intro">Здесь сравниваются два способа работы обученной многоагентной стратегии и два варианта поведения по заранее заданным правилам. Для сравнения используются одинаковые условия.</p><div class="guide-grid">';
 Object.keys(G.policyDescriptions).forEach(function(id){var t=G.policyDescriptions[id];html+='<article class="guide-card '+(v.policy===id?'selected-guide':'')+'"><span class="guide-code">'+(id.startsWith('MAPPO')?'ОБУЧЕННАЯ МОДЕЛЬ':'ПРАВИЛА ДЛЯ СРАВНЕНИЯ')+'</span><h3>'+escape(M.policyNames[id])+'</h3><p><strong>'+escape(t.short)+'</strong></p><p>'+escape(t.details)+'</p><button type="button" class="small-guide-action" data-choose-policy="'+id+'">'+(id===v.policy?'Выбрана':'Выбрать стратегию')+'</button></article>';});
 html+='</div>';
 }else if(selectedTab==='actions'){
