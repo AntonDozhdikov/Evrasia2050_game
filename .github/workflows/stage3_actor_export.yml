@@ -1,0 +1,31 @@
+name: Stage 3 frozen MAPPO export
+on:
+  push:
+    branches: [feat/adaptive-mappo-stage3]
+    paths:
+      - 'tools/stage3/export_actor.py'
+      - 'research/frozen/EURASIA_STAGE3_HANDOFF_V47.zip'
+      - '.github/workflows/stage3_actor_export.yml'
+permissions:
+  contents: write
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/adaptive-mappo-stage3
+      - name: Export authentic frozen V4.7 Actor and state metadata
+        run: |
+          python3 tools/stage3/export_actor.py
+          node --check assets/policy_v47.js
+          test -s assets/policy_v47.js
+      - name: Commit reproducible policy tensor artifact
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/policy_v47.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Export frozen V4.7 MAPPO actor and observation metadata"
+            git push origin HEAD:feat/adaptive-mappo-stage3
+          fi
