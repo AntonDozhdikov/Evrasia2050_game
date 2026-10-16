@@ -136,5 +136,6 @@ function render(){ $('policyExplanation').textContent=policyExplanations[state.p
 function download(name,text,mime){let url=URL.createObjectURL(new Blob([text],{type:mime}));let a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
 function downloadJSON(){download(`eurasia_${state.scenario}_${state.policy}_${state.seed}_${state.year}.json`,JSON.stringify({manifest:D.manifest,snapshot:current(),origin:'V4.7 archived trajectory, not newly calculated'},null,2),'application/json;charset=utf-8');}
 function downloadCSV(){download(`eurasia_${state.scenario}_${state.policy}_${state.seed}_2025-2050.csv`,'\ufeff'+M.exportCsv(D,state.scenario,state.policy,state.seed),'text/csv;charset=utf-8');}
+window.addEventListener('eurasia:texts-updated',()=>{renderCountry();renderScenario();});
 selectSetup();render();
 })();
