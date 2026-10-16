@@ -102,8 +102,8 @@ function calculate(){
   renderAll();
   const entered=Object.values(p.years).filter(rows=>p.controlled.some(country=>!!rows[country])).length;
   const auto=26-entered;
-  const keys=p.scenario.startsWith('W')?' Жеребьёвка кризисов '+p.wildcardSeed+'; номер расчёта '+p.seed+'.':' Номер расчёта '+p.seed+'.';
-  $('partyResultProvenance').textContent='Расчёт V4.7: игрок задал решения на '+entered+' из 26 лет; '+auto+' '+yearsWord(auto)+' рассчитано автоматически по стратегии «'+NAMES[p.policy]+'». MAPPO / MAPPO_GREEDY воспроизводят архивные последовательности решений без адаптации к изменениям игрока; BARGAIN пересчитывается по текущему состоянию модели. Сравнение использует одинаковые исходные условия и кризисы.'+keys+' Экономические результаты — сценарные оценки, не прогноз.';
+  const seedNote=p.scenario.startsWith('W')?' Жеребьёвка кризисов '+p.wildcardSeed+'; номер расчёта '+p.seed+'.':' Номер расчёта '+p.seed+'.';
+  $('partyResultProvenance').textContent='Расчёт V4.7: игрок задал решения на '+entered+' из 26 лет; '+auto+' '+yearsWord(auto)+' рассчитано автоматически по стратегии «'+NAMES[p.policy]+'». MAPPO / MAPPO_GREEDY воспроизводят архивные последовательности решений без адаптации к изменениям игрока; BARGAIN пересчитывается по текущему состоянию модели. Сравнение использует одинаковые исходные условия и кризисы.'+seedNote+' Экономические результаты — сценарные оценки, не прогноз.';
   status.textContent='Расчет завершен: 26 лет; '+p.controlled.length+' '+countryWord(p.controlled.length)+'; '+entered+' '+yearsWord(entered)+' решений игрока; '+auto+' '+yearsWord(auto)+' автоматически; '+available.length+' стратегии для сравнения.'+
    (available.length<4?' Доступны переговорная и нейтральная стратегии.':'');
   $('partyResults').scrollIntoView({behavior:'smooth',block:'start'});
