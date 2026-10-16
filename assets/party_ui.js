@@ -34,20 +34,31 @@ function render(){
  countries.innerHTML=Core.COUNTRIES.map(c=>'<label class="party-country '+(party.controlled.includes(c)?'chosen':'')+'"><input type="checkbox" value="'+c+'" '+(party.controlled.includes(c)?'checked':'')+'><span>'+escape(M.countryNames[c])+'</span></label>').join('');
  countries.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>onCountriesChange(input)));
  const current=party.years[party.year]||{};
+ if(!party.controlled.includes(lastCountry))lastCountry=party.controlled[0];
+ const tabs=$('partyCountryTabs');
+ if(tabs){
+  tabs.innerHTML=party.controlled.map(country=>'<button type="button" role="tab" class="party-tab '+(country===lastCountry?'active':'')+'" aria-selected="'+String(country===lastCountry)+'" data-party-tab="'+country+'">'+escape(M.countryNames[country])+(current[country]?' <span class="party-tab-check">✓</span>':'')+'</button>').join('');
+  tabs.querySelectorAll('button[data-party-tab]').forEach(button=>button.addEventListener('click',()=>{
+   lastCountry=button.dataset.partyTab;
+   tabs.querySelectorAll('button[data-party-tab]').forEach(btn=>{const active=btn.dataset.partyTab===lastCountry;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active));});
+   $('partyActions').querySelectorAll('.party-country-card').forEach(card=>{card.hidden=card.dataset.partyCard!==lastCountry;});
+  }));
+ }
  const forms=party.controlled.map(country=>{
   const levels=current[country]||baseline(country,party.year);
-  return '<article class="party-country-card"><header><h3>'+escape(M.countryNames[country])+'</h3><span class="party-state">'+(current[country]?'Решения сохранены':'Решения на текущий год')+'</span></header><div class="party-decisions">'+G.actionDescriptions.map((d,i)=>'<label><span>'+escape(d.name)+'</span><select data-party-country="'+country+'" data-party-action="'+i+'">'+optionsLevel(i,levels[i])+'</select></label>').join('')+'</div></article>';
+  return '<article class="party-country-card" data-party-card="'+country+'" '+(country!==lastCountry?'hidden':'')+'><header><h3>'+escape(M.countryNames[country])+'</h3><span class="party-state">'+(current[country]?'Решения сохранены':'Новый ход')+'</span></header><div class="party-decisions">'+G.actionDescriptions.map((d,i)=>'<label><span>'+escape(d.name)+'</span><select data-party-country="'+country+'" data-party-action="'+i+'">'+optionsLevel(i,levels[i])+'</select></label>').join('')+'</div></article>';
  });
  $('partyActions').innerHTML=forms.join('');
- $('partyCount').textContent=Object.values(party.years).reduce((sum,rows)=>sum+Object.keys(rows).length,0)+' записей решений · '+Object.keys(party.years).length+' игровых лет';
+ $('partyActions').querySelectorAll('select[data-party-country]').forEach(select=>select.addEventListener('change',()=>window.dispatchEvent(new Event('eurasia:party-edited'))));
+ $('partyCount').textContent=Object.keys(party.years).length+' из 26 лет сохранено';
  $('partyNext').disabled=party.year===2050;
  const wild=party.scenario.startsWith('W'),supported=!wild&&D.manifest.seeds.includes(party.seed);
  $('partyContext').innerHTML=wild?
-  '<strong>Условия «Дикой карты».</strong> Четыре кризиса подготовлены для будущего расчета. Отдельные партии с таким сочетанием пока не вычислялись.':
-  '<strong>Основной сценарий '+escape(party.scenario)+'.</strong> '+(supported?
-   'Уровни действий до редактирования взяты из сохраненного расчета V4.7.':
-   'Для указанного начального числа готовых решений нет; исходно установлен средний уровень.');
- $('partyNotComputed').textContent='После сохранения решений нажмите «Рассчитать итог партии». Показатели появятся в разделе «Графики и расчеты», вместе со сравнением четырех стратегий. Для «Диких карт» доступны две стратегии по правилам.';
+  '<strong>Дикая карта:</strong> четыре кризиса. Партия рассчитывается по выбранной стратегии.':
+  '<strong>'+escape(G.scenarioTitles[party.scenario]||party.scenario)+'.</strong> '+(supported?
+   'Начальные решения взяты из выбранной стратегии.':
+   'Начальный уровень решений — средний.');
+ $('partyNotComputed').textContent='Сохраните год, чтобы зафиксировать решения, затем рассчитайте итог до 2050 года.';
 }
 function onCountriesChange(input){
  const choices=Array.from($('partyCountries').querySelectorAll('input:checked')).map(x=>x.value);
