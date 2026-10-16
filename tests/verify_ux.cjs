@@ -24,7 +24,7 @@ assert.ok(results.includes('partySeriesChoices')&&results.includes('partyStrengt
 assert.ok(results.includes('partyResultRows')&&results.includes('partyCountryRows'),'Нет полных таблиц');
 assert.ok(results.includes('renderCountryDetail')&&results.includes('previewYear'),'Нет подробной экономики стран и обратной связи по годам');
 assert.ok(party.includes('saveNamedSlot')&&party.includes('loadNamedSlot')&&party.includes('deleteNamedSlot'),'Отсутствуют именованные сохранения');
-assert.ok(results.includes('wildcard_seed:computation.party.wildcardSeed'),'Экспорт теряет жеребьёвку кризисов');
+assert.ok(results.includes("wildcard_seed:computation.party.scenario.startsWith('W')?computation.party.wildcardSeed"),'Экспорт теряет жеребьёвку кризисов');
 assert.ok(!read('assets/wildcards.js').includes('следующий выпуск игрового движка'),'Устаревшие подсказки «Диких карт»');
 assert.ok(css.includes('@media(max-width:490px)')&&css.includes('.intro')&&css.includes('.player-chart'),'Нет адаптивной верстки');
 for(const file of ['assets/party_ui.js','assets/party_results.js','assets/ux_v2.js','assets/engine_v47.js']){
