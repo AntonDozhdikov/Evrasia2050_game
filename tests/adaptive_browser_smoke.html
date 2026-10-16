@@ -25,6 +25,7 @@
    check(d.querySelector('#partyResultRows tr td').textContent===first,'Детерминированная стратегия не воспроизводима');
    d.getElementById('partyPreviewYear').click();
    check(!d.getElementById('partyYearPreviewContent').hidden,'Не работает просмотр года с нейросетью');
+   w.confirm=()=>true;
    set(d.getElementById('partyScenario'),'W07');
    set(d.getElementById('partyPolicy'),'ADAPTIVE_MAPPO');
    check(d.getElementById('partyPolicy').value==='ADAPTIVE_MAPPO','Адаптивная вероятностная стратегия недоступна для «Дикой карты»');
