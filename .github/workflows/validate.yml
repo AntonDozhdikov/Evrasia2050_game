@@ -31,8 +31,10 @@ jobs:
           python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/eurasia-test-server.log 2>&1 &
           sleep 2
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom http://127.0.0.1:8765/tests/browser_smoke.html > /tmp/eurasia-browser-test.html 2>/tmp/eurasia-chrome.log
+          grep -o '<p id="status">[^<]*' /tmp/eurasia-browser-test.html || true
           grep -Fq '<p id="status">PASS UX:' /tmp/eurasia-browser-test.html || { tail -c 1800 /tmp/eurasia-browser-test.html; cat /tmp/eurasia-chrome.log | tail -n 25; exit 1; }
           echo "Браузерная игра: тест пройден"
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom http://127.0.0.1:8765/tests/editor_smoke.html > /tmp/eurasia-editor-test.html 2>/tmp/eurasia-editor-chrome.log
+          grep -o '<p id="status">[^<]*' /tmp/eurasia-editor-test.html || true
           grep -Fq '<p id="status">PASS EDITOR:' /tmp/eurasia-editor-test.html || { tail -c 1800 /tmp/eurasia-editor-test.html; cat /tmp/eurasia-editor-chrome.log | tail -n 25; exit 1; }
           echo "Редактор и публикация текстов в игре: тест пройден"
