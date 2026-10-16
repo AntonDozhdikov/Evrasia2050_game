@@ -25,6 +25,9 @@ assert.ok(initialLogits.every(c=>c.length===6&&c.every(row=>row.length===3&&row.
 const a1=Adaptive.actions(initial,'ADAPTIVE_MAPPO_GREEDY',163,2025);
 const a2=Adaptive.actions(initial,'ADAPTIVE_MAPPO_GREEDY',381,2025);
 assert.deepEqual(a1,a2,'The deterministic frozen actor cannot depend on RNG seed at fixed state');
+const archiveFirst=db.runs['S01|MAPPO_GREEDY|163'].actions[0];
+const agreement=a1.flat().filter((v,i)=>v===archiveFirst.flat()[i]).length/48;
+console.log('STAGE3_ARCHIVE_ALIGNMENT: first-year matching action fraction '+agreement.toFixed(4));
 const q1=Adaptive.actions(initial,'ADAPTIVE_MAPPO',163,2025);
 const q2=Adaptive.actions(initial,'ADAPTIVE_MAPPO',163,2025);
 assert.deepEqual(q1,q2,'Stochastic actor must be reproducible with the same seed');
