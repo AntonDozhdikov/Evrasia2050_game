@@ -4,7 +4,7 @@
 const G=window.EURASIA_GUIDE,D=window.EURASIA_DATA,M=window.EurasiaModel;
 if(!G||!D||!M)return;
 const selectors={intro:'.intro > div > p',start:'.intro-note > span',method:'.method-heading > p',limits:'.method-limit > p',
- actionHelp:'.actions-panel .panel-lead',tradeHelp:'.network-panel .panel-lead',scenarioHelp:'.reference-heading > p'};
+ actionHelp:'.actions-panel .panel-lead',tradeHelp:'.network-panel .panel-lead',scenarioHelp:'#reference .reference-heading > p'};
 const keys={scenario:['title','short','details'],crisis:['name','note'],policy:['short','details'],action:['name','detail','level0','level1','level2'],page:['text']};
 let state;try{state=JSON.parse(localStorage.getItem('evrasia2050:editorial:v1')||'null');}catch(_){return;}
 if(!state||state.version!==1||JSON.stringify(state).length>700000)return;
