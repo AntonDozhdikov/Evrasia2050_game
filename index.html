@@ -4,19 +4,26 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
 <title>Евразия 2050 — исследуйте решения восьми государств</title>
 <meta name="description" content="Евразия 2050: восемь государств, двадцать рассчитанных сценариев и десять дополнительных сочетаний кризисов. Торговля, инвестиции, переговоры и последствия решений.">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="assets/ux_v2.css">
 </head>
 <body>
 <div id="root" class="shell">
   <header class="topbar">
     <a class="brand" href="./index.html" aria-label="Евразия 2050 — главная"><span class="brand-mark">Е<span class="brand-dot"></span></span><span><strong>ЕВРАЗИЯ <b>2050</b></strong><small>страны, решения, последствия</small></span></a>
-    <nav class="topnav" aria-label="Разделы"><a href="#party-planner">Новая партия</a><a href="#results">Графики</a><a href="#countries">Торговля</a><a href="#reference">Правила</a></nav>
-    <span class="version">ИССЛЕДОВАТЬ СЦЕНАРИИ</span>
+    <nav class="topnav" aria-label="Разделы"><a href="#party-planner">Играть</a><a href="#results">Итоги</a><a href="#archive-results" data-ux-open="archive-results">Исследование</a><a href="#reference">Справка</a></nav>
+    <a class="header-play" href="#party-planner">Начать партию <span aria-hidden="true">→</span></a>
   </header>
   <main id="experiment">
     <section class="intro">
-      <div><div class="eyebrow"><span class="pulse"></span> ВОСЕМЬ ГОСУДАРСТВ · 30 СЦЕНАРИЕВ · 2025–2050</div><h1>Евразия <em>2050</em></h1><p>Что меняется, когда государства выбирают сотрудничество, инвестиции или самостоятельные действия? Сравните стратегии России, Беларуси, Казахстана, Кыргызстана, Узбекистана, Таджикистана, Туркменистана и Армении. Проследите, как в модели складываются торговля, совместные проекты и реакция на кризисы.</p></div>
-      <aside class="intro-note"><strong>Как начать</strong><span>Выберите сценарий и способ действий стран. Нажмите «Воспроизвести», чтобы пройти по годам, или сразу откройте интересующий год. Порядок действий указан внизу страницы.</span><a href="#methods">Правила и справка <span aria-hidden="true">↗</span></a></aside>
+      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> СТРАТЕГИЧЕСКАЯ ИГРА · 2025–2050</div>
+        <h1>Евразия <em>2050</em></h1>
+        <p>Возглавьте одну или несколько стран. Выбирайте партнеров, заключайте соглашения и инвестируйте. Каждое решение меняет будущее восьми государств.</p>
+        <div class="hero-actions"><a class="hero-primary" href="#party-planner">Начать игру <span aria-hidden="true">→</span></a><a class="hero-secondary" href="#archive-results" data-ux-open="archive-results">Сравнить стратегии</a></div>
+        <div class="hero-caption">Одна партия — 26 лет решений. В конце узнаете, какой путь оказался успешнее.</div>
+      </div>
+      <aside class="intro-note"><div class="hero-visual-heading"><span class="hero-visual-signal">●</span> ВАШИ РЕШЕНИЯ МЕНЯЮТ ХОД ИГРЫ</div>
+        <div class="hero-steps"><div><b>01</b><span>Выберите государство</span></div><div><b>02</b><span>Определите его курс</span></div><div><b>03</b><span>Пройдите через кризисы</span></div><div><b>04</b><span>Сравните результат</span></div></div>
+        <a href="#reference">Условия и правила игры <span aria-hidden="true">↗</span></a></aside>
     </section>
     <section class="game-facts" aria-label="Сведения об игре">
       <div><strong>8</strong><span>государств</span></div><div><strong>2025–2050</strong><span>игровые годы</span></div>
@@ -24,48 +31,41 @@
       <div><strong>100</strong><span>кризисных событий</span></div>
     </section>
     <section id="party-planner" class="planner-panel">
-      <div class="reference-heading"><span class="section-kicker">НОВАЯ ИГРОВАЯ ПАРТИЯ</span><h2>Управляйте решениями государств</h2>
-        <p>Возьмите под управление одну или несколько стран. Выбирайте торговую политику, инвестиции, переговоры и защиту от кризисов. Ваши решения сохраняются по годам.</p></div>
-      <div class="party-notice"><strong>Режим записи решений</strong><p id="partyNotComputed">Сохраните решения хотя бы одного года и нажмите «Рассчитать итог партии». Игра вычислит показатели до 2050 года и сравнит вашу стратегию с контрольными.</p></div>
+      <div class="reference-heading"><span class="section-kicker">ВАША ПАРТИЯ</span><h2>Вы управляете будущим</h2><p>Выберите условия и страну. Затем определите шесть направлений ее политики.</p></div>
+      <div class="party-notice"><strong>Ход игры</strong><p id="partyNotComputed">Выбирайте решения, сохраняйте год и переходите дальше. В любой момент можно рассчитать последствия до 2050 года.</p></div>
       <div class="party-setup">
         <label>Сценарий партии<select id="partyScenario"></select></label>
         <label>Стратегия остальных стран<select id="partyPolicy"></select></label>
-        <label>Начальное число<input id="partySeed" type="number" min="0" max="4294967295" step="1" value="163"></label>
         <label>Год решений<select id="partyYear"></select></label>
+        <details class="party-advanced"><summary>Дополнительные настройки <span aria-hidden="true">⌄</span></summary><label>Номер расчета<input id="partySeed" type="number" min="0" max="4294967295" step="1" value="163"></label><p>Одинаковый номер позволяет воспроизвести партию.</p></details>
       </div>
-      <h3 class="party-subheading">Какими государствами вы управляете</h3>
+      <h3 class="party-subheading"><span class="step-number">1</span> Выберите государства <small>Можно управлять сразу несколькими</small></h3>
       <div id="partyCountries" class="party-countries"></div>
       <div id="partyContext" class="party-context"></div>
-      <div class="party-actions-header"><h3>Решения на выбранный год</h3><span id="partyCount"></span></div>
+      <div class="party-actions-header"><h3><span class="step-number">2</span> Определите решения <span class="decision-year-label">на выбранный год</span></h3><span id="partyCount"></span></div><div id="partyCountryTabs" class="party-tabs" role="tablist" aria-label="Решения управляемых государств"></div>
       <div id="partyActions" class="party-action-grid"></div>
-      <div class="party-buttons">
-        <button type="button" class="primary" id="partySave">Сохранить решения года</button>
-        <button type="button" class="secondary" id="partyNext">Сохранить и перейти к следующему году →</button>
-        <button type="button" class="secondary" id="partyExport">Скачать партию</button>
-        <button type="button" class="secondary" id="partyImport">Загрузить партию</button>
-        <button type="button" class="secondary" id="partyNew">Новая партия</button><button type="button" class="primary" id="partyCalculate">Рассчитать итог партии</button>
+      <div class="party-buttons"><div class="party-buttons-primary"><button type="button" class="primary" id="partySave">Сохранить год</button><button type="button" class="secondary" id="partyNext">Следующий год →</button><button type="button" class="primary party-calc-cta" id="partyCalculate">Рассчитать итоги <span aria-hidden="true">↗</span></button></div><details class="party-file-options"><summary>Управление партиями <span aria-hidden="true">⌄</span></summary><div><button type="button" class="secondary" id="partyExport">Скачать партию</button><button type="button" class="secondary" id="partyImport">Загрузить партию</button><button type="button" class="secondary" id="partyNew">Новая партия</button></div></details>
         <input type="file" id="partyFile" accept="application/json,.json" hidden>
       </div>
       <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
     </section>
 
     <section id="results" class="results-heading">
-      <span class="section-kicker">РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА</span><h2>Графики и расчеты</h2>
-      <p>Сначала представлены показатели вашей партии и сравнение стратегий. Ниже можно отдельно изучить результаты исходного эксперимента V4.7.</p>
+      <span class="section-kicker">РЕЗУЛЬТАТ ВАШИХ РЕШЕНИЙ</span><h2>Кто справился лучше?</h2><p>Сравните свою партию с решениями других стратегий. Результат покажет сильные стороны и цену выбранного курса.</p>
     </section>
     <section id="partyResults" class="player-results" aria-label="Расчет игрока и сравнение стратегий">
       <div class="player-result-intro"><h3>Итоги вашей партии</h3><p id="partyResultsStatus">Сохраните решения государств и нажмите «Рассчитать итог партии».</p></div>
       <div id="partyResultsContent" hidden>
-        <div class="player-results-kpis" id="partyResultKpis"></div>
-        <div class="player-chart-toolbar"><label>Показатель <select id="partyResultMetric"></select></label></div>
+        <div class="player-results-kpis" id="partyResultKpis"></div><div id="partyStrengths" class="player-insights" aria-live="polite"></div>
+        <div class="player-chart-toolbar"><label>Что сравниваем <select id="partyResultMetric"></select></label></div><div id="partySeriesChoices" class="player-series-choices" aria-label="Линии графика"></div>
         <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
-        <div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div>
-        <h4>Результаты государств</h4><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div>
+        <details class="result-details" id="partyAllMetrics"><summary>Все 21 показателя <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
+        <details class="result-details" id="partyCountryMetrics"><summary>Результаты восьми стран <span>Оценка каждой страны по стратегиям</span></summary><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div></details>
         <p class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. Для обученных стратегий использованы сохраненные решения исходного исследования; переговорная и нейтральная стратегии действуют по собственным правилам. Место в таблице определяется средней оценкой решений в модели; остальные показатели сравниваются отдельно. Новые партии используют собственную воспроизводимую последовательность случайных отклонений.</p>
         <button id="partyDownloadResults" type="button" class="secondary">Скачать результаты сравнения</button>
       </div>
     </section>
-    <section class="control-panel" aria-label="Настройки готовых результатов">
+    <details id="archive-results" class="archive-section"><summary><span class="archive-heading"><small>ИССЛЕДОВАНИЕ V4.7</small><strong>Посмотреть другие сценарии и стратегии</strong><em>Экономика, торговые связи, решения восьми стран</em></span><span class="archive-open-label">Открыть сравнение <span aria-hidden="true">↓</span></span></summary><div class="archive-content"><section class="control-panel" aria-label="Настройки готовых результатов">
       <div class="controls-grid">
         <label>Исходный сценарий <select id="scenario" aria-label="Условия сценария"></select></label>
         <label>Как действуют страны <select id="policy" aria-label="Стратегия стран"></select></label>
@@ -93,7 +93,8 @@
         <section class="panel scenario-panel"><div class="section-header"><div><span class="section-kicker">04 / УСЛОВИЯ</span><h2>О выбранном сценарии</h2></div></div><div id="scenarioDescription"></div><div class="report-metrics" id="reportMetrics"></div><div class="downloads"><button id="exportJson" class="secondary">↓ Скачать данные года</button><button id="exportCsv" class="secondary">↓ Скачать данные за все годы</button></div></section>
       </div>
     </div>
-    <section id="methods" class="method-panel">
+    </div></details>
+    <details id="methods" class="method-panel method-compact"><summary>Как играть <span>Три коротких шага и пояснение расчетов</span></summary><div class="method-inner">
       <div class="method-heading"><span class="section-kicker">ПРАВИЛА</span><h2>Как устроена игра</h2><p>Выбирайте страны и их решения по годам. Готовые результаты эксперимента позволяют сравнить стратегии, инвестиции, переговоры и реакцию государств на кризисы.</p></div>
       <div class="howto-grid">
         <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» используют оставшиеся кризисы и предназначены для следующей версии с расчетом новых партий. Номер расчета определяет вариант исходных условий.</p></div>
@@ -101,7 +102,7 @@
         <div><b>3. Изучите действия государств</b><p>Выберите страну, чтобы увидеть ее шесть решений за год. На отдельной схеме представлены известные торговые связи за 2024 год.</p></div>
       </div>
       <div class="method-limit"><strong>О результатах</strong><p>Экономические графики относятся к двадцати рассчитанным сценариям исследования. Для «Диких карт» подготовлены кризисные события. Их экономические последствия будут доступны после подключения расчета новых партий.</p></div>
-    </section>
+    </div></details>
     <section id="reference" class="reference-panel">
       <div class="reference-heading"><span class="section-kicker">СПРАВОЧНИК ИГРЫ</span><h2>Условия и правила</h2></div>
       <div class="reference-accordions">
@@ -115,6 +116,6 @@
   </main>
   <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
 </div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/party_results.js"></script>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/party_results.js"></script><script src="assets/ux_v2.js"></script>
 </body>
 </html>
