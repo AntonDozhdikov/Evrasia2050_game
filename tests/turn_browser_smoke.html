@@ -28,13 +28,17 @@
    d.getElementById('partyCalculate').click();
    check(!d.getElementById('partyResultsContent').hidden,'Results failed: '+d.getElementById('partyResultsStatus').textContent);
    check(d.querySelectorAll('#partyControlledSummary .controlled-result-card').length===2,'Must compare RUS and BLR individually');
-   check(d.querySelectorAll('#partyControlledSummary .controlled-result-metric').length===8,'Must show four national metrics each');
+   check(d.querySelectorAll('#partyControlledSummary .controlled-result-metric').length===12,'Must show four national metrics each');
    const select=d.getElementById('partyCountryBaseline');
    select.value='NEUTRAL';select.dispatchEvent(new Event('change',{bubbles:true}));
    check(d.querySelector('#partyControlledSummary').textContent.includes('Без новых инициатив'),'Country baseline did not change');
    const insight=d.getElementById('partyStrengths').textContent;
    check(!/174\s*268\s*226\s*220/.test(insight),'Unconverted dollar value visible in billion-dollar comparison');
    check(d.getElementById('partyResultRows').textContent.includes('млрд долл.'),'Trade units missing');
+   const metrics=d.getElementById('partyCountryMetric');
+   check([...metrics.options].length>=11,'Missing expanded country macroeconomic chart selectors');
+   metrics.value='unemployment';metrics.dispatchEvent(new Event('change',{bubbles:true}));
+   check(d.getElementById('partyCountryDetailChart').textContent.includes('Безработица'),'Country unemployment plot did not update');
    frame.style.width='320px';
    check(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Mobile overflow: '+d.documentElement.scrollWidth+'/'+d.documentElement.clientWidth);
    status.textContent='PASS TURN QA: prior AI actions, crises, national outcomes, billion-dollar units, strategy selector, 320px';
