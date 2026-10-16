@@ -49,6 +49,7 @@ for report in reports:
     print('scenario:',json.dumps(report.get('configuration'),ensure_ascii=False),flush=True)
     print('results:',json.dumps(report.get('results'),ensure_ascii=False),flush=True)
     if report.get('changedInput'): print('changed_input:',report['changedInput'],flush=True)
+    if report.get('invalidImportDebug'): print('invalid_import_debug:',json.dumps(report['invalidImportDebug'],ensure_ascii=False),flush=True)
     for error in report.get('errors', []): print('ERROR:',error,flush=True)
 if not all(r.get('checks') and not r.get('errors') for r in reports):
     raise SystemExit('FAIL: at least one simulated player failed')

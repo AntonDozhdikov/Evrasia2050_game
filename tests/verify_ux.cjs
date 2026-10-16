@@ -9,7 +9,7 @@ const sections=['class="intro"','id="party-planner"','id="results"','id="partyRe
 const positions=sections.map(x=>html.indexOf(x));
 assert.ok(positions.every(x=>x>=0),'Пропущен основной раздел');
 assert.ok(positions.every((x,i)=>i===0||x>positions[i-1]),'Неверный порядок игровых разделов');
-const ids=['uxQuickStart','partyCountryTabs','partyActions','partySave','partyNext','partyCalculate','partyExport','partyImport','partyNew','partyResultKpis','partyStrengths','partySeriesChoices','partyResultChart','partyAllMetrics','partyCountryMetrics','archive-results','countries','decisionMap','partyResultRows','partyCountryRows'];
+const ids=['uxQuickStart','partyCountryTabs','partyActions','partySave','partyNext','partyCalculate','partyExport','partyImport','partyNew','partyResultKpis','partyStrengths','partySeriesChoices','partyResultChart','partyAllMetrics','partyCountryMetrics','archive-results','countries','decisionMap','partyResultRows','partyCountryRows','partySlots','partySlotSave','partySlotLoad','partySlotDelete','partyPreviewYear','partyYearPreviewContent','partyYearCrisis','partyYearCountries','partyResultProvenance','partyCountryDetails','partyCountryDetailChart','partyCountryDetailRows'];
 for(const id of ids)assert.ok(html.includes('id="'+id+'"'),'Отсутствует '+id);
 for(const p of ['assets/styles.css','assets/ux_v2.css','assets/party_ui.js','assets/party_results.js','assets/ux_v2.js'])assert.ok(html.includes('"'+p+'"'),'Не подключен '+p);
 assert.ok(!html.includes('editor.html')&&!html.includes('id="text-editor"'),'Редактор появился на игровой странице');
@@ -22,6 +22,10 @@ assert.ok(party.includes('party.controlled')&&party.includes('Core.plan'),'На�
 assert.ok(results.includes("const METRICS=[")&&results.includes("function calculate()"),'Утрачен вычислительный итог');
 assert.ok(results.includes('partySeriesChoices')&&results.includes('partyStrengths'),'Нет сравнительного графика');
 assert.ok(results.includes('partyResultRows')&&results.includes('partyCountryRows'),'Нет полных таблиц');
+assert.ok(results.includes('renderCountryDetail')&&results.includes('previewYear'),'Нет подробной экономики стран и обратной связи по годам');
+assert.ok(party.includes('saveNamedSlot')&&party.includes('loadNamedSlot')&&party.includes('deleteNamedSlot'),'Отсутствуют именованные сохранения');
+assert.ok(results.includes("wildcard_seed:computation.party.scenario.startsWith('W')?computation.party.wildcardSeed"),'Экспорт теряет жеребьёвку кризисов');
+assert.ok(!read('assets/wildcards.js').includes('следующий выпуск игрового движка'),'Устаревшие подсказки «Диких карт»');
 assert.ok(css.includes('@media(max-width:490px)')&&css.includes('.intro')&&css.includes('.player-chart'),'Нет адаптивной верстки');
 for(const file of ['assets/party_ui.js','assets/party_results.js','assets/ux_v2.js','assets/engine_v47.js']){
  new Function(read(file));
