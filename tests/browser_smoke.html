@@ -69,7 +69,14 @@
    frame.style.width='390px';
    expect(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Горизонтальная прокрутка на телефоне (390)');
    frame.style.width='320px';
-   expect(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Горизонтальная прокрутка на телефоне (320)');
+   const tooWide=[...d.querySelectorAll('body *')].filter(el=>{
+    const rect=el.getBoundingClientRect();
+    return rect.width>0&&rect.right>d.documentElement.clientWidth+4&&!el.closest('[hidden]');
+   }).slice(0,12).map(el=>{
+    const r=el.getBoundingClientRect();return (el.id||String(el.className||'').slice(0,36)||el.tagName)+':'+Math.round(r.right);
+   }).join('; ');
+   expect(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,
+    'Горизонтальная прокрутка на телефоне (320), ширина '+d.documentElement.scrollWidth+'/'+d.documentElement.clientWidth+'; элементы: '+tooWide);
    status.textContent='PASS UX: изменения без потерь, две страны, расчет, исключенные страны, 21 показатель, 8 стран, график, телефоны';
   }catch(e){status.textContent='FAIL UX: '+e.message;}
  };
