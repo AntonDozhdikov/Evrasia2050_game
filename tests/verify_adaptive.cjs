@@ -27,6 +27,7 @@ const a2=Adaptive.actions(initial,'ADAPTIVE_MAPPO_GREEDY',381,2025);
 assert.deepEqual(a1,a2,'The deterministic frozen actor cannot depend on RNG seed at fixed state');
 const archiveFirst=db.runs['S01|MAPPO_GREEDY|163'].actions[0];
 const agreement=a1.flat().filter((v,i)=>v===archiveFirst.flat()[i]).length/48;
+assert.equal(agreement,1,'Real frozen actor must reproduce the 2025 trained MAPPO decisions (48/48)');
 console.log('STAGE3_ARCHIVE_ALIGNMENT: first-year matching action fraction '+agreement.toFixed(4));
 const q1=Adaptive.actions(initial,'ADAPTIVE_MAPPO',163,2025);
 const q2=Adaptive.actions(initial,'ADAPTIVE_MAPPO',163,2025);
@@ -51,6 +52,15 @@ assert.deepEqual(Engine.run(options('ADAPTIVE_MAPPO')).history,stochastic.histor
 assert.deepEqual(baseline.history,Engine.run(options('BARGAIN')).history);
 const divergent=Engine.run({...options('ADAPTIVE_MAPPO_GREEDY'),overrides:{2025:{RUS:[2,2,2,2,2,2]}}});
 assert.notDeepEqual(divergent.history[0].actions[0],selected.history[0].actions[0]);
+const downstreamDifferences=selected.history.slice(1).reduce((total,row,i)=>{
+ const next=divergent.history[i+1];
+ return total+row.actions.slice(1).flat().filter((v,j)=>v!==next.actions.slice(1).flat()[j]).length;
+},0);
+const baselineAlignment=selected.history.reduce((total,row,i)=>{
+ const archived=db.runs['S01|MAPPO_GREEDY|163'].actions[i];
+ return total+row.actions.flat().filter((v,j)=>v===archived.flat()[j]).length;
+},0)/(26*48);
+console.log('STAGE3_LONG_RUN: no-intervention archive action agreement '+baselineAlignment.toFixed(4)+', other-country changed decisions under RUS intervention '+downstreamDifferences);
 // A stronger paired intervention: other countries receive a new state and their
 // response probabilities must be recalculated; never require a particular action
 // to flip, since a deterministic argmax can remain identical.
