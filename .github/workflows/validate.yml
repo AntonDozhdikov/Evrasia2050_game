@@ -11,6 +11,20 @@ jobs:
     steps:
       - name: Получить проект
         uses: actions/checkout@v4
+      - name: Stage 3 archive and dependency probe
+        run: |
+          python3 - <<'PY'
+          import zipfile,importlib.util
+          path='research/frozen/EURASIA_STAGE3_HANDOFF_V47.zip'
+          with zipfile.ZipFile(path) as z:
+              files=z.infolist()
+              print('STAGE3_ZIP_FILES',len(files))
+              for f in files:
+                  if any(x in f.filename.lower() for x in ['mappo.pt','checkpoint','marl','input_tables','v47_economic','prep','meta.json','manifest']):
+                      print('STAGE3_ZIP',f.filename,f.file_size)
+          for package in ['torch','numpy','pandas','safetensors']:
+              print('STAGE3_DEP',package,bool(importlib.util.find_spec(package)))
+          PY
       - name: Проверить JavaScript
         run: |
           node --check assets/engine_v47.js
