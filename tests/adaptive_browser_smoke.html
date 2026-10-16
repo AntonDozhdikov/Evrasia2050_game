@@ -25,6 +25,7 @@
    check(d.querySelector('#partyResultRows tr td').textContent===first,'Детерминированная стратегия не воспроизводима');
    d.getElementById('partyPreviewYear').click();
    check(!d.getElementById('partyYearPreviewContent').hidden,'Не работает просмотр года с нейросетью');
+   check(d.querySelectorAll('#partyYearActionRows tr').length===8,'Не показаны шесть решений восьми стран');
    w.confirm=()=>true;
    set(d.getElementById('partyScenario'),'W07');
    set(d.getElementById('partyPolicy'),'ADAPTIVE_MAPPO');
