@@ -6,7 +6,7 @@ if(!D||!M||!G)return;
 var $=function(id){return document.getElementById(id);};
 var escape=function(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
 var fmt=function(x,n){return Number(x).toLocaleString('ru-RU',{maximumFractionDigits:n==null?2:n,minimumFractionDigits:0});};
-var selectedTab='scenarios',crisisFilter='scenario';
+var selectedTab='scenarios',crisisFilter='scenario',lastReferenceKey='';
 var pos={RUS:[255,70],BLR:[112,122],KAZ:[311,184],KGZ:[202,258],UZB:[292,293],TJK:[384,283],TKM:[381,218],ARM:[85,247]};
 function view(){
 var a=document.querySelector('.agent-row.chosen');
@@ -24,7 +24,7 @@ var s=scenario(sid),i=s?s.crisis_ids.indexOf(eventId):-1,years=[];if(i<0)return 
 for(var y=2026+i*4;y<=2050;y+=12)years.push(y);return years;
 }
 function showTab(tab){
-selectedTab=tab;
+selectedTab=tab;lastReferenceKey='';
 document.querySelectorAll('[data-guide-tab]').forEach(function(el){var active=el.dataset.guideTab===tab;el.classList.toggle('active',active);el.setAttribute('aria-selected',String(active));});
 renderReference(view());
 }
@@ -43,15 +43,17 @@ var n=Number(archive.values.crises_active);if(n!==list.length)html+='<p class="f
 node.innerHTML=html;
 }
 function renderMap(v){
-var snapshot=M.at(D,v.scenario,v.policy,v.seed,v.year),actions=snapshot.actions,desc=G.actionDescriptions[v.action],colors=['#dce6f0','#87b4df','#255eaf'];
+var snapshot=M.at(D,v.scenario,v.policy,v.seed,v.year),actions=snapshot.actions,previous=v.year>2025?M.at(D,v.scenario,v.policy,v.seed,v.year-1).actions:null,desc=G.actionDescriptions[v.action],colors=['#dce6f0','#87b4df','#255eaf'];
 if(!desc)return;
 var counts=[0,1,2].map(function(l){return D.countries.filter(function(c){return actions[c][v.action]===l;}).length;});
 var markup='<div class="decision-map-heading"><strong>'+escape(desc.name)+'</strong><small>'+counts[0]+' низкий · '+counts[1]+' средний · '+counts[2]+' высокий</small></div><svg viewBox="0 0 480 350" role="img" aria-label="Решения восьми государств">';
 D.countries.forEach(function(c){
-var xy=pos[c],level=actions[c][v.action],focused=v.country===c,fullname=M.countryNames[c],act=desc.levels[level];
-markup+='<g data-decision-country="'+c+'" role="button" tabindex="0" aria-label="'+escape(fullname+': '+act)+'"><circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="'+(focused?31:26)+'" fill="'+colors[level]+'" stroke="'+(focused?'#cd4954':'#fff')+'" stroke-width="'+(focused?4:2)+'"/><text x="'+xy[0]+'" y="'+(xy[1]-2)+'" fill="'+(level===2?'white':'#213b55')+'" text-anchor="middle" font-size="12" font-weight="700">'+c+'</text><text x="'+xy[0]+'" y="'+(xy[1]+13)+'" fill="'+(level===2?'white':'#213b55')+'" text-anchor="middle" font-size="11">'+level+'/2</text><title>'+escape(fullname+': '+act)+'</title></g>';
+var xy=pos[c],level=actions[c][v.action],focused=v.country===c,fullname=M.countryNames[c],act=desc.levels[level],changed=previous&&previous[c][v.action]!==level;
+markup+='<g data-decision-country="'+c+'" role="button" tabindex="0" aria-label="'+escape(fullname+': '+act)+'"><circle cx="'+xy[0]+'" cy="'+xy[1]+'" r="'+(focused?31:26)+'" fill="'+colors[level]+'" stroke="'+(focused?'#cd4954':'#fff')+'" stroke-width="'+(focused?4:2)+'"'+(changed?' stroke-dasharray="5 3"':'')+'/><text x="'+xy[0]+'" y="'+(xy[1]-2)+'" fill="'+(level===2?'white':'#213b55')+'" text-anchor="middle" font-size="12" font-weight="700">'+c+'</text><text x="'+xy[0]+'" y="'+(xy[1]+13)+'" fill="'+(level===2?'white':'#213b55')+'" text-anchor="middle" font-size="11">'+level+'/2</text><title>'+escape(fullname+': '+act)+'</title></g>';
 });
-markup+='</svg><p class="decision-map-caption">Нажмите на государство, чтобы увидеть все шесть решений. Размещение условное; карта не показывает неподтвержденные двусторонние соглашения.</p>';
+var changedCountries=previous?D.countries.filter(function(c){return previous[c][v.action]!==actions[c][v.action];}):[];
+var diffLine=v.year>2025?'По сравнению с '+(v.year-1)+' годом изменили этот тип решения: '+(changedCountries.length?changedCountries.map(function(c){return M.countryNames[c];}).join(', '):'ни одна страна')+'.':'Показаны решения первого года.';
+markup+='</svg><p class="decision-map-caption"><strong>'+escape(diffLine)+'</strong> Нажмите на государство, чтобы увидеть все шесть решений. Пунктирный контур обозначает изменение уровня относительно предыдущего года. Расположение условное.</p>';
 $('decisionMap').innerHTML=markup;
 $('decisionMap').querySelectorAll('[data-decision-country]').forEach(function(node){
 function choose(){var country=node.dataset.decisionCountry,button=document.querySelector('.agent-row[data-code="'+country+'"]');if(button){button.click();renderMap(view());}}
@@ -70,6 +72,8 @@ return (c.note?c.note+'. ':'')+target;
 }
 function renderReference(v){
 var box=$('referenceContent'),html='';
+var key=selectedTab+'|'+(selectedTab==='scenarios'?v.scenario:selectedTab==='strategies'?v.policy:selectedTab==='crises'?(v.scenario+'|'+v.year+'|'+crisisFilter):'fixed');
+if(key===lastReferenceKey)return;lastReferenceKey=key;
 if(selectedTab==='scenarios'){
 html='<p class="reference-intro">Каждый сценарий задает собственную последовательность трех кризисных событий. Выберите сценарий, чтобы сопоставить действия стран и результаты разных стратегий.</p><div class="guide-grid">';
 D.scenarios.forEach(function(s){
