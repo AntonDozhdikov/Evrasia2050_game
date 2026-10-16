@@ -55,7 +55,7 @@ function restore(){
   const data=localStorage.getItem(KEY),id=localStorage.getItem(ACTIVE_KEY);
   if(data){const p=JSON.parse(data);Core.validate(p);verifyWild(p);party=Core.clone(p);}
   if(id&&readSlots().some(x=>x.id===id))activeSlot=id;
- }catch(_){party=Core.make();activeSlot=null;}
+ }catch(e){party=Core.make();activeSlot=null;flash='Не удалось восстановить сохранение: '+e.message+'. Проверьте ранее скачанный файл партии.';}
 }
 function saveNamedSlot(){
  if(!savePendingIfAny())return;
@@ -164,7 +164,11 @@ function decisionsForYear(){
 }
 function saveYear(){
  try{
-  const values=decisionsForYear();
+  const values=decisionsForYear(),saved=party.years[party.year]||{};
+  if(party.controlled.every(c=>saved[c]&&values[c]&&saved[c].every((v,i)=>v===values[c][i]))){
+   line('Решения '+party.year+' года уже сохранены.');
+   return true;
+  }
   for(const c of party.controlled)party=Core.plan(party,party.year,c,values[c]);
   const stored=store();render();
   line('Решения '+party.year+' года сохранены для '+party.controlled.length+' государств.'+(stored?'':' Скачайте файл партии: сохранение в браузере недоступно.'),stored);
@@ -251,5 +255,5 @@ if(quick)quick.addEventListener('click',()=>{
 });
 window.addEventListener('eurasia:texts-updated',render);
 window.EurasiaPartyUI={saveCurrentYear:saveYear,getCurrent:()=>Core.clone(party),getActiveSlot:()=>activeSlot};
-restore();render();
+restore();render();if(flash)line(flash,false);
 })();
