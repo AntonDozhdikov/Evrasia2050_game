@@ -112,5 +112,6 @@ var yearObserver=new MutationObserver(function(){refresh();});yearObserver.obser
 var countryObserver=new MutationObserver(function(){renderMap(view());});countryObserver.observe($('actions'),{subtree:true,childList:true,attributes:false});
 document.querySelectorAll('[data-guide-tab]').forEach(function(n){n.addEventListener('click',function(){showTab(n.dataset.guideTab);});});
 document.querySelectorAll('[data-open-guide]').forEach(function(n){n.addEventListener('click',function(e){e.preventDefault();showTab(n.dataset.openGuide);$('reference').scrollIntoView({behavior:'smooth',block:'start'});});});
+window.addEventListener('eurasia:texts-updated',function(){lastReferenceKey='';refresh();});
 refresh();
 })();
