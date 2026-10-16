@@ -6,7 +6,7 @@
 })(typeof self!=='undefined'?self:this,function(){
 'use strict';
 const COUNTRIES=['RUS','BLR','KAZ','KGZ','UZB','TJK','TKM','ARM'];
-const POLICIES=['MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL'];
+const POLICIES=['MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL','ADAPTIVE_MAPPO_GREEDY','ADAPTIVE_MAPPO'];
 const START=2025,END=2050,VERSION=1;
 function checkAction(values){
  return Array.isArray(values)&&values.length===6&&values.every(v=>Number.isInteger(v)&&v>=0&&v<=2);
