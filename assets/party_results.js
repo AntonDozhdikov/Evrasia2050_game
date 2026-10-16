@@ -31,8 +31,9 @@ const METRICS=[
  ['crises','Сумма годовых кризисных воздействий','',0,'crises_active']
 ];
 const keys=['PLAYER','MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL'];
-const NAMES={PLAYER:'Игрок',MAPPO_GREEDY:'MAPPO: архивная детерминированная',MAPPO:'MAPPO: архивная вероятностная',BARGAIN:'Переговоры по правилам',NEUTRAL:'Без новых инициатив'};
-const colors={PLAYER:'#155bb9',MAPPO_GREEDY:'#8543a9',MAPPO:'#008578',BARGAIN:'#d44d62',NEUTRAL:'#687993'};
+const isAdaptive=p=>p.startsWith('ADAPTIVE_MAPPO');
+const NAMES={PLAYER:'Игрок',MAPPO_GREEDY:'MAPPO: архивная детерминированная',MAPPO:'MAPPO: архивная вероятностная',BARGAIN:'Переговоры по правилам',NEUTRAL:'Без новых инициатив',ADAPTIVE_MAPPO_GREEDY:'Адаптивная MAPPO: детерминированная',ADAPTIVE_MAPPO:'Адаптивная MAPPO: вероятностная'};
+const colors={PLAYER:'#155bb9',MAPPO_GREEDY:'#8543a9',MAPPO:'#008578',BARGAIN:'#d44d62',NEUTRAL:'#687993',ADAPTIVE_MAPPO_GREEDY:'#cc791b',ADAPTIVE_MAPPO:'#9a672a'};
 const yearsWord=n=>n%10===1&&n%100!==11?'год':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'года':'лет';
 const countryWord=n=>n===1?'управляемое государство':n>=2&&n<=4?'управляемых государства':'управляемых государств';
 let computation=null,activeSeries=[];
@@ -83,8 +84,13 @@ function calculate(){
   const p=extract(),scenario=getScenario(p);
   const isWild=scenario.scenario_id[0]==='W',standardSeed=D.manifest.seeds.includes(p.seed);
   const available=(isWild||!standardSeed)?['BARGAIN','NEUTRAL']:keys.slice(1);
-  if(!available.includes(p.policy))throw Error('Для новой партии выберите «Переговоры по правилам» или «Без новых инициатив». Два режима обученной стратегии требуют исходного сценария и сохраненного номера расчета.');
-  const settings={bootstrap:B,cat:G.crisisCatalog,scenario,seed:p.seed,db:D};
+  if(isAdaptive(p.policy)){
+   if(!window.EurasiaAdaptive)throw Error('Не загружен контрольный файл обученной политики V4.7');
+   available.push('ADAPTIVE_MAPPO_GREEDY');
+  }else if(!available.includes(p.policy)){
+   throw Error('Для архивной MAPPO нужны исходный сценарий и номер расчёта; для адаптивной MAPPO эти ограничения не действуют.');
+  }
+  const settings={bootstrap:B,cat:G.crisisCatalog,scenario,seed:p.seed,db:D,adaptive:window.EurasiaAdaptive};
   const runs={};
   // Ранее записанные решения исключенных из управления стран остаются в файле,
   // но не влияют на расчет текущей партии.
@@ -103,7 +109,7 @@ function calculate(){
   const entered=Object.values(p.years).filter(rows=>p.controlled.some(country=>!!rows[country])).length;
   const auto=26-entered;
   const seedNote=p.scenario.startsWith('W')?' Жеребьёвка кризисов '+p.wildcardSeed+'; номер расчёта '+p.seed+'.':' Номер расчёта '+p.seed+'.';
-  $('partyResultProvenance').textContent='Расчёт V4.7: игрок задал решения на '+entered+' из 26 лет; '+auto+' '+yearsWord(auto)+' рассчитано автоматически по стратегии «'+NAMES[p.policy]+'». MAPPO / MAPPO_GREEDY воспроизводят архивные последовательности решений без адаптации к изменениям игрока; BARGAIN пересчитывается по текущему состоянию модели. Сравнение использует одинаковые исходные условия и кризисы.'+seedNote+' Экономические результаты — сценарные оценки, не прогноз.';
+  $('partyResultProvenance').textContent='Расчёт V4.7: игрок задал решения на '+entered+' из 26 лет; '+auto+' '+yearsWord(auto)+' рассчитано автоматически по стратегии «'+NAMES[p.policy]+'». Архивные MAPPO воспроизводят сохранённые решения; адаптивная MAPPO применяет реальный замороженный актор V4.7 к текущему состоянию экономической JS-модели. Некоторые нецелевые признаки наблюдения зафиксированы на уровне 2024 года, поэтому численная идентичность Python не заявляется. BARGAIN вычисляется по правилам текущей среды. Сравнение использует одинаковые исходные условия и кризисы.'+seedNote+' Экономические результаты — сценарные оценки, не прогноз.';
   status.textContent='Расчет завершен: 26 лет; '+p.controlled.length+' '+countryWord(p.controlled.length)+'; '+entered+' '+yearsWord(entered)+' решений игрока; '+auto+' '+yearsWord(auto)+' автоматически; '+available.length+' стратегии для сравнения.'+
    (available.length<4?' Доступны переговорная и нейтральная стратегии.':'');
   $('partyResults').scrollIntoView({behavior:'smooth',block:'start'});
@@ -228,7 +234,7 @@ function previewYear(){
   const isWild=p.scenario.startsWith('W'),standard=D.manifest.seeds.includes(p.seed);
   if((isWild||!standard)&&p.policy.startsWith('MAPPO'))throw Error('Этот номер расчёта не поддерживает архивную MAPPO.');
   const overrides=Object.fromEntries(Object.entries(p.years).map(([year,rows])=>[year,Object.fromEntries(Object.entries(rows).filter(([code])=>p.controlled.includes(code)))]));
-  const run=Engine.run({bootstrap:B,cat:G.crisisCatalog,scenario,seed:p.seed,db:D,policy:p.policy,overrides});
+  const run=Engine.run({bootstrap:B,cat:G.crisisCatalog,scenario,seed:p.seed,db:D,policy:p.policy,overrides,adaptive:window.EurasiaAdaptive});
   const year=p.year,h=run.history[year-2025],saved=p.years[year]||{},chosen=p.controlled.filter(c=>saved[c]).length;
   status.textContent=year+': '+chosen+' из '+p.controlled.length+' государств управляются заданными решениями. Для остальных действует стратегия «'+NAMES[p.policy]+'».';
   const metrics=[
@@ -240,7 +246,10 @@ function previewYear(){
   const events=crisesForYear(scenario,year);
   $('partyYearCrisis').innerHTML='<b>Действующие кризисы:</b> '+(events.length?events.map(safe).join('; '):'нет активных кризисов')+'.';
   $('partyYearCountries').innerHTML='<table><thead><tr><th>Государство</th><th>Рост ВВП</th><th>Капитал</th><th>Оценка решений</th><th>Тип действий</th></tr></thead><tbody>'+
-   h.country_stats.map((row,i)=>'<tr><th>'+safe(M.countryNames[row.country])+'</th><td>'+fmt(row.growth,2)+' %</td><td>'+fmt(row.budget,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+((saved[row.country]&&p.controlled.includes(row.country))?'Игрок':'Стратегия')+'</td></tr>').join('')+'</tbody></table>';
+   h.country_stats.map((row,i)=>'<tr><th>'+safe(M.countryNames[row.country])+'</th><td>'+fmt(row.growth,2)+' %</td><td>'+fmt(row.budget,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+((saved[row.country]&&p.controlled.includes(row.country))?'Игрок':safe(NAMES[p.policy]))+'</td></tr>').join('')+'</tbody></table>'+
+   '<details class="year-decision-details" open><summary>Шесть решений каждой страны за '+year+' год</summary><div class="year-decisions-scroll"><table><thead><tr><th>Государство</th>'+G.actionDescriptions.map(a=>'<th>'+safe(a.name)+'</th>').join('')+'</tr></thead><tbody id="partyYearActionRows">'+
+   h.actions.map((row,i)=>'<tr><th>'+safe(M.countryNames[D.countries[i]])+'</th>'+row.map((level,k)=>'<td title="'+safe(G.actionDescriptions[k].levels[level])+'">'+level+' — '+safe(G.actionDescriptions[k].levels[level])+'</td>').join('')+'</tr>').join('')+
+   '</tbody></table></div><p>Действия с пометкой «Стратегия» вычислены из исходной обученной политики, из архива или по правилам выбранного режима. Решения под управлением игрока берутся из сохранения.</p></details>';
   output.hidden=false;
  }catch(e){output.hidden=true;status.textContent='Не удалось показать последствия года: '+e.message;}
 }
@@ -248,7 +257,9 @@ function exportJSON(){
  if(!computation)return;
  const data={party:computation.party,scenario:computation.scenario,metrics:METRICS.map(m=>m.slice(0,4)),
   outcomes:computation.runs,summary:computation.summaries,provenance:{base:'V4.7',source:'2024 Stage1',engine:'JS conditional port of EurasiaEnv',reproducible:true,
-  policy_mode:'MAPPO archive actions replayed without agent adaptation; BARGAIN recalculated; NEUTRAL fixed',
+  policy_mode:isAdaptive(computation.party.policy)?'Real frozen MAPPO V4.7 actor forward-pass with state adapter: some 2024 non-target features frozen':'MAPPO archive actions replayed without agent adaptation; BARGAIN recalculated; NEUTRAL fixed',
+  adaptive_checkpoint:isAdaptive(computation.party.policy)?window.EurasiaAdaptive.checkpoint:null,
+  observation_adapter:isAdaptive(computation.party.policy)?window.EurasiaAdaptive.observationAdapter:null,
   player_years:Object.keys(computation.party.years).filter(y=>computation.party.controlled.some(code=>computation.party.years[y][code])),
   automatic_year_policy:computation.party.policy,
   wildcard_seed:computation.party.scenario.startsWith('W')?computation.party.wildcardSeed:null,
