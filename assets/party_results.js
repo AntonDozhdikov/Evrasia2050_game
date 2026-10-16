@@ -189,6 +189,31 @@ function renderChart(){
  }).join('');
  $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+(metric[2]?' · '+safe(metric[2]):'')+'</div><svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+safe(metric[1])+': сравнение 2025–2050 годов"><title>'+safe(metric[1])+': 2025–2050</title>'+grid+years+lines+'</svg>';
 }
+function renderControlledSummary(){
+ if(!computation)return;
+ const c=computation,key=$('partyCountryBaseline').value,reference=c.runs[key],host=$('partyControlledSummary');
+ if(!reference){host.textContent='Выберите стратегию сравнения.';return;}
+ const player=c.runs.PLAYER;
+ host.innerHTML='<p class="controlled-comparison-note">Автоматическая стратегия: <strong>'+safe(NAMES[key])+
+  '</strong>. Одинаковые сценарии и исходные условия; для каждой страны учитываются решения других государств и реакции адаптивной политики. Разница — результат модели, не прогноз.</p>'+
+  '<div class="controlled-results-grid">'+c.party.controlled.map(code=>{
+   const i=D.countries.indexOf(code);
+   const mine=player.history.map(y=>y.country_stats[i]),base=reference.history.map(y=>y.country_stats[i]);
+   const average=(data,k)=>data.reduce((total,row)=>total+row[k],0)/data.length;
+   const metrics=[
+    ['Средний годовой рост ВВП',average(mine,'growth'),average(base,'growth'),'%','п.п.'],
+    ['Исходящая торговля, 2050',U.countryTrade(mine[25].trade_usd),U.countryTrade(base[25].trade_usd),'млрд долл.','млрд долл.'],
+    ['Остаток капитала, 2050',mine[25].budget,base[25].budget,'усл. ед.','усл. ед.'],
+    ['Оценка за 26 лет',player.returns[i],reference.returns[i],'усл. ед.','усл. ед.']
+   ];
+   return '<article class="controlled-result-card"><h4>'+safe(M.countryNames[code])+'</h4><div class="controlled-result-grid">'+
+    metrics.map(([label,own,benchmark,unit,deltaUnit])=>'<div class="controlled-result-metric">'+
+    '<strong>'+safe(label)+'</strong><span>Ваш курс: <b>'+fmt(own,2)+' '+safe(unit)+'</b></span>'+
+    '<span>Автоматический: '+fmt(benchmark,2)+' '+safe(unit)+'</span>'+
+    '<span class="controlled-result-delta">Разница: '+safe(U.signed(own-benchmark,2))+' '+safe(deltaUnit)+'</span></div>').join('')+
+    '</div></article>';
+  }).join('')+'</div>';
+}
 function renderCountryDetail(){
  if(!computation)return;
  const c=computation,code=$('partyCountryDetailSelect').value,k=D.countries.indexOf(code);
@@ -213,6 +238,7 @@ function renderCountryDetail(){
  $('partyCountryDetailChart').innerHTML='<strong>'+safe(M.countryNames[code])+' — '+safe(fieldNames[field])+'</strong><p class="country-legend"><span><i style="background:'+colors.PLAYER+'"></i>Игрок</span><span><i style="background:'+colors[baseline]+'"></i>'+safe(NAMES[baseline])+'</span></p>'+
  '<svg viewBox="0 0 '+Wd+' '+Hd+'" role="img" aria-label="'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+', 2025–2050"><title>'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+'</title>'+grid+years+line(player,colors.PLAYER)+line(other,colors[baseline])+'</svg>';
  $('partyCountryDetailRows').innerHTML=player.map((row,i)=>'<tr><th>'+(i+2025)+'</th><td>'+fmt(row.growth,3)+'</td><td>'+fmt(other[i].growth,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+fmt(other[i].reward,3)+'</td></tr>').join('');
+ renderControlledSummary();
 }
 function crisesForYear(scenario,year){
  const out=[],wild=scenario.scenario_id.startsWith('W');
