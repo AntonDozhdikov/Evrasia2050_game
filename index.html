@@ -10,48 +10,23 @@
 <div id="root" class="shell">
   <header class="topbar">
     <a class="brand" href="./index.html" aria-label="Евразия 2050 — главная"><span class="brand-mark">Е<span class="brand-dot"></span></span><span><strong>ЕВРАЗИЯ <b>2050</b></strong><small>страны, решения, последствия</small></span></a>
-    <nav class="topnav" aria-label="Разделы"><a class="active" href="#experiment">Сценарии</a><a href="#party-planner">Своя партия</a><a href="#countries">Торговые связи</a><a href="#reference" data-open-guide="wildcards">Дикие карты</a><a href="#reference">Справочник</a><a href="#text-editor">Редактор текстов</a><a href="#methods">Как пользоваться</a></nav>
+    <nav class="topnav" aria-label="Разделы"><a href="#party-planner">Новая партия</a><a href="#results">Графики</a><a href="#countries">Торговля</a><a href="#reference">Правила</a></nav>
     <span class="version">ИССЛЕДОВАТЬ СЦЕНАРИИ</span>
   </header>
   <main id="experiment">
     <section class="intro">
       <div><div class="eyebrow"><span class="pulse"></span> ВОСЕМЬ ГОСУДАРСТВ · 30 СЦЕНАРИЕВ · 2025–2050</div><h1>Евразия <em>2050</em></h1><p>Что меняется, когда государства выбирают сотрудничество, инвестиции или самостоятельные действия? Сравните стратегии России, Беларуси, Казахстана, Кыргызстана, Узбекистана, Таджикистана, Туркменистана и Армении. Проследите, как в модели складываются торговля, совместные проекты и реакция на кризисы.</p></div>
-      <aside class="intro-note"><strong>С чего начать</strong><span>Выберите сценарий и способ действий стран. Нажмите «Воспроизвести», чтобы пройти по годам, или сразу откройте интересующий год. Для сравнения выберите вторую стратегию.</span><a href="#methods">Что можно изменить в этой версии <span aria-hidden="true">↗</span></a></aside>
+      <aside class="intro-note"><strong>Как начать</strong><span>Выберите сценарий и способ действий стран. Нажмите «Воспроизвести», чтобы пройти по годам, или сразу откройте интересующий год. Порядок действий указан внизу страницы.</span><a href="#methods">Правила и справка <span aria-hidden="true">↗</span></a></aside>
     </section>
-    <section class="control-panel" aria-label="Настройки симуляции">
-      <div class="controls-grid">
-        <label>Условия развития <select id="scenario" aria-label="Условия сценария"></select></label>
-        <label>Как действуют страны <select id="policy" aria-label="Стратегия стран"></select></label>
-        <label>Сравнить со стратегией <select id="compare" aria-label="Стратегия для сравнения"></select></label>
-        <label>Вариант расчета <select id="seed" aria-label="Вариант расчета"></select></label>
-      </div>
-      <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
-      <div class="wild-inline"><label for="wildcardPicker">Дополнительные сценарии «Дикие карты»</label><select id="wildcardPicker" aria-label="Выберите один из десяти дополнительных сценариев"><option value="">Выберите случайное сочетание кризисов</option></select><p id="wildcardSummary">Десять новых сочетаний используют все сорок оставшихся кризисов. Четыре события в каждом.</p><a href="#reference" data-open-guide="wildcards">Посмотреть и изменить состав событий ↓</a></div>
-      <div class="choice-explanations"><div class="choice-explanation"><strong>Сценарий</strong><p id="scenarioShort" aria-live="polite"></p><a href="#reference" data-open-guide="scenarios">20 основных сценариев ↓</a> · <a href="#reference" data-open-guide="wildcards">10 «Диких карт» ↓</a></div><div class="choice-explanation"><strong>Стратегия</strong><p id="policyExplanation" aria-live="polite"></p><a href="#reference" data-open-guide="strategies">Подробнее о стратегиях ↓</a></div></div><p class="controls-note">Для прежних результатов используйте основные настройки. Для составления собственной партии откройте раздел «Своя партия».</p>
+    <section class="game-facts" aria-label="Сведения об игре">
+      <div><strong>8</strong><span>государств</span></div><div><strong>2025–2050</strong><span>игровые годы</span></div>
+      <div><strong>20</strong><span>рассчитанных сценариев</span></div><div><strong>10</strong><span>«Диких карт»</span></div>
+      <div><strong>100</strong><span>кризисных событий</span></div>
     </section>
-    <section class="stat-grid" aria-label="Результаты выбранного года">
-      <article class="stat"><div class="stat-label">Средний рост ВВП <span>8 стран, результат модели</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
-      <article class="stat"><div class="stat-label">Новые совместные проекты <span>в выбранном году</span></div><div class="stat-value" id="projects">—</div><div class="stat-caption" id="projects-delta"></div></article>
-      <article class="stat"><div class="stat-label">Торговля между странами <span>млрд долл., модель</span></div><div class="stat-value" id="trade">—</div><div class="stat-caption" id="trade-delta"></div></article>
-      <article class="stat"><div class="stat-label">Кризисные воздействия <span>в выбранном году</span></div><div class="stat-value" id="crisis">—</div><div class="stat-caption" id="crisis-delta"></div></article>
-    </section>
-    <section class="crisis-notice" id="crisisNotice" aria-label="Кризисные события выбранного года" aria-live="polite"><div><span class="section-kicker">КРИЗИСЫ И СОБЫТИЯ</span><div id="crisisCurrent"></div></div><a href="#reference" data-open-guide="crises">Справочник кризисов ↓</a></section>
-    <div class="main-grid">
-      <div class="column-stack">
-        <section class="panel plot-panel"><div class="section-header"><div><span class="section-kicker">01 / СРАВНЕНИЕ</span><h2>Как меняются результаты</h2></div><label class="metric-picker">Показатель <select id="metric"><option value="mean_growth_pct">Экономический рост</option><option value="new_projects">Новые проекты</option><option value="projects_matured">Созревшие проекты</option><option value="trade_usd_total">Торговый оборот</option><option value="capital_budget_total">Бюджетный капитал</option><option value="mean_reward">Оценка модели (условная)</option><option value="network_strength">Индекс связей (модель)</option></select></label></div><div id="chart" class="chart" role="img" aria-label="График сценарных показателей"></div><div class="plot-legend"><span><i class="swatch blue"></i><span id="legendPrimary">Выбранная политика</span></span><span><i class="swatch red"></i><span id="legendCompare">Контрольная политика</span></span></div><p class="footnote" id="metricExplanation">Синяя линия — выбранная стратегия, красная — стратегия сравнения. Это результаты симуляции, а не прогноз официальных показателей.</p></section>
-        <section class="panel actions-panel"><div class="section-header"><div><span class="section-kicker">03 / ПОЛИТИКА СТРАН</span><h2>Что решили государства</h2></div><span class="side-caption" id="actionPeriod">2025 · действия стран</span></div><p class="panel-lead">Выберите государство на схеме решений. Цвет показывает уровень действия по выбранному направлению; ниже приведены все шесть решений каждой страны.</p><div class="decision-controls"><label for="actionType">Показать на схеме: <select id="actionType"><option value="0">Торговля</option><option value="1">Инвестиции</option><option value="2">Координация</option><option value="3">Защита от кризисов</option><option value="4">Ориентация на партнеров</option><option value="5">Трудовая мобильность</option></select></label></div><div id="decisionMap" class="decision-map" aria-label="Решения восьми государств на схеме" role="group"></div><div class="decision-legend"><span><i class="decision-dot decision-level-0"></i>Низкий уровень</span><span><i class="decision-dot decision-level-1"></i>Средний уровень</span><span><i class="decision-dot decision-level-2"></i>Высокий уровень</span></div><div id="actions" class="actions"></div><div class="country-insight" id="countryDetail"></div><p class="footnote">Схема показывает индивидуальные решения стран, а не реальную географию или подтвержденные двусторонние соглашения. <a href="#reference" data-open-guide="actions">Расшифровка всех действий ↓</a></p></section>
-      </div>
-      <div class="column-stack">
-        <section class="panel network-panel" id="countries"><div class="section-header"><div><span class="section-kicker">02 / ТОРГОВЛЯ</span><h2>Кто с кем торгует</h2></div><span class="side-caption">Доступные данные за 2024 год</span></div><p class="panel-lead">Выберите страну на схеме. Толщина линии отражает сумму <em>известных</em> экспортных потоков между двумя государствами. Отсутствие линии не означает отсутствия торговли.</p><svg id="network" viewBox="0 0 480 350" aria-label="Схема наблюдаемых экспортных связей 2024 года" role="img"></svg><div id="tradeOverview" class="network-overview"></div><div id="tradePartners" class="trade-partners" aria-live="polite"></div><p class="footnote">Схема построена по историческим данным за 2024 год и не меняется при переключении игровых лет. Показаны только подтвержденные направления экспорта. Расположение стран условное.</p></section>
-        <section class="panel scenario-panel"><div class="section-header"><div><span class="section-kicker">04 / УСЛОВИЯ</span><h2>О выбранном сценарии</h2></div></div><div id="scenarioDescription"></div><div class="report-metrics" id="reportMetrics"></div><div class="downloads"><button id="exportJson" class="secondary">↓ Скачать данные года</button><button id="exportCsv" class="secondary">↓ Скачать данные за все годы</button></div></section>
-      </div>
-    </div>
-    <section id="reference" class="reference-panel"><div class="reference-heading"><span class="section-kicker">ПОДРОБНОСТИ</span><h2>Сценарии, кризисы, стратегии и решения</h2><p>Узнайте, что происходит в выбранном варианте развития, как реагируют страны и какие правила использует модель.</p></div><div class="reference-tabs" role="tablist" aria-label="Разделы справочника"><button type="button" class="reference-tab active" data-guide-tab="scenarios" role="tab" aria-selected="true">Сценарии</button><button type="button" class="reference-tab" data-guide-tab="crises" role="tab" aria-selected="false">Кризисы</button><button type="button" class="reference-tab" data-guide-tab="strategies" role="tab" aria-selected="false">Стратегии</button><button type="button" class="reference-tab" data-guide-tab="actions" role="tab" aria-selected="false">Действия стран</button><button type="button" class="reference-tab" data-guide-tab="wildcards" role="tab" aria-selected="false">Дикие карты</button></div><div id="referenceContent" class="reference-content" role="tabpanel"></div></section>
-
     <section id="party-planner" class="planner-panel">
       <div class="reference-heading"><span class="section-kicker">НОВАЯ ИГРОВАЯ ПАРТИЯ</span><h2>Управляйте решениями государств</h2>
-        <p>Выберите одну или несколько стран, задайте их действия и составьте последовательность решений до 2050 года. Решения сохраняются в браузере и в отдельном файле.</p></div>
-      <div class="party-notice"><strong>Подготовка партии</strong><p id="partyNotComputed">Новая расчетная партия станет доступна после переноса экономического движка V4.7. Архивные графики выше остаются неизменными.</p></div>
+        <p>Возьмите под управление одну или несколько стран. Выбирайте торговую политику, инвестиции, переговоры и защиту от кризисов. Ваши решения сохраняются по годам.</p></div>
+      <div class="party-notice"><strong>Режим записи решений</strong><p id="partyNotComputed">Вы можете составить и сохранить партию. Расчет ее экономических последствий будет добавлен после проверки игрового движка.</p></div>
       <div class="party-setup">
         <label>Сценарий партии<select id="partyScenario"></select></label>
         <label>Стратегия остальных стран<select id="partyPolicy"></select></label>
@@ -74,38 +49,60 @@
       <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
     </section>
 
-    <section id="text-editor" class="editor-panel">
-      <div class="reference-heading"><span class="section-kicker">РЕДАКТОР ИГРОВЫХ ТЕКСТОВ</span><h2>Изменяйте описания и пояснения</h2>
-        <p>Здесь можно редактировать названия и описания сценариев, все сто кризисов, четыре стратегии, действия стран и основные пояснения страницы.</p></div>
-      <div class="editor-context">Текстовые правки сохраняются на этом устройстве. Для переноса в другой браузер скачайте файл и загрузите его там. Для публикации исправлений всем посетителям перенесите этот файл в репозиторий. Численные данные и расчеты изменениям не подвергаются.</div>
-      <div class="editor-controls">
-        <label>Раздел<select id="textKind"><option value="scenario">Сценарии</option><option value="crisis">Кризисы</option><option value="policy">Стратегии</option><option value="action">Действия государств</option><option value="page">Тексты страницы</option></select></label>
-        <label>Что редактировать<select id="textItem"></select></label>
-      </div>
-      <p id="textEditorCurrent" class="editor-state"></p>
-      <div id="textFields" class="editor-fields"></div>
-      <div class="editor-actions">
-        <button type="button" id="textApply" class="primary">Сохранить текст</button>
-        <button type="button" id="textDownload" class="secondary">Скачать исправления</button>
-        <button type="button" id="textLoad" class="secondary">Загрузить исправления</button>
-        <button type="button" id="textReset" class="secondary">Вернуть выбранный текст</button>
-        <button type="button" id="textResetAll" class="secondary">Вернуть все тексты</button>
-        <input type="file" id="textImportFile" accept="application/json,.json" hidden>
-      </div>
-      <p id="textEditorMessage" class="party-message" role="status" aria-live="polite"></p>
+    <section id="results" class="results-heading">
+      <span class="section-kicker">РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА</span><h2>Графики и расчеты</h2>
+      <p>Здесь можно сравнить уже рассчитанные сценарии и стратегии. Результаты новой партии появятся после подключения расчетного движка.</p>
     </section>
+    <section class="control-panel" aria-label="Настройки готовых результатов">
+      <div class="controls-grid">
+        <label>Исходный сценарий <select id="scenario" aria-label="Условия сценария"></select></label>
+        <label>Как действуют страны <select id="policy" aria-label="Стратегия стран"></select></label>
+        <label>Сравнить со стратегией <select id="compare" aria-label="Стратегия для сравнения"></select></label>
+        <label>Вариант расчета <select id="seed" aria-label="Вариант расчета"></select></label>
+      </div>
+      <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
+      <div class="wild-inline"><label for="wildcardPicker">Дополнительные сценарии «Дикие карты»</label><select id="wildcardPicker" aria-label="Выберите один из десяти дополнительных сценариев"><option value="">Выберите случайное сочетание кризисов</option></select><p id="wildcardSummary">Десять новых сочетаний используют все сорок оставшихся кризисов. Четыре события в каждом.</p><a href="#reference" data-open-guide="wildcards">Посмотреть и изменить состав событий ↓</a></div>
+      <div class="choice-explanations"><div class="choice-explanation"><strong>Сценарий</strong><p id="scenarioShort" aria-live="polite"></p><a href="#reference" data-open-guide="scenarios">20 основных сценариев ↓</a> · <a href="#reference" data-open-guide="wildcards">10 «Диких карт» ↓</a></div><div class="choice-explanation"><strong>Стратегия</strong><p id="policyExplanation" aria-live="polite"></p><a href="#reference" data-open-guide="strategies">Подробнее о стратегиях ↓</a></div></div><p class="controls-note">Здесь показаны результаты завершенного вычислительного эксперимента.</p>
+    </section>
+    <section class="stat-grid" aria-label="Результаты выбранного года">
+      <article class="stat"><div class="stat-label">Средний рост ВВП <span>8 стран, результат модели</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
+      <article class="stat"><div class="stat-label">Новые совместные проекты <span>в выбранном году</span></div><div class="stat-value" id="projects">—</div><div class="stat-caption" id="projects-delta"></div></article>
+      <article class="stat"><div class="stat-label">Торговля между странами <span>млрд долл., модель</span></div><div class="stat-value" id="trade">—</div><div class="stat-caption" id="trade-delta"></div></article>
+      <article class="stat"><div class="stat-label">Кризисные воздействия <span>в выбранном году</span></div><div class="stat-value" id="crisis">—</div><div class="stat-caption" id="crisis-delta"></div></article>
+    </section>
+    <section class="crisis-notice" id="crisisNotice" aria-label="Кризисные события выбранного года" aria-live="polite"><div><span class="section-kicker">КРИЗИСЫ И СОБЫТИЯ</span><div id="crisisCurrent"></div></div><a href="#reference" data-open-guide="crises">Справочник кризисов ↓</a></section>
+    <div class="main-grid">
+      <div class="column-stack">
+        <section class="panel plot-panel"><div class="section-header"><div><span class="section-kicker">01 / СРАВНЕНИЕ</span><h2>Как меняются результаты</h2></div><label class="metric-picker">Показатель <select id="metric"><option value="mean_growth_pct">Экономический рост</option><option value="new_projects">Новые проекты</option><option value="projects_matured">Созревшие проекты</option><option value="trade_usd_total">Торговый оборот</option><option value="capital_budget_total">Бюджетный капитал</option><option value="mean_reward">Оценка модели (условная)</option><option value="network_strength">Индекс связей (модель)</option></select></label></div><div id="chart" class="chart" role="img" aria-label="График сценарных показателей"></div><div class="plot-legend"><span><i class="swatch blue"></i><span id="legendPrimary">Выбранная политика</span></span><span><i class="swatch red"></i><span id="legendCompare">Контрольная политика</span></span></div><p class="footnote" id="metricExplanation">Синяя линия — выбранная стратегия; красная — стратегия сравнения.</p></section>
+        <section class="panel actions-panel"><div class="section-header"><div><span class="section-kicker">03 / ПОЛИТИКА СТРАН</span><h2>Что решили государства</h2></div><span class="side-caption" id="actionPeriod">2025 · действия стран</span></div><p class="panel-lead">Выберите государство на схеме решений. Цвет показывает уровень действия по выбранному направлению; ниже приведены все шесть решений каждой страны.</p><div class="decision-controls"><label for="actionType">Показать на схеме: <select id="actionType"><option value="0">Торговля</option><option value="1">Инвестиции</option><option value="2">Координация</option><option value="3">Защита от кризисов</option><option value="4">Ориентация на партнеров</option><option value="5">Трудовая мобильность</option></select></label></div><div id="decisionMap" class="decision-map" aria-label="Решения восьми государств на схеме" role="group"></div><div class="decision-legend"><span><i class="decision-dot decision-level-0"></i>Низкий уровень</span><span><i class="decision-dot decision-level-1"></i>Средний уровень</span><span><i class="decision-dot decision-level-2"></i>Высокий уровень</span></div><div id="actions" class="actions"></div><div class="country-insight" id="countryDetail"></div><p class="footnote">На схеме представлены решения государств по выбранному направлению. <a href="#reference" data-open-guide="actions">Расшифровка всех действий ↓</a></p></section>
+      </div>
+      <div class="column-stack">
+        <section class="panel network-panel" id="countries"><div class="section-header"><div><span class="section-kicker">02 / ТОРГОВЛЯ</span><h2>Кто с кем торгует</h2></div><span class="side-caption">Доступные данные за 2024 год</span></div><p class="panel-lead">Выберите страну на схеме. Толщина линии отражает сумму <em>известных</em> экспортных потоков между двумя государствами. Отсутствие линии не означает отсутствия торговли.</p><svg id="network" viewBox="0 0 480 350" aria-label="Схема наблюдаемых экспортных связей 2024 года" role="img"></svg><div id="tradeOverview" class="network-overview"></div><div id="tradePartners" class="trade-partners" aria-live="polite"></div><p class="footnote">Схема построена по историческим данным за 2024 год и не меняется при переключении игровых лет. Показаны только подтвержденные направления экспорта. Расположение стран условное.</p></section>
+        <section class="panel scenario-panel"><div class="section-header"><div><span class="section-kicker">04 / УСЛОВИЯ</span><h2>О выбранном сценарии</h2></div></div><div id="scenarioDescription"></div><div class="report-metrics" id="reportMetrics"></div><div class="downloads"><button id="exportJson" class="secondary">↓ Скачать данные года</button><button id="exportCsv" class="secondary">↓ Скачать данные за все годы</button></div></section>
+      </div>
+    </div>
     <section id="methods" class="method-panel">
-      <div class="method-heading"><span class="section-kicker">КАК ПОЛЬЗОВАТЬСЯ</span><h2>Исследуйте разные пути развития Евразии</h2><p>Восемь государств могут по-разному реагировать на экономические перемены, договариваться о совместных проектах и выбирать степень сотрудничества. Эта модель позволяет сопоставить последствия нескольких способов действий в одинаковых условиях.</p></div>
+      <div class="method-heading"><span class="section-kicker">ПРАВИЛА</span><h2>Как устроена игра</h2><p>Выбирайте страны и их решения по годам. Готовые результаты эксперимента позволяют сравнить стратегии, инвестиции, переговоры и реакцию государств на кризисы.</p></div>
       <div class="howto-grid">
-        <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» используют оставшиеся кризисы и предназначены для следующей версии с расчетом новых партий. Номер расчета задает исходные случайные условия.</p></div>
+        <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» используют оставшиеся кризисы и предназначены для следующей версии с расчетом новых партий. Номер расчета определяет вариант исходных условий.</p></div>
         <div><b>2. Сопоставьте решения</b><p>Укажите две стратегии и интересующий год. Графики покажут различия в экономическом росте, количестве проектов и торговле.</p></div>
         <div><b>3. Изучите действия государств</b><p>Выберите страну, чтобы увидеть ее шесть решений за год. На отдельной схеме представлены известные торговые связи за 2024 год.</p></div>
       </div>
-      <div class="method-limit"><strong>О результатах</strong><p>Экономические графики относятся к двадцати рассчитанным сценариям исследования. Для «Диких карт» подготовлены условия будущих партий. Их последствия будут вычисляться игровым движком. Исторические сведения и показатели моделирования представлены отдельно.</p></div>
+      <div class="method-limit"><strong>О результатах</strong><p>Экономические графики относятся к двадцати рассчитанным сценариям исследования. Для «Диких карт» подготовлены кризисные события. Их экономические последствия будут доступны после подключения расчета новых партий.</p></div>
+    </section>
+    <section id="reference" class="reference-panel">
+      <div class="reference-heading"><span class="section-kicker">СПРАВОЧНИК ИГРЫ</span><h2>Условия и правила</h2></div>
+      <div class="reference-accordions">
+        <details id="guide-panel-scenarios" class="reference-accordion" data-guide-detail="scenarios"><summary>Сценарии <small>20 вариантов развития</small></summary><div id="guide-scenarios" class="reference-content"></div></details>
+        <details id="guide-panel-crises" class="reference-accordion" data-guide-detail="crises"><summary>Кризисы <small>100 событий и их воздействие</small></summary><div id="guide-crises" class="reference-content"></div></details>
+        <details id="guide-panel-strategies" class="reference-accordion" data-guide-detail="strategies"><summary>Стратегии <small>4 способа принятия решений</small></summary><div id="guide-strategies" class="reference-content"></div></details>
+        <details id="guide-panel-actions" class="reference-accordion" data-guide-detail="actions"><summary>Действия государств <small>6 направлений, по 3 уровня</small></summary><div id="guide-actions" class="reference-content"></div></details>
+        <details id="guide-panel-wildcards" class="reference-accordion" data-guide-detail="wildcards"><summary>Дикие карты <small>10 дополнительных сценариев</small></summary><div id="guide-wildcards" class="reference-content"></div></details>
+      </div>
     </section>
   </main>
   <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
 </div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/text_editor.js"></script>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script>
 </body>
 </html>
