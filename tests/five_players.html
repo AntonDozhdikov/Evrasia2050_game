@@ -151,7 +151,7 @@
    assert(d.querySelectorAll('#partyResultChart polyline').length===2,'График кризисов обновляется');
    d.getElementById('partyPreviewYear').click();
    assert(!d.getElementById('partyYearPreviewContent').hidden,'Просмотр последствий выбранного года работает');
-   assert(d.querySelectorAll('#partyYearCountries tr').length===9,'Годовой итог содержит все восемь государств');
+   assert(d.querySelectorAll('#partyYearCountries > table tr').length===9,'Годовой итог содержит все восемь государств');
    assert(d.getElementById('partyYearCrisis').textContent.includes('кризис'),'Кризисы показаны за год');
    assert(!d.getElementById('partyResultsContent').hidden,'Просмотр года не скрывает полный результат');
   }
