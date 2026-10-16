@@ -231,9 +231,12 @@ async function importParty(file){
   if(request!==importSerial)return false;
   const p=JSON.parse(text);Core.validate(p);
   verifyWild(p);
-  const next=Core.clone(p);
+  const next=Core.clone(p),previous=party,previousSlot=activeSlot;
   party=next;setActiveSlot(null);
-  if(!store())throw Error('Не удалось сохранить загруженную партию в браузере');
+  if(!store()){
+   party=previous;setActiveSlot(previousSlot);
+   throw Error('Не удалось сохранить загруженную партию в браузере');
+  }
   render();
   const n=Object.keys(party.years).length;
   line('Партия загружена: '+n+' '+(n%10===1&&n%100!==11?'игровой год':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'игровых года':'игровых лет')+'.');
