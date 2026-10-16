@@ -37,9 +37,14 @@ jobs:
                   files=ck.namelist()
                   print('STAGE3_PT_FILES',len(files),files[:12])
                   pkl=next(x for x in files if x.endswith('data.pkl'))
-                  globals=[(p.arg) for p in pickletools.genops(ck.read(pkl)) if p.name=='GLOBAL']
+                  globals=[(p.arg) for p,_,_ in pickletools.genops(ck.read(pkl)) if p.name=='GLOBAL']
                   print('STAGE3_PT_GLOBALS',sorted(set(globals)))
                   print('STAGE3_PT_BYTES',len(ck.read(pkl)))
+              import json
+              state=json.loads(z.read('runtime/world/scalers_and_state.json'))
+              print('STAGE3_STATE_KEYS',list(state))
+              for kk,v in state.items():
+                  print('STAGE3_STATE_FIELD',kk,str(v)[:380])
           PY
       - name: Проверить JavaScript
         run: |
