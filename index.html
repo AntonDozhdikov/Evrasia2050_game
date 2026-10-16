@@ -1,122 +1,26 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
-<title>Евразия 2050 — исследуйте решения восьми государств</title>
-<meta name="description" content="Евразия 2050: восемь государств, двадцать рассчитанных сценариев и десять дополнительных сочетаний кризисов. Торговля, инвестиции, переговоры и последствия решений.">
-<link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="assets/ux_v2.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<title>Евразия 2050 — переход к игре</title>
+<meta http-equiv="refresh" content="0;url=./play_the_game">
+<link rel="canonical" href="https://antondozhdikov.github.io/Evrasia2050_game/play_the_game">
+<script>
+/* Сохраняем параметры ссылки и выбранный раздел при переходе со старого адреса. */
+(function(){
+ const destination=new URL('./play_the_game',window.location.href);
+ destination.search=window.location.search;
+ destination.hash=window.location.hash;
+ window.location.replace(destination.href);
+})();
+</script>
 </head>
 <body>
-<div id="root" class="shell">
-  <header class="topbar">
-    <a class="brand" href="./index.html" aria-label="Евразия 2050 — главная"><span class="brand-mark">Е<span class="brand-dot"></span></span><span><strong>ЕВРАЗИЯ <b>2050</b></strong><small>страны, решения, последствия</small></span></a>
-    <nav class="topnav" aria-label="Разделы"><a href="#party-planner">Играть</a><a href="#results">Итоги</a><a href="#archive-results" data-ux-open="archive-results">Исследование</a><a href="#reference">Справка</a></nav>
-    <a class="header-play" href="#party-planner">Начать партию <span aria-hidden="true">→</span></a>
-  </header>
-  <main id="experiment">
-    <section class="intro">
-      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> СТРАТЕГИЧЕСКАЯ ИГРА · 2025–2050</div>
-        <h1>Евразия <em>2050</em></h1>
-        <p>Возглавьте одну или несколько стран. Выбирайте партнеров, заключайте соглашения и инвестируйте. Каждое решение меняет будущее восьми государств.</p>
-        <div class="hero-actions"><a class="hero-primary" href="#party-planner">Начать игру <span aria-hidden="true">→</span></a><a class="hero-secondary" href="#archive-results" data-ux-open="archive-results">Сравнить стратегии</a></div>
-        <div class="hero-caption">Одна партия — 26 лет решений. В конце узнаете, какой путь оказался успешнее.</div>
-      </div>
-      <aside class="intro-note"><div class="hero-visual-heading"><span class="hero-visual-signal">●</span> ВАШИ РЕШЕНИЯ МЕНЯЮТ ХОД ИГРЫ</div>
-        <div class="hero-steps"><div><b>01</b><span>Выберите государство</span></div><div><b>02</b><span>Определите его курс</span></div><div><b>03</b><span>Пройдите через кризисы</span></div><div><b>04</b><span>Сравните результат</span></div></div>
-        <a href="#reference">Условия и правила игры <span aria-hidden="true">↗</span></a></aside>
-    </section>
-    <section class="game-facts" aria-label="Сведения об игре">
-      <div><strong>8</strong><span>государств</span></div><div><strong>2025–2050</strong><span>игровые годы</span></div>
-      <div><strong>20</strong><span>рассчитанных сценариев</span></div><div><strong>10</strong><span>«Диких карт»</span></div>
-      <div><strong>100</strong><span>кризисных событий</span></div>
-    </section>
-    <section id="party-planner" class="planner-panel">
-      <div class="reference-heading"><span class="section-kicker">ВАША ПАРТИЯ</span><h2>Вы управляете будущим</h2><p>Выберите условия и страну. Затем определите шесть направлений ее политики.</p></div>
-      <div class="party-notice"><strong>Ход игры</strong><p id="partyNotComputed">Выбирайте решения, сохраняйте год и переходите дальше. В любой момент можно рассчитать последствия до 2050 года.</p></div>
-      <div class="quick-start-line"><button type="button" id="uxQuickStart" class="quick-start-button">⚡ Быстрый старт: Россия · 2025</button><span>Или настройте сценарий и страны самостоятельно</span></div>
-      <div class="party-setup">
-        <label>Сценарий партии<select id="partyScenario"></select></label>
-        <label>Стратегия остальных стран<select id="partyPolicy"></select></label>
-        <label>Год решений<select id="partyYear"></select></label>
-        <details class="party-advanced"><summary>Дополнительные настройки <span aria-hidden="true">⌄</span></summary><label>Номер расчета<input id="partySeed" type="number" min="0" max="4294967295" step="1" value="163"></label><p>Одинаковый номер позволяет воспроизвести партию.</p></details>
-      </div>
-      <h3 class="party-subheading"><span class="step-number">1</span> Выберите государства <small>Можно управлять сразу несколькими</small></h3>
-      <div id="partyCountries" class="party-countries"></div>
-      <div id="partyContext" class="party-context"></div>
-      <div class="party-actions-header"><h3><span class="step-number">2</span> Определите решения <span class="decision-year-label">на выбранный год</span></h3><span id="partyCount"></span></div><div id="partyCountryTabs" class="party-tabs" role="tablist" aria-label="Решения управляемых государств"></div>
-      <div id="partyActions" class="party-action-grid"></div>
-      <div class="party-buttons"><div class="party-buttons-primary"><button type="button" class="primary" id="partySave">Сохранить год</button><button type="button" class="secondary" id="partyNext">Следующий год →</button><button type="button" class="primary party-calc-cta" id="partyCalculate">Рассчитать итоги <span aria-hidden="true">↗</span></button></div><details class="party-file-options"><summary>Управление партиями <span aria-hidden="true">⌄</span></summary><div><button type="button" class="secondary" id="partyExport">Скачать партию</button><button type="button" class="secondary" id="partyImport">Загрузить партию</button><button type="button" class="secondary" id="partyNew">Новая партия</button></div></details>
-        <input type="file" id="partyFile" accept="application/json,.json" hidden>
-      </div>
-      <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
-    </section>
-
-    <section id="results" class="results-heading">
-      <span class="section-kicker">РЕЗУЛЬТАТ ВАШИХ РЕШЕНИЙ</span><h2>Кто справился лучше?</h2><p>Сравните свою партию с решениями других стратегий. Результат покажет сильные стороны и цену выбранного курса.</p>
-    </section>
-    <section id="partyResults" class="player-results" aria-label="Расчет игрока и сравнение стратегий">
-      <div class="player-result-intro"><h3>Итоги вашей партии</h3><p id="partyResultsStatus">Выберите решения хотя бы на один год и нажмите «Рассчитать итоги».</p></div>
-      <div id="partyResultsContent" hidden>
-        <div class="player-results-kpis" id="partyResultKpis"></div><div id="partyStrengths" class="player-insights" aria-live="polite"></div>
-        <div class="player-chart-toolbar"><label>Что сравниваем <select id="partyResultMetric"></select></label></div><div id="partySeriesChoices" class="player-series-choices" aria-label="Линии графика"></div>
-        <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
-        <details class="result-details" id="partyAllMetrics"><summary>Все 21 показатель <span>Подробная таблица сравнения</span></summary><div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div></details>
-        <details class="result-details" id="partyCountryMetrics"><summary>Результаты восьми стран <span>Оценка каждой страны по стратегиям</span></summary><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div></details>
-        <p class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. Для обученных стратегий использованы сохраненные решения исходного исследования; переговорная и нейтральная стратегии действуют по собственным правилам. Место в таблице определяется средней оценкой решений в модели; остальные показатели сравниваются отдельно. Новые партии используют собственную воспроизводимую последовательность случайных отклонений.</p>
-        <button id="partyDownloadResults" type="button" class="secondary">Скачать результаты сравнения</button>
-      </div>
-    </section>
-    <details id="archive-results" class="archive-section"><summary><span class="archive-heading"><small>ИССЛЕДОВАНИЕ V4.7</small><strong>Посмотреть другие сценарии и стратегии</strong><em>Экономика, торговые связи, решения восьми стран</em></span><span class="archive-open-label">Открыть сравнение <span aria-hidden="true">↓</span></span></summary><div class="archive-content"><section class="control-panel" aria-label="Настройки готовых результатов">
-      <div class="controls-grid">
-        <label>Исходный сценарий <select id="scenario" aria-label="Условия сценария"></select></label>
-        <label>Как действуют страны <select id="policy" aria-label="Стратегия стран"></select></label>
-        <label>Сравнить со стратегией <select id="compare" aria-label="Стратегия для сравнения"></select></label>
-        <label>Вариант расчета <select id="seed" aria-label="Вариант расчета"></select></label>
-      </div>
-      <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
-      <div class="wild-inline"><label for="wildcardPicker">Дополнительные сценарии «Дикие карты»</label><select id="wildcardPicker" aria-label="Выберите один из десяти дополнительных сценариев"><option value="">Выберите случайное сочетание кризисов</option></select><p id="wildcardSummary">Десять новых сочетаний используют все сорок оставшихся кризисов. Четыре события в каждом.</p><a href="#reference" data-open-guide="wildcards">Посмотреть и изменить состав событий ↓</a></div>
-      <div class="choice-explanations"><div class="choice-explanation"><strong>Сценарий</strong><p id="scenarioShort" aria-live="polite"></p><a href="#reference" data-open-guide="scenarios">20 основных сценариев ↓</a> · <a href="#reference" data-open-guide="wildcards">10 «Диких карт» ↓</a></div><div class="choice-explanation"><strong>Стратегия</strong><p id="policyExplanation" aria-live="polite"></p><a href="#reference" data-open-guide="strategies">Подробнее о стратегиях ↓</a></div></div><p class="controls-note">Здесь показаны результаты завершенного вычислительного эксперимента.</p>
-    </section>
-    <section class="stat-grid" aria-label="Результаты выбранного года">
-      <article class="stat"><div class="stat-label">Средний рост ВВП <span>8 стран, результат модели</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
-      <article class="stat"><div class="stat-label">Новые совместные проекты <span>в выбранном году</span></div><div class="stat-value" id="projects">—</div><div class="stat-caption" id="projects-delta"></div></article>
-      <article class="stat"><div class="stat-label">Торговля между странами <span>млрд долл., модель</span></div><div class="stat-value" id="trade">—</div><div class="stat-caption" id="trade-delta"></div></article>
-      <article class="stat"><div class="stat-label">Кризисные воздействия <span>в выбранном году</span></div><div class="stat-value" id="crisis">—</div><div class="stat-caption" id="crisis-delta"></div></article>
-    </section>
-    <section class="crisis-notice" id="crisisNotice" aria-label="Кризисные события выбранного года" aria-live="polite"><div><span class="section-kicker">КРИЗИСЫ И СОБЫТИЯ</span><div id="crisisCurrent"></div></div><a href="#reference" data-open-guide="crises">Справочник кризисов ↓</a></section>
-    <div class="main-grid">
-      <div class="column-stack">
-        <section class="panel plot-panel"><div class="section-header"><div><span class="section-kicker">01 / СРАВНЕНИЕ</span><h2>Как меняются результаты</h2></div><label class="metric-picker">Показатель <select id="metric"><option value="mean_growth_pct">Экономический рост</option><option value="new_projects">Новые проекты</option><option value="projects_matured">Созревшие проекты</option><option value="trade_usd_total">Торговый оборот</option><option value="capital_budget_total">Бюджетный капитал</option><option value="mean_reward">Оценка модели (условная)</option><option value="network_strength">Индекс связей (модель)</option></select></label></div><div id="chart" class="chart" role="img" aria-label="График сценарных показателей"></div><div class="plot-legend"><span><i class="swatch blue"></i><span id="legendPrimary">Выбранная политика</span></span><span><i class="swatch red"></i><span id="legendCompare">Контрольная политика</span></span></div><p class="footnote" id="metricExplanation">Синяя линия — выбранная стратегия; красная — стратегия сравнения.</p></section>
-        <section class="panel actions-panel"><div class="section-header"><div><span class="section-kicker">03 / ПОЛИТИКА СТРАН</span><h2>Что решили государства</h2></div><span class="side-caption" id="actionPeriod">2025 · действия стран</span></div><p class="panel-lead">Выберите государство и посмотрите его решения. Цвет обозначает уровень выбранного действия.</p><div class="decision-controls"><label for="actionType">Показать на схеме: <select id="actionType"><option value="0">Торговля</option><option value="1">Инвестиции</option><option value="2">Координация</option><option value="3">Защита от кризисов</option><option value="4">Ориентация на партнеров</option><option value="5">Трудовая мобильность</option></select></label></div><div id="decisionMap" class="decision-map" aria-label="Решения восьми государств на схеме" role="group"></div><div class="decision-legend"><span><i class="decision-dot decision-level-0"></i>Низкий уровень</span><span><i class="decision-dot decision-level-1"></i>Средний уровень</span><span><i class="decision-dot decision-level-2"></i>Высокий уровень</span></div><div id="actions" class="actions"></div><div class="country-insight" id="countryDetail"></div><p class="footnote">На схеме представлены решения государств по выбранному направлению. <a href="#reference" data-open-guide="actions">Расшифровка всех действий ↓</a></p></section>
-      </div>
-      <div class="column-stack">
-        <section class="panel network-panel" id="countries"><div class="section-header"><div><span class="section-kicker">02 / ТОРГОВЛЯ</span><h2>Кто с кем торгует</h2></div><span class="side-caption">Доступные данные за 2024 год</span></div><p class="panel-lead">Выберите страну, чтобы увидеть ее торговых партнеров. Толщина линии соответствует сумме экспорта между двумя государствами за 2024 год.</p><svg id="network" viewBox="0 0 480 350" aria-label="Схема наблюдаемых экспортных связей 2024 года" role="img"></svg><div id="tradeOverview" class="network-overview"></div><div id="tradePartners" class="trade-partners" aria-live="polite"></div><p class="footnote">Суммы экспорта приведены за 2024 год.</p></section>
-        <section class="panel scenario-panel"><div class="section-header"><div><span class="section-kicker">04 / УСЛОВИЯ</span><h2>О выбранном сценарии</h2></div></div><div id="scenarioDescription"></div><div class="report-metrics" id="reportMetrics"></div><div class="downloads"><button id="exportJson" class="secondary">↓ Скачать данные года</button><button id="exportCsv" class="secondary">↓ Скачать данные за все годы</button></div></section>
-      </div>
-    </div>
-    </div></details>
-    <details id="methods" class="method-panel method-compact"><summary>Как играть <span>Три коротких шага и пояснение расчетов</span></summary><div class="method-inner">
-      <div class="method-heading"><span class="section-kicker">ПРАВИЛА</span><h2>Как устроена игра</h2><p>Выбирайте страны и их решения по годам. Готовые результаты эксперимента позволяют сравнить стратегии, инвестиции, переговоры и реакцию государств на кризисы.</p></div>
-      <div class="howto-grid">
-        <div><b>1. Выберите условия</b><p>Двадцать исходных сценариев содержат готовые результаты. Еще десять «Диких карт» объединяют оставшиеся кризисы по четыре события и доступны в новых партиях. Номер расчета определяет вариант исходных условий.</p></div>
-        <div><b>2. Сопоставьте решения</b><p>Укажите две стратегии и интересующий год. Графики покажут различия в экономическом росте, количестве проектов и торговле.</p></div>
-        <div><b>3. Изучите действия государств</b><p>Выберите страну, чтобы увидеть ее шесть решений за год. На отдельной схеме представлены известные торговые связи за 2024 год.</p></div>
-      </div>
-      <div class="method-limit"><strong>О результатах</strong><p>Архивные графики показывают двадцать исходных сценариев исследования. В новой партии движок V4.7 рассчитывает также «Дикие карты» с переговорной и нейтральной стратегиями. Обученные стратегии сравниваются только при сохраненных исходных условиях.</p></div>
-    </div></details>
-    <section id="reference" class="reference-panel">
-      <div class="reference-heading"><span class="section-kicker">СПРАВОЧНИК ИГРЫ</span><h2>Условия и правила</h2></div>
-      <div class="reference-accordions">
-        <details id="guide-panel-scenarios" class="reference-accordion" data-guide-detail="scenarios"><summary>Сценарии <small>20 вариантов развития</small></summary><div id="guide-scenarios" class="reference-content"></div></details>
-        <details id="guide-panel-crises" class="reference-accordion" data-guide-detail="crises"><summary>Кризисы <small>100 событий и их воздействие</small></summary><div id="guide-crises" class="reference-content"></div></details>
-        <details id="guide-panel-strategies" class="reference-accordion" data-guide-detail="strategies"><summary>Стратегии <small>4 способа принятия решений</small></summary><div id="guide-strategies" class="reference-content"></div></details>
-        <details id="guide-panel-actions" class="reference-accordion" data-guide-detail="actions"><summary>Действия государств <small>6 направлений, по 3 уровня</small></summary><div id="guide-actions" class="reference-content"></div></details>
-        <details id="guide-panel-wildcards" class="reference-accordion" data-guide-detail="wildcards"><summary>Дикие карты <small>10 дополнительных сценариев</small></summary><div id="guide-wildcards" class="reference-content"></div></details>
-      </div>
-    </section>
-  </main>
-  <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
-</div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/party_results.js"></script><script src="assets/ux_v2.js"></script>
+<main>
+<p>Игра «Евразия 2050» открывается по новому адресу.</p>
+<p><a href="./play_the_game">Перейти к игре «Евразия 2050»</a></p>
+</main>
 </body>
 </html>

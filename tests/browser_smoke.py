@@ -34,7 +34,7 @@ with serve() as url, sync_playwright() as p:
     errors = []
     page = browser.new_page(viewport={'width': 1440, 'height': 960}, accept_downloads=True)
     page.on('pageerror', lambda e: errors.append(str(e)))
-    page.goto(url, wait_until='load', timeout=45000)
+    page.goto(url + 'play_the_game.html', wait_until='load', timeout=45000)
     assert page.locator('#scenario option').count() == 20
     assert page.locator('#policy option').count() == 4
     assert page.locator('#seed option').count() == 3
@@ -52,7 +52,7 @@ with serve() as url, sync_playwright() as p:
     assert out.value.suggested_filename.endswith('.csv')
     mobile = browser.new_page(viewport={'width': 390, 'height': 844})
     mobile.on('pageerror', lambda e: errors.append(str(e)))
-    mobile.goto(url, wait_until='load', timeout=45000)
+    mobile.goto(url + 'play_the_game.html', wait_until='load', timeout=45000)
     assert mobile.locator('#actions .agent-row').count() == 8
     assert not errors, errors
     browser.close()
