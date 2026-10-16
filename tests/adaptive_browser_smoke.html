@@ -1,0 +1,39 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Stage 3 адаптивная MAPPO</title></head>
+<body><p id="status">WAIT ADAPTIVE</p><iframe id="game" src="../play_the_game.html" style="width:1100px;height:800px;border:0"></iframe>
+<script>
+(function(){
+ 'use strict';
+ const f=document.getElementById('game'),status=document.getElementById('status');
+ function check(x,msg){if(!x)throw Error(msg);}
+ function set(select,value){select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));}
+ f.addEventListener('load',()=>setTimeout(()=>{
+  try{
+   const d=f.contentDocument,w=f.contentWindow;
+   check(w.EurasiaAdaptive&&w.EURASIA_ACTOR_V47,'Замороженная нейросеть не загружена');
+   check(w.EURASIA_ACTOR_V47.provenance.checkpoint_sha256.length===64,'Отсутствует SHA256 настоящего чекпойнта');
+   check([...d.querySelector('#partyPolicy').options].some(x=>x.value==='ADAPTIVE_MAPPO_GREEDY'),'Адаптивная стратегия не доступна');
+   set(d.getElementById('partyPolicy'),'ADAPTIVE_MAPPO_GREEDY');
+   check(d.getElementById('partyPolicy').value==='ADAPTIVE_MAPPO_GREEDY','Стратегия сброшена');
+   const r=d.querySelector('[data-party-country="RUS"][data-party-action="0"]');
+   set(r,'2');d.getElementById('partyCalculate').click();
+   check(!d.getElementById('partyResultsContent').hidden,'Нет расчёта: '+d.getElementById('partyResultsStatus').textContent);
+   check(d.querySelectorAll('#partyResultRows tr').length===21,'Утерян 21 показатель');
+   check(d.querySelectorAll('#partySeriesChoices button').length===6,'Нет сравнения с замороженными и адаптивными стратегиями');
+   check(d.getElementById('partyResultProvenance').textContent.includes('реальный замороженный актор'),'Нет научной маркировки нового режима');
+   const first=d.querySelector('#partyResultRows tr td').textContent;
+   d.getElementById('partyCalculate').click();
+   check(d.querySelector('#partyResultRows tr td').textContent===first,'Детерминированная стратегия не воспроизводима');
+   d.getElementById('partyPreviewYear').click();
+   check(!d.getElementById('partyYearPreviewContent').hidden,'Не работает просмотр года с нейросетью');
+   set(d.getElementById('partyScenario'),'W07');
+   set(d.getElementById('partyPolicy'),'ADAPTIVE_MAPPO');
+   check(d.getElementById('partyPolicy').value==='ADAPTIVE_MAPPO','Адаптивная вероятностная стратегия недоступна для «Дикой карты»');
+   d.getElementById('partyCalculate').click();
+   check(!d.getElementById('partyResultsContent').hidden,'«Дикая карта» не рассчитана с новым актором: '+d.getElementById('partyResultsStatus').textContent);
+   check(d.querySelectorAll('#partySeriesChoices button').length===4,'Некорректные контрольные стратегии «Дикой карты»');
+   status.textContent='PASS ADAPTIVE WEB: checkpoint, 2 адаптивные стратегии, расчет, 21 показатель, контрольные стратегии, год, воспроизводимость, «Дикая карта»';
+  }catch(e){status.textContent='FAIL ADAPTIVE WEB: '+e.message;}
+ },350),{once:true});
+ setTimeout(()=>{if(status.textContent==='WAIT ADAPTIVE')status.textContent='FAIL ADAPTIVE WEB: timeout';},30000);
+})();
+</script></body></html>
