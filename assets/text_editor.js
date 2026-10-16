@@ -10,8 +10,7 @@ const PAGE={
  method:{label:'Объяснение игры',selector:'.method-heading > p'},
  limits:{label:'О результатах',selector:'.method-limit > p'},
  actionHelp:{label:'Как читать решения',selector:'.actions-panel .panel-lead'},
- tradeHelp:{label:'Как читать торговлю',selector:'.network-panel .panel-lead'},
- scenarioHelp:{label:'Пояснение к справочнику',selector:'#reference .reference-heading > p'}
+ tradeHelp:{label:'Как читать торговлю',selector:'.network-panel .panel-lead'}
 };
 const copy=x=>JSON.parse(JSON.stringify(x));
 const base={
