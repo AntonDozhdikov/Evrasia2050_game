@@ -24,8 +24,9 @@ var s=scenario(sid),i=s?s.crisis_ids.indexOf(eventId):-1,years=[];if(i<0)return 
 for(var y=2026+i*4;y<=2050;y+=12)years.push(y);return years;
 }
 function showTab(tab){
+if(!['scenarios','crises','strategies','actions','wildcards'].includes(tab))return;
 selectedTab=tab;lastReferenceKey='';
-document.querySelectorAll('[data-guide-tab]').forEach(function(el){var active=el.dataset.guideTab===tab;el.classList.toggle('active',active);el.setAttribute('aria-selected',String(active));});
+document.querySelectorAll('[data-guide-detail]').forEach(function(el){el.open=el.dataset.guideDetail===tab;});
 renderReference(view());
 }
 function renderSummaries(v){
@@ -71,7 +72,9 @@ var target=region.length?'В модели прямые адресаты: '+regio
 return (c.note?c.note+'. ':'')+target;
 }
 function renderReference(v){
-var box=$('referenceContent'),html='';
+var detail=$('guide-panel-'+selectedTab);
+if(!detail||!detail.open)return;
+var box=$('guide-'+selectedTab),html='';
 var key=selectedTab+'|'+(selectedTab==='scenarios'?v.scenario:selectedTab==='strategies'?v.policy:selectedTab==='crises'?(v.scenario+'|'+v.year+'|'+crisisFilter):'fixed');
 if(key===lastReferenceKey)return;lastReferenceKey=key;
 if(selectedTab==='wildcards'){window.EURASIA_WILDCARDS.render(box);return;}
@@ -110,7 +113,9 @@ $('actionType').addEventListener('change',refresh);
 ['scenario','policy','seed','year'].forEach(function(id){$(id).addEventListener('change',refresh);});
 var yearObserver=new MutationObserver(function(){refresh();});yearObserver.observe($('selectedYear'),{subtree:true,childList:true,characterData:true});
 var countryObserver=new MutationObserver(function(){renderMap(view());});countryObserver.observe($('actions'),{subtree:true,childList:true,attributes:false});
-document.querySelectorAll('[data-guide-tab]').forEach(function(n){n.addEventListener('click',function(){showTab(n.dataset.guideTab);});});
+document.querySelectorAll('[data-guide-detail]').forEach(function(n){n.addEventListener('toggle',function(){
+ if(n.open){selectedTab=n.dataset.guideDetail;lastReferenceKey='';document.querySelectorAll('[data-guide-detail]').forEach(function(other){if(other!==n)other.open=false;});renderReference(view());}
+});});
 document.querySelectorAll('[data-open-guide]').forEach(function(n){n.addEventListener('click',function(e){e.preventDefault();showTab(n.dataset.openGuide);$('reference').scrollIntoView({behavior:'smooth',block:'start'});});});
 window.addEventListener('eurasia:texts-updated',function(){lastReferenceKey='';refresh();});
 refresh();
