@@ -8,10 +8,10 @@
  const TRADE_SCALE=1e9;
  const units={
   growth:'%',inflation:'%',investments:'%',exports:'%',imports:'%',unemployment:'%',population:'%',remittances:'%',
-  projects:'проектов',matured:'проектов',agreements:'соглашений',mobility:'соглашений',
+  projects:'шт.',matured:'шт.',agreements:'шт.',mobility:'шт.',
   expenses:'усл. ед.',benefits:'усл. ед.',net:'усл. ед.',
-  trade:'млрд долл.',budget:'усл. ед.',network:'индекс',concentration:'индекс',
-  reward:'усл. ед.',crises:'воздействий'
+  trade:'млрд долл.',budget:'усл. ед.',network:'коэф.',concentration:'индекс',
+  reward:'усл. ед.',crises:'кризисо-лет'
  };
  const fromSummary=(key,raw)=>{
   if(!Number.isFinite(raw))throw Error('Недопустимое значение '+key);
