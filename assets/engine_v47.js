@@ -28,7 +28,7 @@ function crisis(state){
   const start=2026+(state.scenario.scenario_id[0]==='W'?3:4)*k;
   if(year>=start&&(state.scenario.scenario_id[0]==='W'?year===start:(year-start)%12===0)){
    const ev=state.cat[String(id)];if(!ev)throw Error('Нет кризиса '+id);
-   state.events.push({...ev,expires:Math.min(2050,year+ev.duration-1)});
+   state.events.push({...ev,started:year,expires:Math.min(2050,year+ev.duration-1)});
   }
  });
  state.events=state.events.filter(e=>e.expires>=year);
@@ -153,7 +153,15 @@ function step(s,actions){
   capital_budget_total:sum(s.energy),project_cash_out:sum(rowProj)/2,project_benefit_current:sum(benefit),
   trade_concentration:avg(concentration),mean_reward:avg(rewards),crises_active:s.events.length,
   rejected_duplicate_pairs:duplicate,growth_pct:values.map(v=>v[0]),
-  country_stats:C.map((c,i)=>({country:c,growth:values[i][0],budget:s.energy[i],reward:rewards[i],trade_usd:sum(s.trade[i])}))};
+  active_crises:s.events.map(e=>({id:e.id,name:e.name,type:e.type,affected:e.affected||[],intensity:e.intensity,started:e.started,expires:e.expires})),
+  country_stats:C.map((c,i)=>({country:c,
+    growth:values[i][0],inflation:values[i][1],investment_pct:values[i][2],
+    export_pct:values[i][3],import_pct:values[i][4],unemployment:values[i][5],
+    population_growth:values[i][6],remittances_pct:values[i][7],
+    budget:s.energy[i],reward:rewards[i],trade_usd:sum(s.trade[i]),
+    project_participations:proposal[i].filter(x=>x>0).length,
+    new_treaties:newTreaties.filter(pair=>pair.includes(i)).length,
+    project_spending:rowProj[i],project_benefit:benefit[i]}))};
  s.history.push(out);
  return out;
 }
@@ -172,8 +180,10 @@ function choose(s,policy,db,scenario,seed,year){
 }
 function run(options){
  const {bootstrap,cat,scenario,seed,policy,db}=options;
+ const untilYear=options.untilYear===undefined?2050:Number(options.untilYear);
+ if(!Number.isInteger(untilYear)||untilYear<2024||untilYear>2050)throw Error('Недопустимый конечный год вычисления');
  const s=init(bootstrap,scenario,cat,seed,options.zeroNoise);
- for(let year=2025;year<=2050;year++){
+ for(let year=2025;year<=untilYear;year++){
   const a=policy.startsWith('ADAPTIVE_MAPPO')
    ? (options.adaptive?options.adaptive.actions(s,policy,seed,year):(()=>{throw Error('Не подключен адаптивный актор MAPPO V4.7');})())
    : choose(s,policy,db,options.actionScenario||scenario.scenario_id,seed,year);
@@ -198,5 +208,20 @@ function summary(run){
   reward:average('mean_reward'),network:last.network_strength,concentration:average('trade_concentration'),
   crises:total('crises_active')};
 }
-return {init,step,choose,run,summary};
+function announcedCrises(scenario,cat,year){
+ if(!Number.isInteger(year)||year<2025||year>2050)throw Error('Недопустимый год для событий');
+ const wild=scenario.scenario_id.startsWith('W');
+ const result=[];
+ (scenario.crisis_ids||[]).forEach((id,k)=>{
+  const e=cat[String(id)];
+  if(!e)throw Error('Нет кризиса '+id);
+  const start=2026+(wild?3:4)*k;
+  for(let begins=start;begins<=year;begins+=wild?1000:12){
+   if(year>=begins&&year<=Math.min(2050,begins+e.duration-1))
+    result.push({id:e.id,name:e.name,type:e.type,intensity:e.intensity,affected:e.affected||[],started:begins,expires:Math.min(2050,begins+e.duration-1)});
+  }
+ });
+ return result;
+}
+return {init,step,choose,run,summary,announcedCrises};
 });

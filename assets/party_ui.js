@@ -146,6 +146,7 @@ function render(){
    (party.policy.startsWith('ADAPTIVE_MAPPO')?'Адаптивная MAPPO: обученный актор вычисляет новые решения по текущему состоянию.':'Начальные решения взяты из выбранной стратегии. Архивная MAPPO использует сохранённые последовательности, а переговорная стратегия пересчитывается по состоянию модели.'):
    'Начальный уровень решений — средний. Для этого номера расчёта доступны переговорная и нейтральная стратегии.');
  $('partyNotComputed').textContent='Вы задаёте решения только для выбранных лет. В остальные годы государства действуют по выбранным стратегиям. Расчёт всегда охватывает 2025–2050 годы.';
+ window.dispatchEvent(new Event('eurasia:party-rendered'));
 }
 function onCountriesChange(input){
  const choices=Array.from($('partyCountries').querySelectorAll('input:checked')).map(x=>x.value);

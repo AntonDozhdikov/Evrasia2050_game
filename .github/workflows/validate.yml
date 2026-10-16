@@ -22,6 +22,8 @@ jobs:
           node --check assets/policy_v47.js
           node --check assets/party_results.js
           node --check assets/party_ui.js
+          node --check assets/party_turn.js
+          node --check assets/metric_units.js
           node --check assets/text_editor.js
       - name: Проверить научные и игровые данные
         run: |
@@ -31,6 +33,7 @@ jobs:
           node tests/verify_interface.cjs
           node tests/verify_engine.cjs
           node tests/verify_adaptive.cjs
+          node tests/verify_turn_and_units.cjs
           node tests/verify_ux.cjs
       - name: Проверить игровую партию в Chrome
         run: |
@@ -49,6 +52,10 @@ jobs:
           grep -o '<p id="status">[^<]*' /tmp/eurasia-adaptive-browser.html || true
           grep -Fq '<p id="status">PASS ADAPTIVE WEB:' /tmp/eurasia-adaptive-browser.html || { tail -c 1600 /tmp/eurasia-adaptive-browser.html; tail -n 20 /tmp/eurasia-adaptive-browser.log; exit 1; }
           echo "Адаптивная MAPPO: тест браузера пройден"
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=25000 --dump-dom http://127.0.0.1:8765/tests/turn_browser_smoke.html > /tmp/eurasia-turn-browser.html 2>/tmp/eurasia-turn-browser.log
+          grep -o '<p id="status">[^<]*' /tmp/eurasia-turn-browser.html || true
+          grep -Fq '<p id="status">PASS TURN QA:' /tmp/eurasia-turn-browser.html || { tail -c 1600 /tmp/eurasia-turn-browser.html; tail -n 20 /tmp/eurasia-turn-browser.log; exit 1; }
+          echo "Информация перед ходом и индивидуальные результаты: тест пройден"
 
       - name: Проверить опубликованный адрес /play_the_game
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
