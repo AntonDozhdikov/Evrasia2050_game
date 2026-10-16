@@ -6,7 +6,7 @@ if(!Core||!D||!M||!G||!W)return;
 const $=id=>document.getElementById(id),KEY='evrasia2050:party-draft:v1';
 const escape=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let party=Core.make(),lastCountry='RUS',flash='';
-function store(){try{localStorage.setItem(KEY,JSON.stringify(party));return true;}catch(_){return false;}}
+function store(){try{localStorage.setItem(KEY,JSON.stringify(party));if(typeof window.dispatchEvent==='function'&&typeof Event==='function')window.dispatchEvent(new Event('eurasia:party-edited'));return true;}catch(_){return false;}}
 function restore(){try{let data=localStorage.getItem(KEY);if(data){let p=JSON.parse(data);Core.validate(p);party=Core.clone(p);if(party.wildcardSeed)W.generate(party.wildcardSeed);}}catch(_){party=Core.make();}}
 function baseline(country,year){
  if(party.scenario.startsWith('W'))return Array(6).fill(1);
@@ -131,7 +131,15 @@ $('partyNext').addEventListener('click',()=>{if(saveYear()&&party.year<2050){par
 $('partyExport').addEventListener('click',exportParty);
 $('partyImport').addEventListener('click',()=>$('partyFile').click());
 $('partyFile').addEventListener('change',e=>importParty(e.target.files[0]));
-$('partyNew').addEventListener('click',()=>{if(!Object.keys(party.years).length||confirm('Начать новую партию? Все записанные решения текущей партии будут заменены.')){let selected=party.controlled.slice();party=Core.control(Core.make(),selected);store();render();line('Новая партия создана.');}});
+$('partyNew').addEventListener('click',()=>{if(!Object.keys(party.years).length||confirm('Начать новую партию? Все записанные решения текущей партии будут заменены.')){let selected=party.controlled.slice();party=Core.control(Core.make(),selected);lastCountry=selected[0];store();render();line('Новая партия создана.');}});
+const quick=$('uxQuickStart');
+if(quick)quick.addEventListener('click',()=>{
+ if(Object.keys(party.years).length&&!confirm('Быстрый старт создаст новую партию. Скачайте сохраненные решения, если они вам нужны. Продолжить?'))return;
+ party=Core.control(Core.make({scenario:'S01',policy:'BARGAIN',seed:163}),['RUS']);
+ lastCountry='RUS';store();render();
+ line('Россия выбрана. Определите решения на 2025 год — и начните игру.');
+ $('partyActions').scrollIntoView({behavior:'smooth',block:'center'});
+});
 window.addEventListener('eurasia:texts-updated',render);
 restore();render();
 })();
