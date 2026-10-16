@@ -27,7 +27,7 @@
    if(!input.checked)input.click();
   }
  }
- function playYear(d,year,countries,variant){
+ function playYear(d,year,countries,variant,lastYear){
   assert(Number(d.getElementById('partyYear').value)===year,'Открыт год '+year);
   for(const c of countries){
    for(let k=0;k<6;k++){
@@ -37,7 +37,7 @@
     change(input,level);
    }
   }
-  if(year<2025+cfg.years-1)d.getElementById('partyNext').click();
+  if(!lastYear)d.getElementById('partyNext').click();
   else d.getElementById('partySave').click();
  }
  function calculated(d,strategies){
@@ -84,7 +84,7 @@
     d.getElementById('partySave').click();
    }
   }else{
-   for(let y=2025;y<2025+cfg.years;y++)playYear(d,y,cfg.countries,id);
+   for(let y=2025;y<2025+cfg.years;y++)playYear(d,y,cfg.countries,id,y===2025+cfg.years-1);
   }
   let saved=party(w);
   assert(Object.keys(saved.years).length===cfg.years,'Сохранено '+cfg.years+' лет');
