@@ -221,3 +221,5 @@ footer{padding:13px 6px 20px;color:#71859a}
  .result-details>summary:after{margin-left:auto}
  .quick-start-button{max-width:100%;white-space:normal;text-align:left}
 }
+
+@media(max-width:360px){.hero-steps{grid-template-columns:minmax(0,1fr)}.hero-steps>div{min-width:0}}
