@@ -26,6 +26,9 @@
    d.getElementById('partyPreviewYear').click();
    check(!d.getElementById('partyYearPreviewContent').hidden,'Не работает просмотр года с нейросетью');
    check(d.querySelectorAll('#partyYearActionRows tr').length===8,'Не показаны шесть решений восьми стран');
+   f.style.width='320px';
+   check(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Годовые решения вызывают горизонтальную прокрутку при 320px: '+d.documentElement.scrollWidth+'/'+d.documentElement.clientWidth);
+   f.style.width='1100px';
    w.confirm=()=>true;
    set(d.getElementById('partyScenario'),'W07');
    set(d.getElementById('partyPolicy'),'ADAPTIVE_MAPPO');
