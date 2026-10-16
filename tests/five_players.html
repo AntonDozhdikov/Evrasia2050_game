@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Пять независимых игроков — Евразия 2050</title></head>
+<body><p id="status">WAIT PLAYER</p><pre id="report"></pre>
+<iframe id="game" src="../play_the_game.html" style="width:1100px;height:800px;border:0"></iframe>
+<script>
+(async function(){
+ 'use strict';
+ const id=Number(new URLSearchParams(location.search).get('player')||1);
+ const s=document.getElementById('status'),r=document.getElementById('report'),f=document.getElementById('game');
+ const checks=[],errors=[],details={player:id,url:location.href,checks,errors,started:Date.now()};
+ const assert=(yes,why)=>{if(!yes)throw Error(why);checks.push(why);};
+ const select=(d,c,i)=>d.querySelector('select[data-party-country="'+c+'"][data-party-action="'+i+'"]');
+ const change=(node,value)=>{node.value=String(value);node.dispatchEvent(new Event('change',{bubbles:true}));};
+ const party=(w)=>JSON.parse(w.localStorage.getItem('evrasia2050:party-draft:v1'));
+ const wait=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
+ async function loaded(){
+  return await new Promise((resolve,reject)=>{
+   if(f.contentDocument&&f.contentDocument.readyState==='complete'&&f.contentWindow.EurasiaPartyUI)return resolve();
+   const t=setTimeout(()=>reject(Error('Загрузка страницы заняла больше 15 секунд')),15000);
+   f.addEventListener('load',()=>{clearTimeout(t);resolve();},{once:true});
+  });
+ }
+ function setCountries(d,countries){
+  for(const c of countries){
+   const input=[...d.querySelectorAll('#partyCountries input')].find(x=>x.value===c);
+   if(!input)throw Error('Отсутствует переключатель '+c);
+   if(!input.checked)input.click();
+  }
+ }
+ function playYear(d,year,countries,variant){
+  assert(Number(d.getElementById('partyYear').value)===year,'Открыт год '+year);
+  for(const c of countries){
+   for(let k=0;k<6;k++){
+    const input=select(d,c,k);
+    if(!input)throw Error('Нет решения '+c+' '+k+' '+year);
+    const level=(year+k+variant+c.charCodeAt(0))%3;
+    change(input,level);
+   }
+  }
+  if(year<2050)d.getElementById('partyNext').click();
+  else d.getElementById('partySave').click();
+ }
+ function calculated(d,strategies){
+  d.getElementById('partyCalculate').click();
+  const status=d.getElementById('partyResultsStatus').textContent;
+  assert(!d.getElementById('partyResultsContent').hidden,'Результаты доступны: '+status);
+  assert(d.querySelectorAll('#partyResultRows tr').length===21,'Выведен 21 показатель');
+  assert(d.querySelectorAll('#partyCountryRows tr').length===8,'Выведены результаты 8 стран');
+  assert(d.querySelectorAll('#partySeriesChoices button').length===strategies,'Число сравниваемых вариантов '+strategies);
+  assert(d.querySelectorAll('#partyResultChart polyline').length===2,'Два ряда на графике');
+  const body=d.getElementById('partyResultRows').innerText;
+  assert(!body.includes('NaN')&&!body.includes('Infinity'),'Числовые результаты корректно отображаются');
+  details.results={strategyCount:strategies,status,firstMetric:d.querySelector('#partyResultRows tr td')?.textContent,yearsSaved:Object.keys(party(f.contentWindow).years).length};
+ }
+ try{
+  await loaded(); await wait(220);
+  let d=f.contentDocument,w=f.contentWindow;
+  assert(!!w.EurasiaPartyUI&&!!w.EurasiaEngine,'Игровые модули загружены');
+  assert(d.title.includes('Евразия'),'Открыта игра');
+  w.localStorage.setItem('qa-five-player-marker',String(id));
+  assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Персональный браузерный профиль');
+  assert(party(w).controlled.join(',')==='RUS','Начальные данные партии независимы');
+  const cfg={
+   1:{scenario:'S01',policy:'BARGAIN',seed:163,countries:['RUS'],years:26,strategies:5},
+   2:{scenario:'S05',policy:'BARGAIN',seed:381,countries:['RUS','BLR','KAZ'],years:26,strategies:5},
+   3:{scenario:'W07',policy:'BARGAIN',seed:163,countries:['RUS','ARM'],years:26,strategies:3},
+   4:{scenario:'S20',policy:'MAPPO_GREEDY',seed:163,countries:['RUS','BLR','KAZ','KGZ','UZB','TJK','TKM','ARM'],years:3,strategies:5},
+   5:{scenario:'S02',policy:'BARGAIN',seed:999,countries:['RUS'],years:1,strategies:3}
+  }[id];
+  if(!cfg)throw Error('Неизвестный игрок');
+  details.configuration=cfg;
+  if(id===1)d.getElementById('uxQuickStart').click();
+  if(d.getElementById('partyScenario').value!==cfg.scenario)change(d.getElementById('partyScenario'),cfg.scenario);
+  if(d.getElementById('partyPolicy').value!==cfg.policy)change(d.getElementById('partyPolicy'),cfg.policy);
+  if(Number(d.getElementById('partySeed').value)!==cfg.seed)change(d.getElementById('partySeed'),cfg.seed);
+  setCountries(d,cfg.countries);
+  const selected=party(w);
+  assert(selected.scenario===cfg.scenario&&selected.policy===cfg.policy&&selected.seed===cfg.seed,'Сценарий/стратегия/сид установлены');
+  assert(selected.controlled.join(',')===cfg.countries.join(','),'Управляемые страны выбраны');
+  if(id===4){
+   for(let y of [2025,2030,2050]){
+    change(d.getElementById('partyYear'),y);
+    for(const c of cfg.countries)for(let k=0;k<6;k++)change(select(d,c,k),(y+k+c.charCodeAt(1))%3);
+    d.getElementById('partySave').click();
+   }
+  }else{
+   for(let y=2025;y<2025+cfg.years;y++)playYear(d,y,cfg.countries,id);
+  }
+  let saved=party(w);
+  assert(Object.keys(saved.years).length===cfg.years,'Сохранено '+cfg.years+' лет');
+  for(const c of cfg.countries)assert(!!saved.years['2025'][c],'Сохранено решение '+c);
+  calculated(d,cfg.strategies);
+  const first=d.querySelector('#partyResultRows tr td')?.textContent;
+  details.firstPlayerMetric=first;
+  if(id===1 || id===2 || id===3){
+   f.src='../play_the_game.html?qa-reload='+id;
+   await loaded(); await wait(220);
+   d=f.contentDocument;w=f.contentWindow;
+   let restored=party(w);
+   assert(restored.scenario===cfg.scenario&&Object.keys(restored.years).length===cfg.years,'Перезагрузка сохранила 26 лет игры');
+   assert(restored.controlled.join(',')===cfg.countries.join(','),'Перезагрузка сохранила управление');
+   assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Профиль и сохранение не смешались');
+   calculated(d,cfg.strategies);
+   assert(d.querySelector('#partyResultRows tr td')?.textContent===first,'Повторный расчет воспроизводит численный итог');
+  }
+  if(id===1){
+   const before=d.querySelector('#partyResultRows tr td')?.textContent;
+   change(d.getElementById('partyYear'),2025);
+   const input=select(d,'RUS',0),previous=Number(input.value);
+   change(input,previous===2?0:2);
+   d.getElementById('partyCalculate').click();
+   assert(!d.getElementById('partyResultsContent').hidden,'Пересчет при изменении действий работает');
+   const after=d.querySelector('#partyResultRows tr td')?.textContent;
+   details.changedInput={before,after};
+   assert(before!==after,'Изменение политики в 2025 изменяет агрегированный рост ВВП');
+  }
+  if(id===2){
+   const original=JSON.stringify(party(w));
+   w.confirm=()=>false;
+   d.getElementById('partyNew').click();
+   assert(JSON.stringify(party(w))===original,'Отказ от удаления не сбрасывает сохранение');
+   const b=d.querySelector('#partyCountries input[value="BLR"]');
+   b.click();
+   assert(!!party(w).years['2025'].BLR,'Отмена управления не удаляет записанные решения');
+   d.getElementById('partyCalculate').click();
+   assert(!d.getElementById('partyResultsContent').hidden,'После исключения страны расчет доступен');
+  }
+  if(id===3){
+   assert(!!party(w).wildcardSeed,'Жеребьевка сохранена в партии');
+   assert(w.EURASIA_WILDCARDS.getSets().some(x=>x.id==='W07'),'Дикая карта существует');
+  }
+  if(id===4){
+   change(d.getElementById('partyYear'),2025);
+   const tab=d.querySelector('[data-party-tab="TKM"]'); tab.click();
+   assert(!d.querySelector('[data-party-card="TKM"]').hidden,'Вкладка Туркменистана работает');
+   assert(d.querySelector('[data-party-card="RUS"]').hidden,'Неактивная страна скрыта');
+   const out=d.getElementById('partyResultMetric');change(out,'crises');
+   assert(d.querySelectorAll('#partyResultChart polyline').length===2,'График кризисов обновляется');
+  }
+  if(id===5){
+   const backup=JSON.stringify(party(w));
+   w.confirm=()=>true;
+   d.getElementById('partyNew').click();
+   assert(Object.keys(party(w).years).length===0,'Новая партия удаляет старые решения');
+   const file=new w.File([backup],'saved-party.json',{type:'application/json'});
+   const input=d.getElementById('partyFile'),transfer=new w.DataTransfer();transfer.items.add(file);
+   input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+   await wait(350);
+   assert(JSON.stringify(party(w))===backup,'Загрузка файла восстанавливает прежнюю партию');
+   const bad=new w.File(['{"invalid":true}'],'bad.json',{type:'application/json'}),dt=new w.DataTransfer();dt.items.add(bad);
+   input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+   await wait(350);
+   assert(d.getElementById('partyMessage').textContent.includes('Загрузка отклонена'),'Некорректное сохранение отклоняется');
+   assert(JSON.stringify(party(w))===backup,'Ошибочный импорт не портит текущую партию');
+  }
+  assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Метка игрока не изменилась');
+  details.completed=Date.now();details.duration_ms=details.completed-details.started;
+  s.textContent='PASS PLAYER '+id+' ('+checks.length+' проверок)';
+ }catch(err){
+  errors.push(err&&err.stack||String(err));
+  details.completed=Date.now();details.duration_ms=details.completed-details.started;
+  s.textContent='FAIL PLAYER '+id+': '+(err?.message||err);
+ }
+ r.textContent=JSON.stringify(details,null,2);
+})();
+</script></body></html>
