@@ -73,7 +73,9 @@
     const rect=el.getBoundingClientRect();
     return rect.width>0&&rect.right>d.documentElement.clientWidth+4&&!el.closest('[hidden]');
    }).slice(0,12).map(el=>{
-    const r=el.getBoundingClientRect();return (el.id||String(el.className||'').slice(0,36)||el.tagName)+':'+Math.round(r.right);
+    const r=el.getBoundingClientRect(),parent=el.parentElement;
+    return el.tagName.toLowerCase()+'#'+el.id+'.'+String(el.className?.baseVal||el.className||'').slice(0,45)+'('+String(parent?.className||'').slice(0,20)+'):'+
+     Math.round(r.left)+'-'+Math.round(r.right);
    }).join('; ');
    expect(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,
     'Горизонтальная прокрутка на телефоне (320), ширина '+d.documentElement.scrollWidth+'/'+d.documentElement.clientWidth+'; элементы: '+tooWide);
