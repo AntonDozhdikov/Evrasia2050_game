@@ -24,3 +24,12 @@ jobs:
           node tests/verify_party.cjs
           node tests/verify_interface.cjs
           node tests/verify_engine.cjs
+          node tests/verify_ux.cjs
+      - name: Проверить игровую партию в Chrome
+        run: |
+          command -v google-chrome
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/eurasia-test-server.log 2>&1 &
+          sleep 2
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom http://127.0.0.1:8765/tests/browser_smoke.html > /tmp/eurasia-browser-test.html 2>/tmp/eurasia-chrome.log
+          grep -q 'PASS UX:' /tmp/eurasia-browser-test.html || { tail -c 1800 /tmp/eurasia-browser-test.html; cat /tmp/eurasia-chrome.log | tail -n 25; exit 1; }
+          echo "Браузерная игра: тест пройден"
