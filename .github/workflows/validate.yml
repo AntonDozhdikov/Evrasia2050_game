@@ -59,3 +59,14 @@ jobs:
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom "$URL" > /tmp/eurasia-public-dom.html 2>/tmp/eurasia-public-browser.log
           grep -Fq 'data-party-tab="RUS"' /tmp/eurasia-public-dom.html || { tail -c 1200 /tmp/eurasia-public-dom.html; tail -n 20 /tmp/eurasia-public-browser.log; exit 1; }
           echo "PASS: новый адрес открывает игру, старый адрес перенаправляет, интерфейс работает"
+
+      - name: Испытать пять независимых игроков одновременно
+        run: |
+          python3 tests/five_players_runner.py
+      - name: Сохранить отчеты пяти игроков
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: five-player-qa
+          path: /tmp/eurasia-qa-five/
+          if-no-files-found: warn
