@@ -154,7 +154,14 @@ function step(s,actions){
   trade_concentration:avg(concentration),mean_reward:avg(rewards),crises_active:s.events.length,
   rejected_duplicate_pairs:duplicate,growth_pct:values.map(v=>v[0]),
   active_crises:s.events.map(e=>({id:e.id,name:e.name,type:e.type,affected:e.affected||[],intensity:e.intensity,started:e.started,expires:e.expires})),
-  country_stats:C.map((c,i)=>({country:c,growth:values[i][0],budget:s.energy[i],reward:rewards[i],trade_usd:sum(s.trade[i])}))};
+  country_stats:C.map((c,i)=>({country:c,
+    growth:values[i][0],inflation:values[i][1],investment_pct:values[i][2],
+    export_pct:values[i][3],import_pct:values[i][4],unemployment:values[i][5],
+    population_growth:values[i][6],remittances_pct:values[i][7],
+    budget:s.energy[i],reward:rewards[i],trade_usd:sum(s.trade[i]),
+    project_participations:proposal[i].filter(x=>x>0).length,
+    new_treaties:newTreaties.filter(pair=>pair.includes(i)).length,
+    project_spending:rowProj[i],project_benefit:benefit[i]}))};
  s.history.push(out);
  return out;
 }
