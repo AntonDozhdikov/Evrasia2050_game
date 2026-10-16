@@ -69,6 +69,10 @@ function extract(){
 }
 function calculate(){
  const status=$('partyResultsStatus');
+ if(window.EurasiaPartyUI&&!window.EurasiaPartyUI.saveCurrentYear()){
+  status.textContent='Не удалось сохранить решения. Разрешите хранение данных в браузере или скачайте партию.';
+  return;
+ }
  status.textContent='Идет расчет 2025–2050 годов…';
  try{
   const p=extract(),scenario=getScenario(p);
@@ -77,7 +81,12 @@ function calculate(){
   if(!available.includes(p.policy))throw Error('Для новой партии выберите «Переговоры по правилам» или «Без новых инициатив». Два режима обученной стратегии требуют исходного сценария и сохраненного номера расчета.');
   const settings={bootstrap:B,cat:G.crisisCatalog,scenario,seed:p.seed,db:D};
   const runs={};
-  runs.PLAYER=Engine.run({...settings,policy:p.policy,overrides:p.years});
+  // Ранее записанные решения исключенных из управления стран остаются в файле,
+  // но не влияют на расчет текущей партии.
+  const overrides=Object.fromEntries(Object.entries(p.years).map(([year,rows])=>[
+   year,Object.fromEntries(Object.entries(rows).filter(([country])=>p.controlled.includes(country)))
+  ]));
+  runs.PLAYER=Engine.run({...settings,policy:p.policy,overrides});
   for(const policy of available)runs[policy]=Engine.run({...settings,policy});
   const summaries=Object.fromEntries(Object.entries(runs).map(([k,v])=>[k,Engine.summary(v)]));
   computation={party:p,scenario,runs,summaries,available:['PLAYER',...available]};
