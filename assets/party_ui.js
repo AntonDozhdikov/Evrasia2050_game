@@ -220,17 +220,33 @@ function exportParty(){
  download(out,'evrazia2050_party_'+party.scenario+'_'+party.year+'.json');
  line('Файл решений готов к сохранению.');
 }
+let lastImport=Promise.resolve(false),importSerial=0;
 async function importParty(file){
- if(!file)return;
+ const request=++importSerial;
+ if(!file)return false;
  try{
   if(file.size>1048576)throw Error('Файл превышает допустимый объем 1 МБ');
-  const p=JSON.parse(await file.text());Core.validate(p);
+  const text=await file.text();
+  // If the user selects another file before reading finishes, only the latest import may modify the party.
+  if(request!==importSerial)return false;
+  const p=JSON.parse(text);Core.validate(p);
   verifyWild(p);
-  party=Core.clone(p);setActiveSlot(null);store();render();
+  const next=Core.clone(p),previous=party,previousSlot=activeSlot;
+  party=next;setActiveSlot(null);
+  if(!store()){
+   party=previous;setActiveSlot(previousSlot);
+   throw Error('Не удалось сохранить загруженную партию в браузере');
+  }
+  render();
   const n=Object.keys(party.years).length;
   line('Партия загружена: '+n+' '+(n%10===1&&n%100!==11?'игровой год':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'игровых года':'игровых лет')+'.');
- }catch(e){line('Загрузка отклонена: '+e.message,false);}
- $('partyFile').value='';
+  return true;
+ }catch(e){
+  if(request===importSerial)line('Загрузка отклонена: '+e.message,false);
+  return false;
+ }finally{
+  if(request===importSerial)$('partyFile').value='';
+ }
 }
 $('partyScenario').addEventListener('change',changeScenario);
 $('partyPolicy').addEventListener('change',changeScenario);
@@ -240,7 +256,7 @@ $('partySave').addEventListener('click',saveYear);
 $('partyNext').addEventListener('click',()=>{if(saveYear()&&party.year<2050){party=Core.goto(party,party.year+1);store(false);render();window.dispatchEvent(new Event('eurasia:year-navigated'));}});
 $('partyExport').addEventListener('click',exportParty);
 $('partyImport').addEventListener('click',()=>$('partyFile').click());
-$('partyFile').addEventListener('change',e=>importParty(e.target.files[0]));
+$('partyFile').addEventListener('change',e=>{lastImport=importParty(e.target.files[0]);});
 $('partySlotSave').addEventListener('click',saveNamedSlot);
 $('partySlotLoad').addEventListener('click',loadNamedSlot);
 $('partySlotDelete').addEventListener('click',deleteNamedSlot);
@@ -254,6 +270,6 @@ if(quick)quick.addEventListener('click',()=>{
  $('partyActions').scrollIntoView({behavior:'smooth',block:'center'});
 });
 window.addEventListener('eurasia:texts-updated',render);
-window.EurasiaPartyUI={saveCurrentYear:saveYear,getCurrent:()=>Core.clone(party),getActiveSlot:()=>activeSlot};
+window.EurasiaPartyUI={saveCurrentYear:saveYear,getCurrent:()=>Core.clone(party),getActiveSlot:()=>activeSlot,get importFinished(){return lastImport;}};
 restore();render();if(flash)line(flash,false);
 })();
