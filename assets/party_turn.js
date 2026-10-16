@@ -35,6 +35,7 @@
    const events=planned.length?
     planned.map(e=>'<li><strong>'+safe(e.name)+'</strong> · '+safe(e.type)+
      ' · '+(e.started===year?'начинается в '+year:'продолжается с '+e.started)+
+     ' · интенсивность: '+num(e.intensity,2)+' (параметр сценария)'+
      ' · '+(e.affected?.length?safe(e.affected.join(', ')):'все государства')+'</li>').join(''):
     '<li>По сценарию на этот год кризисных событий нет.</li>';
    let content='<div class="turn-intel-head"><div><span class="section-kicker">ИНФОРМАЦИЯ ПЕРЕД ХОДОМ</span>'+
