@@ -17,7 +17,8 @@ function init(bootstrap,scenario,cat,seed=163,zeroNoise=false){
   z:copy(bootstrap.targetZ),means:bootstrap.mean,std:bootstrap.std,gdpZ:bootstrap.gdpZ.slice(),popZ:bootstrap.popZ.slice(),
   gdpMean:bootstrap.gdpZMean,gdpStd:bootstrap.gdpZStd,popMean:bootstrap.popZMean,popStd:bootstrap.popZStd,
   energy:bootstrap.energy.slice(),instit:bootstrap.instit,trade:copy(bootstrap.trade),tradeInitial:bootstrap.tradeInitial,
-  register:{},pending:[],active:[],events:[],returns:Array(N).fill(0),history:[]};
+  register:{},pending:[],active:[],events:[],returns:Array(N).fill(0),history:[],
+  lastProjects:Array(N).fill(0),lastAgreements:Array(N).fill(0),lastCrisis:Array(N).fill(0)};
  state.graph=state.trade.map(row=>row.map(v=>v/Math.max(1e-8,sum(row))));
  return state;
 }
@@ -133,6 +134,15 @@ function step(s,actions){
  rewards.forEach((v,i)=>s.returns[i]+=v);
  const projects=offers.filter(([i,j])=>proposal[i][j]>0).length;
  const activeAgreements=Array.from({length:N},(_,i)=>Array.from({length:N-i-1},(_,k)=>agreement[i][i+k+1])).flat().filter(Boolean).length;
+ // Observation-only data for the frozen MAPPO actor. These never feed into
+ // economic state updates or V4.7 rewards.
+ s.lastProjects=proposal.map(row=>row.filter(amount=>amount>0).length/7);
+ s.lastAgreements=Array(N).fill(0);
+ for(const pair of Object.keys(s.register)){
+  const [i,j]=pair.split('-').map(Number);
+  if(Number.isInteger(i)&&Number.isInteger(j)){s.lastAgreements[i]+=1/7;s.lastAgreements[j]+=1/7;}
+ }
+ s.lastCrisis=shock.map(row=>clamp(Math.abs(row[0]),0,2));
  const out={year,actions:copy(actions),mean_growth_pct:avg(values.map(v=>v[0])),
   inflation_pct:avg(values.map(v=>v[1])),investment_pct:avg(values.map(v=>v[2])),export_pct:avg(values.map(v=>v[3])),
   import_pct:avg(values.map(v=>v[4])),unemployment_pct:avg(values.map(v=>v[5])),
@@ -164,7 +174,9 @@ function run(options){
  const {bootstrap,cat,scenario,seed,policy,db}=options;
  const s=init(bootstrap,scenario,cat,seed,options.zeroNoise);
  for(let year=2025;year<=2050;year++){
-  const a=choose(s,policy,db,options.actionScenario||scenario.scenario_id,seed,year);
+  const a=policy.startsWith('ADAPTIVE_MAPPO')
+   ? (options.adaptive?options.adaptive.actions(s,policy,seed,year):(()=>{throw Error('Не подключен адаптивный актор MAPPO V4.7');})())
+   : choose(s,policy,db,options.actionScenario||scenario.scenario_id,seed,year);
   const changed=options.overrides&&options.overrides[year];
   if(changed)for(const [country,actions] of Object.entries(changed)){
    const i=C.indexOf(country);if(i<0)throw Error('Неизвестное государство');
