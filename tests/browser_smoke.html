@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Проверка браузерной игры</title></head>
+<body><p id="status">ОЖИДАНИЕ</p><iframe id="game" src="../index.html" style="width:1200px;height:880px;border:0"></iframe>
+<script>
+(function(){
+ 'use strict';
+ const status=document.getElementById('status');
+ const frame=document.getElementById('game');
+ const verify=()=>{
+  try{
+   const d=frame.contentDocument,w=frame.contentWindow;
+   const expect=(yes,why)=>{if(!yes)throw Error(why)};
+   expect(d.getElementById('partyCalculate'),'Кнопка расчета не найдена');
+   expect(d.getElementById('partyCountryTabs'),'Нет переключателей стран');
+   expect(!d.getElementById('archive-results').open,'Архив открыт сразу');
+   expect(!d.getElementById('partyAllMetrics').open,'Таблица показателей открыта сразу');
+   expect(!d.querySelector('#text-editor'),'Редактор виден в игре');
+   d.getElementById('uxQuickStart').click();
+   const belarus=[...d.querySelectorAll('#partyCountries input')].find(x=>x.value==='BLR');
+   expect(belarus,'Нет выбора Беларуси');
+   belarus.click();
+   const tab=d.querySelector('[data-party-tab="BLR"]');
+   expect(tab,'Нет вкладки Беларуси');tab.click();
+   const investment=d.querySelector('select[data-party-country="BLR"][data-party-action="1"]');
+   expect(investment,'Нет инвестиционных решений Беларуси');
+   investment.value='2';investment.dispatchEvent(new Event('change',{bubbles:true}));
+   d.querySelector('[data-party-tab="RUS"]').click();
+   d.getElementById('partySave').click();
+   const recorded=JSON.parse(w.localStorage.getItem('evrasia2050:party-draft:v1'));
+   expect(recorded.years['2025'].BLR[1]===2,'Не сохранился выбор Беларуси после переключения вкладок');
+   d.getElementById('partyCalculate').click();
+   const result=d.getElementById('partyResultsContent');
+   expect(!result.hidden,'Результаты скрыты: '+d.getElementById('partyResultsStatus').textContent);
+   expect(d.querySelectorAll('#partyResultRows tr').length===21,'Утрачен показатель сравнения');
+   expect(d.querySelectorAll('#partyCountryRows tr').length===8,'Утрачен результат страны');
+   expect(d.querySelectorAll('#partySeriesChoices button').length===5,'Нет выбора серий');
+   expect(d.querySelectorAll('#partyResultChart polyline').length===2,'На графике неверное число исходных линий');
+   const series=[...d.querySelectorAll('#partySeriesChoices button')].find(x=>x.getAttribute('aria-pressed')==='false');
+   expect(series,'Нет выключенной серии');series.click();
+   expect(d.querySelectorAll('#partyResultChart polyline').length===3,'Линия не добавилась');
+   expect(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Горизонтальная прокрутка при ширине 1200');
+   status.textContent='PASS UX: две страны, сохранение, итоги, 21 показатель, 8 стран, график, компактность';
+  }catch(e){status.textContent='FAIL UX: '+e.message;}
+ };
+ frame.addEventListener('load',()=>setTimeout(verify,250));
+ setTimeout(()=>{if(status.textContent==='ОЖИДАНИЕ')status.textContent='FAIL UX: превышено время загрузки';},9000);
+})();
+</script>
+</body></html>
