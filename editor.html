@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Евразия 2050 — редактор текстов</title><link rel="stylesheet" href="assets/styles.css"></head>
+<body><div class="shell">
+<header class="topbar"><span class="brand"><span class="brand-mark">Е</span><span><strong>ЕВРАЗИЯ 2050</strong><small>Редакционный режим</small></span></span>
+<span class="version">Редактор описаний</span></header>
+<main class="editor-only-main">
+<section class="intro editor-intro"><div><h1>Редактор текстов</h1><p>Исправляйте названия и описания сценариев, кризисов, стратегий и действий государств. Изменения можно сохранить файлом и передать для публикации.</p></div></section>
+    <section id="text-editor" class="editor-panel">
+      <div class="reference-heading"><span class="section-kicker">РЕДАКТОР ИГРОВЫХ ТЕКСТОВ</span><h2>Изменяйте описания и пояснения</h2>
+        <p>Здесь можно редактировать названия и описания сценариев, все сто кризисов, четыре стратегии, действия стран и основные пояснения страницы.</p></div>
+      <div class="editor-context">Текстовые правки сохраняются на этом устройстве. Для переноса в другой браузер скачайте файл и загрузите его там. Для публикации исправлений всем посетителям перенесите этот файл в репозиторий. Численные данные и расчеты изменениям не подвергаются.</div>
+      <div class="editor-controls">
+        <label>Раздел<select id="textKind"><option value="scenario">Сценарии</option><option value="crisis">Кризисы</option><option value="policy">Стратегии</option><option value="action">Действия государств</option><option value="page">Тексты страницы</option></select></label>
+        <label>Что редактировать<select id="textItem"></select></label>
+      </div>
+      <p id="textEditorCurrent" class="editor-state"></p>
+      <div id="textFields" class="editor-fields"></div>
+      <div class="editor-actions">
+        <button type="button" id="textApply" class="primary">Сохранить текст</button>
+        <button type="button" id="textDownload" class="secondary">Скачать исправления</button>
+        <button type="button" id="textLoad" class="secondary">Загрузить исправления</button>
+        <button type="button" id="textReset" class="secondary">Вернуть выбранный текст</button>
+        <button type="button" id="textResetAll" class="secondary">Вернуть все тексты</button>
+        <input type="file" id="textImportFile" accept="application/json,.json" hidden>
+      </div>
+      <p id="textEditorMessage" class="party-message" role="status" aria-live="polite"></p>
+    </section>
+
+<section class="editor-help"><h2>Как опубликовать изменения</h2><p>Скачайте файл исправлений. Чтобы новая редакция появилась у всех игроков, ее необходимо включить в материалы сайта через GitHub. Исправления на этом устройстве остаются в браузере.</p></section>
+<div hidden aria-hidden="true">
+<section class="intro"><div><p>Что меняется, когда государства выбирают сотрудничество, инвестиции или самостоятельные действия? Сравните стратегии России, Беларуси, Казахстана, Кыргызстана, Узбекистана, Таджикистана, Туркменистана и Армении. Проследите, как в модели складываются торговля, совместные проекты и реакция на кризисы.</p></div></section><aside class="intro-note"><span>Выберите сценарий и способ действий стран. Нажмите «Воспроизвести», чтобы пройти по годам, или сразу откройте интересующий год.</span></aside>
+<section class="method-heading"><p>Выбирайте страны и их решения по годам. Готовые результаты эксперимента позволяют сравнить стратегии, инвестиции, переговоры и реакцию государств на кризисы.</p></section><div class="method-limit"><p>Экономические графики относятся к двадцати рассчитанным сценариям исследования. Для «Диких карт» подготовлены условия будущих партий.</p></div>
+<section class="actions-panel"><p class="panel-lead">Выберите государство на схеме решений. Цвет показывает уровень действия по выбранному направлению; ниже приведены все шесть решений каждой страны.</p></section>
+<section class="network-panel"><p class="panel-lead">Выберите страну на схеме. Толщина линии отражает сумму известных экспортных потоков между государствами.</p></section>
+<section class="reference-heading"><p>Подробные описания сценариев, кризисов, стратегий и действий государств.</p></section></div>
+</main></div>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/text_editor.js"></script>
+</body></html>
