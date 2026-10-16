@@ -50,6 +50,9 @@
   assert(d.querySelectorAll('#partyResultChart polyline').length===2,'Два ряда на графике');
   const body=d.getElementById('partyResultRows').innerText;
   assert(!body.includes('NaN')&&!body.includes('Infinity'),'Числовые результаты корректно отображаются');
+  assert(d.getElementById('partyResultProvenance').textContent.includes('автоматически'),'Разъяснены незаполненные игроком годы');
+  assert(d.querySelectorAll('#partyCountryDetailChart polyline').length===2,'Страновой график содержит две линии');
+  assert(d.querySelectorAll('#partyCountryDetailRows tr').length===26,'Страновая таблица содержит 26 лет');
   details.results={strategyCount:strategies,status,firstMetric:d.querySelector('#partyResultRows tr td')?.textContent,yearsSaved:Object.keys(party(f.contentWindow).years).length};
  }
  try{
@@ -115,6 +118,10 @@
    assert(before!==after,'Изменение политики в 2025 изменяет агрегированный рост ВВП');
   }
   if(id===2){
+   change(d.getElementById('partyYear'),2026);
+   assert(!d.getElementById('partyResultsContent').hidden,'Простая навигация по годам не прячет расчёт');
+   change(d.getElementById('partyYear'),2025);
+   assert(!d.getElementById('partyResultsContent').hidden,'Возврат к году не прячет расчёт');
    const original=JSON.stringify(party(w));
    w.confirm=()=>false;
    d.getElementById('partyNew').click();
@@ -128,6 +135,12 @@
   if(id===3){
    assert(!!party(w).wildcardSeed,'Жеребьевка сохранена в партии');
    assert(w.EURASIA_WILDCARDS.getSets().some(x=>x.id==='W07'),'Дикая карта существует');
+   const wildcardSeed=party(w).wildcardSeed,firstResult=d.querySelector('#partyResultRows tr td').textContent;
+   w.EURASIA_WILDCARDS.generate(999999);
+   d.getElementById('partyCalculate').click();
+   assert(party(w).wildcardSeed===wildcardSeed,'Жеребьевка сохранения не изменена внешним выбором');
+   assert(d.querySelector('#partyResultRows tr td').textContent===firstResult,'Дикая карта воспроизводима при изменении каталога');
+   assert(d.getElementById('partyContext').textContent.includes(String(wildcardSeed)),'Игроку показан номер жеребьевки');
   }
   if(id===4){
    change(d.getElementById('partyYear'),2025);
@@ -136,6 +149,11 @@
    assert(d.querySelector('[data-party-card="RUS"]').hidden,'Неактивная страна скрыта');
    const out=d.getElementById('partyResultMetric');change(out,'crises');
    assert(d.querySelectorAll('#partyResultChart polyline').length===2,'График кризисов обновляется');
+   d.getElementById('partyPreviewYear').click();
+   assert(!d.getElementById('partyYearPreviewContent').hidden,'Просмотр последствий выбранного года работает');
+   assert(d.querySelectorAll('#partyYearCountries tr').length===9,'Годовой итог содержит все восемь государств');
+   assert(d.getElementById('partyYearCrisis').textContent.includes('кризис'),'Кризисы показаны за год');
+   assert(!d.getElementById('partyResultsContent').hidden,'Просмотр года не скрывает полный результат');
   }
   if(id===5){
    const backup=JSON.stringify(party(w));
@@ -159,6 +177,21 @@
     coreValidateTest:(()=>{try{w.EurasiaParty.validate({invalid:true});return 'accepted';}catch(e){return e.message;}})()};
    assert(d.getElementById('partyMessage').textContent.includes('Загрузка отклонена'),'Некорректное сохранение отклоняется: '+d.getElementById('partyMessage').textContent);
    assert(JSON.stringify(party(w))===backup,'Ошибочный импорт не портит текущую партию');
+   w.prompt=()=> 'Моя тестовая партия';
+   d.getElementById('partySlotSave').click();
+   const slotId=d.getElementById('partySlots').value;
+   assert(slotId.startsWith('save-'),'Создано именованное сохранение');
+   const named=JSON.parse(w.localStorage.getItem('evrasia2050:party-slots:v1'));
+   assert(named.length===1&&named[0].name==='Моя тестовая партия','Именованная партия хранится в профиле');
+   d.getElementById('partyNew').click();
+   assert(!Object.keys(party(w).years).length,'Рабочая партия сбрасывается независимо от именованной');
+   d.getElementById('partySlots').value=slotId;
+   d.getElementById('partySlotLoad').click();
+   assert(JSON.stringify(party(w))===backup,'Именованная партия восстанавливает все решения');
+   d.getElementById('partySlots').value=slotId;
+   d.getElementById('partySlotDelete').click();
+   assert(JSON.parse(w.localStorage.getItem('evrasia2050:party-slots:v1')).length===0,'Именованная партия удаляется');
+   assert(JSON.stringify(party(w))===backup,'Удаление слота сохраняет открытую партию');
   }
   assert(w.localStorage.getItem('qa-five-player-marker')===String(id),'Метка игрока не изменилась');
   details.completed=Date.now();details.duration_ms=details.completed-details.started;
