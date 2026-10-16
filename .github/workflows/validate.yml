@@ -1,0 +1,26 @@
+name: Проверка игры Евразия 2050
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получить проект
+        uses: actions/checkout@v4
+      - name: Проверить JavaScript
+        run: |
+          node --check assets/engine_v47.js
+          node --check assets/party_results.js
+          node --check assets/party_ui.js
+          node --check assets/text_editor.js
+      - name: Проверить научные и игровые данные
+        run: |
+          node tests/verify_data.cjs
+          node tests/verify_scenarios.cjs
+          node tests/verify_party.cjs
+          node tests/verify_interface.cjs
+          node tests/verify_engine.cjs
