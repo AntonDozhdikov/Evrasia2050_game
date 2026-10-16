@@ -35,4 +35,14 @@ const override={2025:{RUS:[2,2,2,2,2,2]}};
 const changed=E.run({bootstrap,cat,scenario:first,seed:163,db:data,policy:'ADAPTIVE_MAPPO_GREEDY',adaptive:A,overrides:override,untilYear:2026});
 assert.notDeepEqual(changed.history[0].actions[0],early.history[0].actions[0]);
 assert.ok(changed.history[1].country_stats.every(x=>Number.isFinite(x.trade_usd)));
+const names=['growth','inflation','investment_pct','export_pct','import_pct','unemployment','population_growth','remittances_pct'];
+for(const year of full.history){
+ assert.equal(year.country_stats.length,8);
+ for(const name of names)assert.ok(year.country_stats.every(x=>Number.isFinite(x[name])),name);
+ const expected=Object.fromEntries([['growth','mean_growth_pct'],['inflation','inflation_pct'],['investment_pct','investment_pct'],['export_pct','export_pct'],['import_pct','import_pct'],['unemployment','unemployment_pct'],['population_growth','population_growth_pct'],['remittances_pct','remittances_pct']]);
+ for(const [key,agg] of Object.entries(expected)){
+  const computed=year.country_stats.reduce((z,x)=>z+x[key],0)/8;
+  assert.ok(Math.abs(computed-year[agg])<1e-10,'National '+key+' does not match aggregate '+agg);
+ }
+}
 console.log('PASS TURN AND UNITS: numeric units, 20 crisis plans, history cutoff, country values and no altered V4.7 economics.');
