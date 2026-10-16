@@ -31,7 +31,7 @@ const METRICS=[
  ['crises','Сумма годовых кризисных воздействий','',0,'crises_active']
 ];
 const keys=['PLAYER','MAPPO_GREEDY','MAPPO','BARGAIN','NEUTRAL'];
-const NAMES={PLAYER:'Игрок',MAPPO_GREEDY:'ИИ: наиболее вероятные решения',MAPPO:'ИИ: вероятностные решения',BARGAIN:'Переговоры по правилам',NEUTRAL:'Без новых инициатив'};
+const NAMES={PLAYER:'Игрок',MAPPO_GREEDY:'MAPPO: архивная детерминированная',MAPPO:'MAPPO: архивная вероятностная',BARGAIN:'Переговоры по правилам',NEUTRAL:'Без новых инициатив'};
 const colors={PLAYER:'#155bb9',MAPPO_GREEDY:'#8543a9',MAPPO:'#008578',BARGAIN:'#d44d62',NEUTRAL:'#687993'};
 const yearsWord=n=>n%10===1&&n%100!==11?'год':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'года':'лет';
 const countryWord=n=>n===1?'управляемое государство':n>=2&&n<=4?'управляемых государства':'управляемых государств';
