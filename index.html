@@ -10,7 +10,7 @@
 <div id="root" class="shell">
   <header class="topbar">
     <a class="brand" href="./index.html" aria-label="Евразия 2050 — главная"><span class="brand-mark">Е<span class="brand-dot"></span></span><span><strong>ЕВРАЗИЯ <b>2050</b></strong><small>страны, решения, последствия</small></span></a>
-    <nav class="topnav" aria-label="Разделы"><a class="active" href="#experiment">Сценарии</a><a href="#countries">Торговые связи</a><a href="#reference" data-open-guide="wildcards">Дикие карты</a><a href="#reference">Справочник</a><a href="#methods">Как пользоваться</a></nav>
+    <nav class="topnav" aria-label="Разделы"><a class="active" href="#experiment">Сценарии</a><a href="#party-planner">Своя партия</a><a href="#countries">Торговые связи</a><a href="#reference" data-open-guide="wildcards">Дикие карты</a><a href="#reference">Справочник</a><a href="#text-editor">Редактор текстов</a><a href="#methods">Как пользоваться</a></nav>
     <span class="version">ИССЛЕДОВАТЬ СЦЕНАРИИ</span>
   </header>
   <main id="experiment">
@@ -27,7 +27,7 @@
       </div>
       <div class="time-controls"><button class="quiet" id="back" title="Предыдущий год" aria-label="Предыдущий год">‹</button><button class="primary" id="play" aria-label="Воспроизвести">▶ Воспроизвести</button><button class="quiet" id="next" title="Следующий год" aria-label="Следующий год">›</button><div class="year-range"><div class="range-top"><span>2025</span><strong id="selectedYear">2025</strong><span>2050</span></div><input type="range" id="year" min="2025" max="2050" value="2025" step="1" aria-label="Игровой год"></div></div>
       <div class="wild-inline"><label for="wildcardPicker">Дополнительные сценарии «Дикие карты»</label><select id="wildcardPicker" aria-label="Выберите один из десяти дополнительных сценариев"><option value="">Выберите случайное сочетание кризисов</option></select><p id="wildcardSummary">Десять новых сочетаний используют все сорок оставшихся кризисов. Четыре события в каждом.</p><a href="#reference" data-open-guide="wildcards">Посмотреть и изменить состав событий ↓</a></div>
-      <div class="choice-explanations"><div class="choice-explanation"><strong>Сценарий</strong><p id="scenarioShort" aria-live="polite"></p><a href="#reference" data-open-guide="scenarios">20 основных сценариев ↓</a> · <a href="#reference" data-open-guide="wildcards">10 «Диких карт» ↓</a></div><div class="choice-explanation"><strong>Стратегия</strong><p id="policyExplanation" aria-live="polite"></p><a href="#reference" data-open-guide="strategies">Подробнее о стратегиях ↓</a></div></div><p class="controls-note">Сейчас можно сравнивать ранее рассчитанные варианты. Управление собственными действиями государств будет добавлено отдельно.</p>
+      <div class="choice-explanations"><div class="choice-explanation"><strong>Сценарий</strong><p id="scenarioShort" aria-live="polite"></p><a href="#reference" data-open-guide="scenarios">20 основных сценариев ↓</a> · <a href="#reference" data-open-guide="wildcards">10 «Диких карт» ↓</a></div><div class="choice-explanation"><strong>Стратегия</strong><p id="policyExplanation" aria-live="polite"></p><a href="#reference" data-open-guide="strategies">Подробнее о стратегиях ↓</a></div></div><p class="controls-note">Для прежних результатов используйте основные настройки. Для составления собственной партии откройте раздел «Своя партия».</p>
     </section>
     <section class="stat-grid" aria-label="Результаты выбранного года">
       <article class="stat"><div class="stat-label">Средний рост ВВП <span>8 стран, результат модели</span></div><div class="stat-value" id="growth">—</div><div class="stat-caption" id="growth-delta"></div></article>
@@ -47,6 +47,53 @@
       </div>
     </div>
     <section id="reference" class="reference-panel"><div class="reference-heading"><span class="section-kicker">ПОДРОБНОСТИ</span><h2>Сценарии, кризисы, стратегии и решения</h2><p>Узнайте, что происходит в выбранном варианте развития, как реагируют страны и какие правила использует модель.</p></div><div class="reference-tabs" role="tablist" aria-label="Разделы справочника"><button type="button" class="reference-tab active" data-guide-tab="scenarios" role="tab" aria-selected="true">Сценарии</button><button type="button" class="reference-tab" data-guide-tab="crises" role="tab" aria-selected="false">Кризисы</button><button type="button" class="reference-tab" data-guide-tab="strategies" role="tab" aria-selected="false">Стратегии</button><button type="button" class="reference-tab" data-guide-tab="actions" role="tab" aria-selected="false">Действия стран</button><button type="button" class="reference-tab" data-guide-tab="wildcards" role="tab" aria-selected="false">Дикие карты</button></div><div id="referenceContent" class="reference-content" role="tabpanel"></div></section>
+
+    <section id="party-planner" class="planner-panel">
+      <div class="reference-heading"><span class="section-kicker">НОВАЯ ИГРОВАЯ ПАРТИЯ</span><h2>Управляйте решениями государств</h2>
+        <p>Выберите одну или несколько стран, задайте их действия и составьте последовательность решений до 2050 года. Решения сохраняются в браузере и в отдельном файле.</p></div>
+      <div class="party-notice"><strong>Подготовка партии</strong><p id="partyNotComputed">Новая расчетная партия станет доступна после переноса экономического движка V4.7. Архивные графики выше остаются неизменными.</p></div>
+      <div class="party-setup">
+        <label>Сценарий партии<select id="partyScenario"></select></label>
+        <label>Стратегия остальных стран<select id="partyPolicy"></select></label>
+        <label>Начальное число<input id="partySeed" type="number" min="0" max="4294967295" step="1" value="163"></label>
+        <label>Год решений<select id="partyYear"></select></label>
+      </div>
+      <h3 class="party-subheading">Какими государствами вы управляете</h3>
+      <div id="partyCountries" class="party-countries"></div>
+      <div id="partyContext" class="party-context"></div>
+      <div class="party-actions-header"><h3>Решения на выбранный год</h3><span id="partyCount"></span></div>
+      <div id="partyActions" class="party-action-grid"></div>
+      <div class="party-buttons">
+        <button type="button" class="primary" id="partySave">Сохранить решения года</button>
+        <button type="button" class="secondary" id="partyNext">Сохранить и перейти к следующему году →</button>
+        <button type="button" class="secondary" id="partyExport">Скачать партию</button>
+        <button type="button" class="secondary" id="partyImport">Загрузить партию</button>
+        <button type="button" class="secondary" id="partyNew">Новая партия</button>
+        <input type="file" id="partyFile" accept="application/json,.json" hidden>
+      </div>
+      <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="text-editor" class="editor-panel">
+      <div class="reference-heading"><span class="section-kicker">РЕДАКТОР ИГРОВЫХ ТЕКСТОВ</span><h2>Изменяйте описания и пояснения</h2>
+        <p>Здесь можно редактировать названия и описания сценариев, все сто кризисов, четыре стратегии, действия стран и основные пояснения страницы.</p></div>
+      <div class="editor-context">Текстовые правки сохраняются на этом устройстве. Для переноса в другой браузер скачайте файл и загрузите его там. Для публикации исправлений всем посетителям перенесите этот файл в репозиторий. Численные данные и расчеты изменениям не подвергаются.</div>
+      <div class="editor-controls">
+        <label>Раздел<select id="textKind"><option value="scenario">Сценарии</option><option value="crisis">Кризисы</option><option value="policy">Стратегии</option><option value="action">Действия государств</option><option value="page">Тексты страницы</option></select></label>
+        <label>Что редактировать<select id="textItem"></select></label>
+      </div>
+      <p id="textEditorCurrent" class="editor-state"></p>
+      <div id="textFields" class="editor-fields"></div>
+      <div class="editor-actions">
+        <button type="button" id="textApply" class="primary">Сохранить текст</button>
+        <button type="button" id="textDownload" class="secondary">Скачать исправления</button>
+        <button type="button" id="textLoad" class="secondary">Загрузить исправления</button>
+        <button type="button" id="textReset" class="secondary">Вернуть выбранный текст</button>
+        <button type="button" id="textResetAll" class="secondary">Вернуть все тексты</button>
+        <input type="file" id="textImportFile" accept="application/json,.json" hidden>
+      </div>
+      <p id="textEditorMessage" class="party-message" role="status" aria-live="polite"></p>
+    </section>
     <section id="methods" class="method-panel">
       <div class="method-heading"><span class="section-kicker">КАК ПОЛЬЗОВАТЬСЯ</span><h2>Исследуйте разные пути развития Евразии</h2><p>Восемь государств могут по-разному реагировать на экономические перемены, договариваться о совместных проектах и выбирать степень сотрудничества. Эта модель позволяет сопоставить последствия нескольких способов действий в одинаковых условиях.</p></div>
       <div class="howto-grid">
@@ -59,6 +106,6 @@
   </main>
   <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
 </div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/text_editor.js"></script>
 </body>
 </html>
