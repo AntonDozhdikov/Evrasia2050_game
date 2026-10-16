@@ -2,8 +2,8 @@
 /* Расчет новой партии и сопоставление пяти вариантов при одинаковых условиях. */
 (function(){
 'use strict';
-const Engine=window.EurasiaEngine,Core=window.EurasiaParty,B=window.EURASIA_ENGINE_BOOTSTRAP,D=window.EURASIA_DATA,G=window.EURASIA_GUIDE,W=window.EURASIA_WILDCARDS,M=window.EurasiaModel;
-if(!Engine||!Core||!B||!D||!G||!W||!M)return;
+const Engine=window.EurasiaEngine,Core=window.EurasiaParty,B=window.EURASIA_ENGINE_BOOTSTRAP,D=window.EURASIA_DATA,G=window.EURASIA_GUIDE,W=window.EURASIA_WILDCARDS,M=window.EurasiaModel,U=window.EurasiaUnits;
+if(!Engine||!Core||!B||!D||!G||!W||!M||!U)return;
 const $=id=>document.getElementById(id);
 const fmt=(v,n=2)=>Number.isFinite(v)?Number(v).toLocaleString('ru-RU',{maximumFractionDigits:n,minimumFractionDigits:0}):'—';
 const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -38,7 +38,7 @@ const yearsWord=n=>n%10===1&&n%100!==11?'год':n%10>=2&&n%10<=4&&(n%100<12||n%
 const countryWord=n=>n===1?'управляемое государство':n>=2&&n<=4?'управляемых государства':'управляемых государств';
 let computation=null,activeSeries=[];
 function normalize(value,key){
- return key==='trade' ? value/1e9:value;
+ return U.fromSummary(key,value);
 }
 function metricAnnual(row,k){
  if(k==='net_annual')return (row.project_benefit_current||0)-(row.project_cash_out||0);
@@ -121,7 +121,7 @@ function renderAll(){
   const scores=c.available.slice(1).map(k=>({name:NAMES[k],value:c.summaries[k][id]}));
   const rivals=scores.filter(x=>Number.isFinite(x.value));if(!rivals.length)return null;
   const best=rivals.reduce((a,b)=>dir*b.value>dir*a.value?b:a);
-  return {label,unit,better:dir*player[id]>dir*best.value+1e-8,against:best.name,delta:player[id]-best.value};
+  return {label,unit,better:dir*player[id]>dir*best.value+1e-8,against:best.name,delta:U.delta(id,player[id],best.value)};
  }).filter(Boolean);
  const better=performance.filter(x=>x.better).length;
  const ranking=c.available.slice().sort((a,b)=>c.summaries[b].reward-c.summaries[a].reward);
@@ -135,20 +135,20 @@ function renderAll(){
  ].map(([title,value])=>'<div class="player-kpi"><span>'+safe(title)+'</span><strong>'+safe(value)+'</strong></div>').join('');
  $('partyResultHead').innerHTML='<tr><th>Показатель</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
  $('partyResultRows').innerHTML=METRICS.map(([key,label,unit,dir])=>{
-  const values=head.map(k=>{let v=c.summaries[k][key];if(key==='trade')v/=1e9;return v;});
+  const values=head.map(k=>U.fromSummary(key,c.summaries[k][key]));
   const ranked=dir?values.reduce((best,v,i)=>dir*v>dir*values[best]?i:best,0):-1;
   return '<tr><th>'+safe(label)+'</th>'+values.map((v,i)=>'<td class="'+(i===0?'player-cell ':'')+(ranked===i?'metric-winner':'')+'">'+fmt(v,key==='trade'?2:3)+(unit?' <small>'+safe(unit)+'</small>':'')+'</td>').join('')+'</tr>';
  }).join('');
  const strengths=performance.filter(x=>x.better).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,2);
  const gaps=performance.filter(x=>!x.better).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,2);
- const rows=(items,empty)=>items.length?items.map(x=>'<li><b>'+safe(x.label)+'</b><span>'+safe((x.delta>0?'+':'')+fmt(x.delta,2)+(x.unit?' '+x.unit:'')+' относительно лучшей стратегии')+'</span></li>').join(''):'<li>'+empty+'</li>';
+ const rows=(items,empty)=>items.length?items.map(x=>'<li><b>'+safe(x.label)+'</b><span>'+safe(U.signed(x.delta,2)+(x.unit?' '+(x.unit==='%'?'п.п.':x.unit):'')+' относительно лучшей стратегии')+'</span></li>').join(''):'<li>'+empty+'</li>';
  $('partyStrengths').innerHTML='<div class="player-insight good"><strong>Где вы впереди</strong><ul>'+rows(strengths,'Пока нет показателей с лучшим результатом.')+'</ul></div>'+
  '<div class="player-insight needs-work"><strong>Что можно улучшить</strong><ul>'+rows(gaps,'По основным показателям отставаний нет.')+'</ul></div>';
  const countries=D.countries;
  $('partyCountryHead').innerHTML='<tr><th>Государство</th>'+head.map(k=>'<th>'+safe(NAMES[k])+'</th>').join('')+'</tr>';
  $('partyCountryRows').innerHTML=countries.map((country,i)=>'<tr><th>'+safe(M.countryNames[country])+(c.party.controlled.includes(country)?' <small>игрок</small>':'')+'</th>'+head.map((k,j)=>'<td class="'+(j===0?'player-cell':'')+'">'+fmt(c.runs[k].returns[i],3)+'</td>').join('')+'</tr>').join('');
  const pick=$('partyCountryDetailSelect');
- pick.innerHTML=countries.map(code=>'<option value="'+code+'">'+safe(M.countryNames[code])+(c.party.controlled.includes(code)?' (игрок)':'')+'</option>').join('');
+ pick.innerHTML=[...c.party.controlled,...countries.filter(code=>!c.party.controlled.includes(code))].map(code=>'<option value="'+code+'">'+safe(M.countryNames[code])+(c.party.controlled.includes(code)?' (игрок)':'')+'</option>').join('');
  pick.value=c.party.controlled[0];
  const baseline=$('partyCountryBaseline');
  baseline.innerHTML=c.available.slice(1).map(key=>'<option value="'+key+'">'+safe(NAMES[key])+'</option>').join('');
@@ -187,7 +187,7 @@ function renderChart(){
   const markers=[0,5,10,15,20,25].map(i=>'<circle cx="'+X(i)+'" cy="'+Y(row.values[i])+'" r="'+(player?4.6:3.3)+'" fill="#fff" stroke="'+colors[row.key]+'" stroke-width="'+(player?3:2)+'"/>').join('');
   return '<polyline points="'+coords+'" fill="none" stroke="'+colors[row.key]+'" stroke-width="'+(player?4.5:3)+'" stroke-linecap="round" stroke-linejoin="round" '+(row.key==='NEUTRAL'?'stroke-dasharray="9 6"':'')+'/>'+markers;
  }).join('');
- $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+'</div><svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+safe(metric[1])+': сравнение 2025–2050 годов"><title>'+safe(metric[1])+': 2025–2050</title>'+grid+years+lines+'</svg>';
+ $('partyResultChart').innerHTML='<div class="player-chart-title">'+safe(metric[1])+(metric[2]?' · '+safe(metric[2]):'')+'</div><svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+safe(metric[1])+': сравнение 2025–2050 годов"><title>'+safe(metric[1])+': 2025–2050</title>'+grid+years+lines+'</svg>';
 }
 function renderCountryDetail(){
  if(!computation)return;
@@ -196,7 +196,7 @@ function renderCountryDetail(){
  if(k<0||!c.runs[baseline])return;
  const player=c.runs.PLAYER.history.map(row=>row.country_stats[k]);
  const other=c.runs[baseline].history.map(row=>row.country_stats[k]);
- const scale=v=>field==='trade_usd'?v/1e9:v;
+ const scale=v=>field==='trade_usd'?U.countryTrade(v):v;
  const values=[...player,...other].map(row=>scale(row[field]));
  const rawMin=Math.min(...values),rawMax=Math.max(...values);
  const padding=Math.max((rawMax-rawMin)*.1,.03);
@@ -209,7 +209,7 @@ function renderCountryDetail(){
   return '<line x1="'+L+'" x2="'+(Wd-24)+'" y1="'+y+'" y2="'+y+'" stroke="#dce6f0"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#48647e">'+fmt(v,2)+'</text>';
  }).join('');
  const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(Hd-12)+'" text-anchor="middle" font-size="12" fill="#48647e">'+y+'</text>').join('');
- const fieldNames={growth:'Рост ВВП, %',reward:'Оценка решений, усл. ед.',budget:'Доступный капитал, усл. ед.',trade_usd:'Экспорт в модели, млрд долл.'};
+ const fieldNames={growth:'Рост ВВП, %',reward:'Оценка решений, усл. ед.',budget:'Доступный капитал, усл. ед.',trade_usd:'Моделируемая исходящая торговля, млрд долл.'};
  $('partyCountryDetailChart').innerHTML='<strong>'+safe(M.countryNames[code])+' — '+safe(fieldNames[field])+'</strong><p class="country-legend"><span><i style="background:'+colors.PLAYER+'"></i>Игрок</span><span><i style="background:'+colors[baseline]+'"></i>'+safe(NAMES[baseline])+'</span></p>'+
  '<svg viewBox="0 0 '+Wd+' '+Hd+'" role="img" aria-label="'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+', 2025–2050"><title>'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+'</title>'+grid+years+line(player,colors.PLAYER)+line(other,colors[baseline])+'</svg>';
  $('partyCountryDetailRows').innerHTML=player.map((row,i)=>'<tr><th>'+(i+2025)+'</th><td>'+fmt(row.growth,3)+'</td><td>'+fmt(other[i].growth,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+fmt(other[i].reward,3)+'</td></tr>').join('');
