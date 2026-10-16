@@ -38,3 +38,17 @@ jobs:
           grep -o '<p id="status">[^<]*' /tmp/eurasia-editor-test.html || true
           grep -Fq '<p id="status">PASS EDITOR:' /tmp/eurasia-editor-test.html || { tail -c 1800 /tmp/eurasia-editor-test.html; cat /tmp/eurasia-editor-chrome.log | tail -n 25; exit 1; }
           echo "Редактор и публикация текстов в игре: тест пройден"
+
+      - name: Проверить опубликованный адрес /play_the_game
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -eu
+          URL=https://antondozhdikov.github.io/Evrasia2050_game/play_the_game
+          curl -fLsS --retry 4 --retry-delay 3 "$URL" > /tmp/eurasia-public-game.html
+          grep -Fq 'id="party-planner"' /tmp/eurasia-public-game.html
+          grep -Fq 'assets/engine_v47.js' /tmp/eurasia-public-game.html
+          curl -fLsS --retry 4 --retry-delay 3 https://antondozhdikov.github.io/Evrasia2050_game/ > /tmp/eurasia-old-entry.html
+          grep -Fq "new URL('./play_the_game'" /tmp/eurasia-old-entry.html
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom "$URL" > /tmp/eurasia-public-dom.html 2>/tmp/eurasia-public-browser.log
+          grep -Fq 'data-party-tab="RUS"' /tmp/eurasia-public-dom.html || { tail -c 1200 /tmp/eurasia-public-dom.html; tail -n 20 /tmp/eurasia-public-browser.log; exit 1; }
+          echo "PASS: новый адрес открывает игру, старый адрес перенаправляет, интерфейс работает"

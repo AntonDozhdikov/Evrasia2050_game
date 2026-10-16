@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const html=read('index.html'),editor=read('editor.html'),css=read('assets/ux_v2.css');
+const html=read('play_the_game.html'),editor=read('editor.html'),css=read('assets/ux_v2.css');
 const party=read('assets/party_ui.js'),results=read('assets/party_results.js');
 const sections=['class="intro"','id="party-planner"','id="results"','id="partyResults"','id="archive-results"','id="methods"','id="reference"'];
 const positions=sections.map(x=>html.indexOf(x));

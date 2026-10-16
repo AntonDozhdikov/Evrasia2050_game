@@ -10,7 +10,7 @@
 2. Распаковать `EURASIA_2050_STAGE3_GITHUB_READY.zip` в папку клонированного репозитория с сохранением каталогов, без удаления уже имеющихся пользовательских файлов.
 3. Проверить список изменений в GitHub Desktop и создать коммит `Stage 3: browser replay of V4.7`.
 4. Выполнить `Push origin`.
-5. В Settings → Pages выбрать GitHub Actions. После успешного выполнения workflow открыть https://antondozhdikov.github.io/Evrasia2050_game/.
+5. В Settings → Pages выбрать GitHub Actions. После успешного выполнения workflow открыть https://antondozhdikov.github.io/Evrasia2050_game/play_the_game.
 
 ## Если используется командная строка Git
 

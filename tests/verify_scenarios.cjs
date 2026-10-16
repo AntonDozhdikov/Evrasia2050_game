@@ -37,7 +37,7 @@ assert.ok(wildIds.every(id=>!originalSet.has(id)));
 W.generate(731205);const first=JSON.stringify(W.getSets());
 W.generate(731205);assert.equal(JSON.stringify(W.getSets()),first);
 W.generate(731206);assert.notEqual(JSON.stringify(W.getSets()),first);
-const html=read('index.html');
+const html=read('play_the_game.html');
 for(const filename of ['assets/data.js','assets/guide.js','assets/editorial_ru.js','assets/wildcards.js','assets/app.js','assets/guide_ui.js'])
  assert.ok(html.includes('src="'+filename+'"'),'Не подключен '+filename);
 assert.ok(html.includes('data-guide-detail="wildcards"'));

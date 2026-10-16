@@ -28,7 +28,7 @@ frame.addEventListener('load',()=>setTimeout(()=>{
     status.textContent='PASS EDITOR: отдельная страница, пять разделов, сохранение и отображение правки в игре';
    }catch(e){status.textContent='FAIL EDITOR: '+e.message;}
   },180));
-  game.src='../index.html';document.body.appendChild(game);
+  game.src='../play_the_game.html';document.body.appendChild(game);
  }catch(e){status.textContent='FAIL EDITOR: '+e.message;}
 },180));
 setTimeout(()=>{if(status.textContent==='ОЖИДАНИЕ')status.textContent='FAIL EDITOR: превышено время загрузки';},9500);

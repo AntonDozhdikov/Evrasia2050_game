@@ -2,7 +2,11 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const game=read('index.html'),editor=read('editor.html'),guide=read('assets/guide_ui.js');
+const game=read('play_the_game.html'),landing=read('index.html'),editor=read('editor.html'),guide=read('assets/guide_ui.js');
+assert.ok(landing.includes('window.location.replace(destination.href)'), 'Старая стартовая страница не перенаправляет');
+assert.ok(landing.includes("new URL('./play_the_game'"), 'Старый адрес не ведет на /play_the_game');
+assert.ok(game.includes('rel="canonical" href="https://antondozhdikov.github.io/Evrasia2050_game/play_the_game"'), 'Неверный основной адрес игры');
+assert.ok(game.includes('href="./play_the_game"'), 'Логотип не ведет на новый адрес');
 const parts=['class="game-facts"','id="party-planner"','id="results"','id="chart"','id="methods"','id="reference"'];
 const positions=parts.map(x=>game.indexOf(x));
 assert.ok(positions.every(x=>x>=0),'На главной отсутствуют разделы');
