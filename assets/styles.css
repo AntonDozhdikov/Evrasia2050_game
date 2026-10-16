@@ -156,3 +156,32 @@
 @media(max-width:1100px){.party-setup{grid-template-columns:repeat(2,minmax(0,1fr))}.party-countries{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:800px){.party-action-grid,.editor-fields{grid-template-columns:1fr}}
 @media(max-width:600px){.planner-panel,.editor-panel{padding:18px 14px}.party-setup,.editor-controls,.party-countries{grid-template-columns:1fr}.party-actions-header{align-items:flex-start;flex-direction:column}.party-buttons button,.editor-actions button{width:100%}}
+
+/* Публичная игровая страница — обзор, партия, результаты, компактный справочник */
+[hidden]{display:none!important}
+.game-facts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin:5px 0 22px}
+.game-facts>div{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;text-align:center;background:#fff;border:1px solid #dfe7f0;border-radius:9px;padding:14px 8px;min-height:71px}
+.game-facts strong{font-size:21px;color:#284e82;letter-spacing:-.02em}
+.game-facts span{font-size:11px;color:#61758e;line-height:1.3}
+.results-heading{margin:28px 0 16px;padding:20px 2px 2px;border-top:1px solid #dbe5ed;scroll-margin-top:10px}
+.results-heading h2{font-size:24px;line-height:1.2;margin:8px 0;color:#1c3653}
+.results-heading p{font-size:13px;color:#5b7189;line-height:1.6;margin:8px 0}
+.reference-panel{margin-top:21px}
+.reference-heading h2{margin-bottom:13px}
+.reference-accordions{display:grid;gap:9px;margin-top:10px}
+.reference-accordion{border:1px solid #dce5ef;background:#fafcfe;border-radius:9px;overflow:hidden}
+.reference-accordion>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;padding:16px 19px;font-size:15px;font-weight:750;color:#273f60}
+.reference-accordion>summary::-webkit-details-marker{display:none}
+.reference-accordion>summary::after{content:"+";font-size:23px;font-weight:400;color:#376eae;margin-left:auto}
+.reference-accordion[open]>summary::after{content:"−"}
+.reference-accordion>summary small{font-size:11px;font-weight:400;color:#72859a;margin-left:8px}
+.reference-accordion[open]>summary{background:#edf4fc}
+.reference-accordion>.reference-content{padding:14px 20px 21px;border-top:1px solid #dfe7ef}
+.reference-accordion:not([open])>.reference-content{display:none}
+.editor-only-main{padding:20px 0 50px}
+.editor-intro h1{font-size:28px;color:#263e59}
+.editor-help{margin-top:20px;border-radius:10px;background:#f1f6fb;padding:19px 23px}
+.editor-help h2{font-size:17px;margin:0 0 8px;color:#29496a}
+.editor-help p{font-size:12px;color:#536c84;line-height:1.6;margin:0}
+@media(max-width:800px){.game-facts{grid-template-columns:repeat(3,minmax(0,1fr))}.reference-accordion>summary{padding:14px 13px;flex-wrap:wrap}}
+@media(max-width:540px){.game-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.reference-accordion>summary small{width:100%;margin:0}.reference-accordion>.reference-content{padding:11px 10px 16px}}
