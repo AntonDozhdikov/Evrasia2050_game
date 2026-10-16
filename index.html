@@ -43,7 +43,7 @@
         <button type="button" class="secondary" id="partyNext">Сохранить и перейти к следующему году →</button>
         <button type="button" class="secondary" id="partyExport">Скачать партию</button>
         <button type="button" class="secondary" id="partyImport">Загрузить партию</button>
-        <button type="button" class="secondary" id="partyNew">Новая партия</button>
+        <button type="button" class="secondary" id="partyNew">Новая партия</button><button type="button" class="primary" id="partyCalculate">Рассчитать итог партии</button>
         <input type="file" id="partyFile" accept="application/json,.json" hidden>
       </div>
       <p id="partyMessage" class="party-message" role="status" aria-live="polite"></p>
@@ -52,6 +52,18 @@
     <section id="results" class="results-heading">
       <span class="section-kicker">РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА</span><h2>Графики и расчеты</h2>
       <p>Здесь можно сравнить уже рассчитанные сценарии и стратегии. Результаты новой партии появятся после подключения расчетного движка.</p>
+    </section>
+    <section id="partyResults" class="player-results" aria-label="Расчет игрока и сравнение стратегий">
+      <div class="player-result-intro"><h3>Итоги вашей партии</h3><p id="partyResultsStatus">Сохраните решения государств и нажмите «Рассчитать итог партии».</p></div>
+      <div id="partyResultsContent" hidden>
+        <div class="player-results-kpis" id="partyResultKpis"></div>
+        <div class="player-chart-toolbar"><label>Показатель <select id="partyResultMetric"></select></label></div>
+        <div id="partyResultChart" class="player-chart" role="img" aria-label="Изменение показателей партии по годам"></div>
+        <div class="player-result-table"><table><thead id="partyResultHead"></thead><tbody id="partyResultRows"></tbody></table></div>
+        <h4>Результаты государств</h4><div class="player-result-table"><table><thead id="partyCountryHead"></thead><tbody id="partyCountryRows"></tbody></table></div>
+        <p class="player-provenance">Сравнение рассчитано по правилам экономики V4.7 при одинаковых исходных условиях и кризисах. Для обученных стратегий использованы сохраненные решения исходного исследования; переговорная и нейтральная стратегии действуют по собственным правилам. Новые партии используют собственную воспроизводимую последовательность случайных отклонений.</p>
+        <button id="partyDownloadResults" type="button" class="secondary">Скачать результаты сравнения</button>
+      </div>
     </section>
     <section class="control-panel" aria-label="Настройки готовых результатов">
       <div class="controls-grid">
@@ -103,6 +115,6 @@
   </main>
   <footer><span>ЕВРАЗИЯ 2050 · исследовательская игра</span><span>История — наблюдаемые данные; 2025–2050 — результаты модели</span></footer>
 </div>
-<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script>
+<script src="assets/data.js"></script><script src="assets/model.js"></script><script src="assets/guide.js"></script><script src="assets/editorial_ru.js"></script><script src="assets/editorial_overrides.js"></script><script src="assets/wildcards.js"></script><script src="assets/app.js"></script><script src="assets/guide_ui.js"></script><script src="assets/engine_bootstrap.js"></script><script src="assets/engine_v47.js"></script><script src="assets/party_core.js"></script><script src="assets/party_ui.js"></script><script src="assets/party_results.js"></script>
 </body>
 </html>
