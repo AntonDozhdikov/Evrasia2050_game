@@ -4,7 +4,7 @@
   else root.EurasiaModel = factory();
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
-  const policyNames = {'MAPPO_GREEDY':'MAPPO: архивная детерминированная стратегия','MAPPO':'MAPPO: архивная вероятностная стратегия', 'BARGAIN':'Переговоры по правилам', 'NEUTRAL':'Без новых инициатив'};
+  const policyNames = {'MAPPO_GREEDY':'MAPPO: архивная детерминированная стратегия','MAPPO':'MAPPO: архивная вероятностная стратегия', 'BARGAIN':'Переговоры по правилам', 'NEUTRAL':'Без новых инициатив', 'ADAPTIVE_MAPPO_GREEDY':'Адаптивная MAPPO: наиболее вероятные действия', 'ADAPTIVE_MAPPO':'Адаптивная MAPPO: вероятностные действия'};
   const countryNames = {'RUS':'Россия','BLR':'Беларусь','KAZ':'Казахстан','KGZ':'Кыргызстан','UZB':'Узбекистан','TJK':'Таджикистан','TKM':'Туркменистан','ARM':'Армения'};
   const actionNames = ['Торговля','Инвестиции','Координация','Устойчивость','Фокус на партнере','Трудовая мобильность'];
   function runKey(scenario,policy,seed){return [scenario,policy,seed].join('|');}
