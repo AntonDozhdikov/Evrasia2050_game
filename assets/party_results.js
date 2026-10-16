@@ -202,6 +202,8 @@ function renderControlledSummary(){
    const average=(data,k)=>data.reduce((total,row)=>total+row[k],0)/data.length;
    const metrics=[
     ['Средний годовой рост ВВП',average(mine,'growth'),average(base,'growth'),'%','п.п.'],
+    ['Средняя годовая инфляция',average(mine,'inflation'),average(base,'inflation'),'%','п.п.'],
+    ['Средняя безработица',average(mine,'unemployment'),average(base,'unemployment'),'%','п.п.'],
     ['Исходящая торговля, 2050',U.countryTrade(mine[25].trade_usd),U.countryTrade(base[25].trade_usd),'млрд долл.','млрд долл.'],
     ['Остаток капитала, 2050',mine[25].budget,base[25].budget,'усл. ед.','усл. ед.'],
     ['Оценка за 26 лет',player.returns[i],reference.returns[i],'усл. ед.','усл. ед.']
@@ -234,7 +236,7 @@ function renderCountryDetail(){
   return '<line x1="'+L+'" x2="'+(Wd-24)+'" y1="'+y+'" y2="'+y+'" stroke="#dce6f0"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#48647e">'+fmt(v,2)+'</text>';
  }).join('');
  const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(Hd-12)+'" text-anchor="middle" font-size="12" fill="#48647e">'+y+'</text>').join('');
- const fieldNames={growth:'Рост ВВП, %',reward:'Оценка решений, усл. ед.',budget:'Доступный капитал, усл. ед.',trade_usd:'Моделируемая исходящая торговля, млрд долл.'};
+ const fieldNames={growth:'Рост ВВП, %',inflation:'Инфляция, %',investment_pct:'Инвестиции / ВВП, %',export_pct:'Экспорт / ВВП, %',import_pct:'Импорт / ВВП, %',unemployment:'Безработица, %',population_growth:'Рост населения, %',remittances_pct:'Денежные переводы / ВВП, %',reward:'Оценка решений, усл. ед.',budget:'Доступный капитал, усл. ед.',trade_usd:'Моделируемая исходящая торговля, млрд долл.'};
  $('partyCountryDetailChart').innerHTML='<strong>'+safe(M.countryNames[code])+' — '+safe(fieldNames[field])+'</strong><p class="country-legend"><span><i style="background:'+colors.PLAYER+'"></i>Игрок</span><span><i style="background:'+colors[baseline]+'"></i>'+safe(NAMES[baseline])+'</span></p>'+
  '<svg viewBox="0 0 '+Wd+' '+Hd+'" role="img" aria-label="'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+', 2025–2050"><title>'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+'</title>'+grid+years+line(player,colors.PLAYER)+line(other,colors[baseline])+'</svg>';
  $('partyCountryDetailRows').innerHTML=player.map((row,i)=>'<tr><th>'+(i+2025)+'</th><td>'+fmt(row.growth,3)+'</td><td>'+fmt(other[i].growth,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+fmt(other[i].reward,3)+'</td></tr>').join('');
