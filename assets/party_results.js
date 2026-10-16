@@ -99,8 +99,11 @@ function renderAll(){
   return {label,unit,better:dir*player[id]>dir*best.value+1e-8,against:best.name,delta:player[id]-best.value};
  }).filter(Boolean);
  const better=performance.filter(x=>x.better).length;
+ const ranking=c.available.slice().sort((a,b)=>c.summaries[b].reward-c.summaries[a].reward);
+ const place=ranking.indexOf('PLAYER')+1;
  $('partyResultKpis').innerHTML=[
- ['Преимущество по показателям',better+' из '+performance.length],
+ ['Место по оценке модели',place+' из '+c.available.length],
+ ['Лучший итог по показателям',better+' из '+performance.length],
  ['Рост ВВП за год',fmt(player.growth)+'%'],
  ['Чистая отдача проектов',fmt(player.net)+' усл. ед.'],
  ['Торговый оборот к 2050 году',fmt(player.trade/1e9,1)+' млрд долл.']
