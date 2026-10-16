@@ -98,3 +98,23 @@
 .guide-card .guide-caveat{color:#788a9d;font-size:10px;margin-top:8px}
 @media(max-width:900px){.guide-grid{grid-template-columns:1fr}.choice-explanations{grid-template-columns:1fr}}
 @media(max-width:650px){.crisis-notice{flex-direction:column;padding:16px;gap:5px}.crisis-notice>a{padding:0}.reference-panel{padding:18px 14px}.reference-tabs{gap:5px}.reference-tab{padding:9px 11px}.decision-map-heading{flex-direction:column;align-items:flex-start}.guide-card{padding:14px}.crisis-params,.impact-grid{grid-template-columns:1fr}}
+
+/* Дополнительные сценарии и жеребьевка кризисов */
+.wild-inline{margin-top:13px;padding:15px 17px;background:#f4f8fd;border:1px solid #d9e4f0;border-radius:10px;display:grid;grid-template-columns:minmax(180px,1fr) minmax(220px,2fr);gap:8px 18px;align-items:center}
+.wild-inline label{font-size:12px;font-weight:800;color:#2b4768}
+.wild-inline select{width:100%;min-width:0;background:white;border:1px solid #cfdaea;border-radius:7px;padding:10px;color:#244265}
+.wild-inline p{grid-column:1/-1;font-size:12px;line-height:1.65;color:#556d88;margin:0}
+.wild-inline a{grid-column:1/-1;justify-self:start;font-size:11px;font-weight:700}
+.wild-toolbar{display:flex;align-items:end;gap:9px 12px;flex-wrap:wrap;margin:14px 0 17px}
+.wild-toolbar label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#536e8a;font-weight:700}
+.wild-toolbar input{width:185px;max-width:100%;border:1px solid #cbdaeb;border-radius:7px;padding:9px 11px;background:#fff;color:#274362}
+.wild-toolbar .small-guide-action{align-self:end;margin:0}
+.wild-warning{border-left:3px solid #6d94bd;background:#f1f6fb;padding:13px 15px;border-radius:0 8px 8px 0;font-size:12px;line-height:1.6;color:#4c6682;margin:14px 0 21px}
+.wild-events{list-style:none;padding:0;margin:9px 0 0;display:flex;flex-direction:column;gap:12px}
+.wild-events li{display:grid;grid-template-columns:49px minmax(0,1fr);gap:11px;border-top:1px solid #e5ebf2;padding-top:11px}
+.wild-events li:first-child{border-top:0;padding-top:0}
+.wild-year{font-size:12px;font-weight:800;color:#245c9b}
+.wild-events b{display:block;font-size:12px;color:#2d4762;line-height:1.45}
+.wild-events small{display:block;margin:5px 0;color:#6d8196;font-size:11px}
+.wild-events p{font-size:11px!important;line-height:1.55!important}
+@media(max-width:700px){.wild-inline{grid-template-columns:1fr}.wild-toolbar{align-items:stretch}.wild-toolbar .small-guide-action{align-self:auto}.wild-toolbar label{flex:1;min-width:140px}}
