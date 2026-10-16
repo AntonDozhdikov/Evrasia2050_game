@@ -259,3 +259,8 @@ footer{padding:13px 6px 20px;color:#71859a}
 .year-decisions-scroll table{border-collapse:collapse;min-width:820px;font-size:11px}
 .year-decisions-scroll th,.year-decisions-scroll td{white-space:normal;min-width:90px;vertical-align:top;padding:7px;border-bottom:1px solid #e0eaf6}
 .year-decision-details>p{padding:8px 3px}
+
+/* Stage 3: constrain policy decision tables within the available mobile grid track. */
+.year-preview-section{grid-template-columns:minmax(0,1fr);min-width:0}
+.year-preview-section>#partyYearPreviewContent,.year-preview-countries,.year-decision-details,.year-decisions-scroll{min-width:0;max-width:100%;box-sizing:border-box}
+.year-preview-countries{width:100%;overflow-x:auto}
