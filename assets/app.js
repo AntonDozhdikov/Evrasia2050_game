@@ -13,9 +13,24 @@ const current=()=>M.at(D,state.scenario,state.policy,state.seed,state.year);
 const compare=()=>M.at(D,state.scenario,state.compare,state.seed,state.year);
 function selectSetup(){
  $('scenario').innerHTML=D.scenarios.map(s=>`<option value="${safe(s.scenario_id)}">${safe(s.scenario_id+' · '+(window.EURASIA_GUIDE?.scenarioTitles?.[s.scenario_id]||s.name))}</option>`).join('');
- for(const id of ['policy','compare'])$(id).innerHTML=Object.entries(M.policyNames).map(([v,k])=>`<option value="${v}">${safe(k)}</option>`).join('');
+ for(const id of ['policy','compare'])$(id).innerHTML=
+   '<optgroup label="Расчёт адаптивной MAPPO">'+M.adaptivePolicies.map(v=>`<option value="${v}">${safe(M.policyNames[v])}</option>`).join('')+'</optgroup>'+
+   '<optgroup label="Архив V4.7">'+M.archivePolicies.map(v=>`<option value="${v}">${safe(M.policyNames[v])}</option>`).join('')+'</optgroup>';
  $('seed').innerHTML=D.manifest.seeds.map(v=>`<option value="${v}">${v}</option>`).join('');
- for(const id of ['scenario','policy','compare','seed','metric']){if(!$(id))continue;$(id).value=state[id];$(id).addEventListener('change',e=>{state[id]=id==='seed'?Number(e.target.value):e.target.value;pause();render();});}
+ for(const id of ['scenario','policy','compare','seed','metric']){
+  if(!$(id))continue;
+  $(id).value=state[id];
+  $(id).addEventListener('change',e=>{
+   state[id]=id==='seed'?Number(e.target.value):e.target.value;
+   if((id==='policy'||id==='compare')&&state.policy===state.compare){
+    const different=[...M.adaptivePolicies,...M.archivePolicies].find(key=>key!==state[id]);
+    const other=id==='policy'?'compare':'policy';
+    state[other]=different;
+    $(other).value=different;
+   }
+   pause();render();
+  });
+ }
  $('year').addEventListener('input',e=>{state.year=Number(e.target.value);render();});
  $('back').onclick=()=>{pause();state.year=Math.max(2025,state.year-1);render();};
  $('next').onclick=()=>{pause();state.year=Math.min(2050,state.year+1);render();};
@@ -25,15 +40,15 @@ function selectSetup(){
 }
 function play(){if(state.year===2050)state.year=2025;$('play').textContent='Ⅱ Пауза';timer=setInterval(()=>{if(state.year===2050){pause();return;}state.year++;render();},650);}
 function pause(){if(timer){clearInterval(timer);timer=null;}$('play').textContent='▶ Воспроизвести';}
-function updateStat(id,deltaId,v,other,suffix='',digits=1){
+function updateStat(id,deltaId,v,other,suffix='',digits=1,deltaUnit=suffix){
  $(id).textContent=fmt(v,digits)+suffix;
  let diff=Number(v)-Number(other);
- $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${suffix}</span> к ${safe(M.policyNames[state.compare])}`;
+ $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${deltaUnit}</span> к ${safe(M.policyNames[state.compare])}`;
 }
 function renderStats(){let x=current().values,y=compare().values;
- updateStat('growth','growth-delta',x.mean_growth_pct,y.mean_growth_pct,'%',2);
+ updateStat('growth','growth-delta',x.mean_growth_pct,y.mean_growth_pct,'%',2,' п.п.');
  updateStat('projects','projects-delta',x.new_projects,y.new_projects,'',0);
- updateStat('trade','trade-delta',x.trade_usd_total/1e9,y.trade_usd_total/1e9,'',1);
+ updateStat('trade','trade-delta',x.trade_usd_total/1e9,y.trade_usd_total/1e9,'',1,' млрд долл.');
  $('crisis').textContent=fmt(x.crises_active,0);$('crisis-delta').textContent=x.crises_active?'Синтетические воздействия':'Активных воздействий нет';
 }
 function renderChart(){
@@ -46,7 +61,15 @@ function renderChart(){
  const grids=Array.from({length:5},(_,i)=>{let v=low+i*(high-low)/4,yy=Y(v);return `<line x1="${p.l}" y1="${yy}" x2="${w-p.r}" y2="${yy}" stroke="#e3e9f0"/><text x="${p.l-12}" y="${yy+4}" font-size="12" fill="#718095" text-anchor="end">${fmt(state.metric==='trade_usd_total'?v/1e9:v,1)}</text>`;}).join('');
  const labels=[2025,2030,2035,2040,2045,2050].map(v=>`<text x="${X(v-2025)}" y="${h-13}" text-anchor="middle" fill="#718095" font-size="12">${v}</text>`).join('');
  $('chart').innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Динамика ${safe(state.metric)}"><g>${grids}${labels}${hl}${makeLine(b,'#d44f5d')}${makeLine(a,'#2362c6')}</g><circle cx="${X(ix)}" cy="${Y(a[ix].value)}" r="6" fill="#2362c6" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.policy])}: ${fmt(a[ix].value,3)}</title></circle><circle cx="${X(ix)}" cy="${Y(b[ix].value)}" r="5" fill="#d44f5d" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.compare])}: ${fmt(b[ix].value,3)}</title></circle></svg>`;
- $('legendPrimary').textContent=M.policyNames[state.policy];$('legendCompare').textContent=M.policyNames[state.compare]; $('metricExplanation').textContent=metricExplanations[state.metric]+' Синяя линия — выбранная стратегия, красная — сравниваемая. Это условные результаты модели.';
+ $('legendPrimary').textContent=M.policyNames[state.policy];
+ $('legendCompare').textContent=M.policyNames[state.compare];
+ $('chartSelection').textContent=M.policyNames[state.policy]+'  ↔  '+M.policyNames[state.compare];
+ $('chartStrategyDetails').innerHTML='<div><b class="strategy-primary">'+safe(M.policyNames[state.policy])+'</b><p>'+safe(M.policyDetails[state.policy])+'</p></div>'+
+  '<div><b class="strategy-secondary">'+safe(M.policyNames[state.compare])+'</b><p>'+safe(M.policyDetails[state.compare])+'</p></div>';
+ const adaptiveMode=[state.policy,state.compare].some(key=>M.adaptivePolicies.includes(key));
+ $('metricExplanation').textContent=metricExplanations[state.metric]+(state.metric==='trade_usd_total'?' Единица оси: млрд долл.':'')+
+  ' Синяя — основная стратегия, красная — контроль. '+
+  (adaptiveMode?'Адаптивные линии рассчитаны в браузере исходным замороженным актором MAPPO с приближённым состоянием V4.7; архивные линии не изменяются.':'Обе линии — сохранённые траектории исходного эксперимента V4.7.');
 }
 const positions={RUS:[255,75],BLR:[110,122],KAZ:[312,186],KGZ:[205,260],UZB:[295,293],TJK:[385,283],TKM:[380,218],ARM:[87,246]};
 const actionLevels=[
@@ -66,12 +89,7 @@ const metricExplanations={
  mean_reward:'Внутренняя оценка действий алгоритмом. Это не прибыль и не общественное благосостояние; использовать ее как единственную меру успеха нельзя.',
  network_strength:'Условный индекс межгосударственной связности внутри модели. Он отличается от исторической схемы торговли за 2024 год.'
 };
-const policyExplanations={
- MAPPO_GREEDY:'ИИ выбирает наиболее вероятное действие обученной политики для каждого государства. Это не означает, что действие обязательно самое выгодное.',
- MAPPO:'ИИ выбирает действия с учетом их вероятностей; при сходных условиях решения могут различаться между расчетами.',
- BARGAIN:'Все страны действуют по заранее установленным правилам переговоров, инвестиций и сотрудничества. Это контрольный вариант для сравнения.',
- NEUTRAL:'Государства сохраняют преимущественно нейтральные решения и не выдвигают новые крупные инициативы. Это контрольная стратегия.'
-};
+const policyExplanations=M.policyDetails;
 const scenarioQuestions={
  S01:'Как отличаются решения стран при изменении условий сырьевых рынков?',
  S02:'Какие стратегии сохраняют ресурсы и позволяют продолжать сотрудничество при финансовых ограничениях?',

@@ -28,7 +28,31 @@ document.querySelectorAll('a[href^="#"]').forEach(link=>{
   if(link.dataset.uxOpen)openTarget('#'+link.dataset.uxOpen);
  });
 });
+const navLinks=[...document.querySelectorAll('.topnav a[href^="#"],.mobile-jump-nav a[href^="#"]')];
+function activeNav(id){
+ for(const link of navLinks){
+  if(link.getAttribute('href')==='#'+id)link.setAttribute('aria-current','location');
+  else link.removeAttribute('aria-current');
+ }
+}
+const navigationSections=['party-planner','results','archive-results','reference'];
+function updateCurrentSection(){
+ const offset=window.innerWidth<=650?145:100;
+ let selected='party-planner';
+ for(const id of navigationSections){
+  const node=$(id);if(node&&node.getBoundingClientRect().top<=offset)selected=id;
+ }
+ activeNav(selected);
+}
+let frame=false;
+window.addEventListener('scroll',()=>{
+ if(frame)return;frame=true;
+ window.requestAnimationFrame(()=>{frame=false;updateCurrentSection();});
+},{passive:true});
+window.addEventListener('resize',updateCurrentSection);
+navLinks.forEach(a=>a.addEventListener('click',()=>activeNav((a.getAttribute('href')||'').slice(1))));
 if(window.location.hash)openTarget(window.location.hash);
+updateCurrentSection();
 window.addEventListener('hashchange',()=>{if(window.location.hash)openTarget(window.location.hash);});
 window.addEventListener('eurasia:party-edited',()=>{
  const output=$('partyResultsContent'),status=$('partyResultsStatus');

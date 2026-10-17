@@ -104,7 +104,11 @@ function configureOptions(){
  const opts=D.scenarios.map(s=>'<option value="'+s.scenario_id+'">'+s.scenario_id+' · '+escape(G.scenarioTitles[s.scenario_id]||s.name)+'</option>')
  .concat(W.getSets().map(s=>'<option value="'+s.id+'">'+escape(s.id+' · Дикая карта № '+Number(s.id.slice(1)))+'</option>'));
  $('partyScenario').innerHTML=opts.join('');
- $('partyPolicy').innerHTML=Object.entries(M.policyNames).map(([id,title])=>'<option value="'+id+'">'+escape(title)+'</option>').join('');
+ $('partyPolicy').innerHTML=[
+  ['Адаптивный ИИ',['ADAPTIVE_MAPPO_GREEDY','ADAPTIVE_MAPPO']],
+  ['Правила',['BARGAIN','NEUTRAL']],
+  ['Архив',['MAPPO_GREEDY','MAPPO']]
+ ].map(([group,ids])=>'<optgroup label="'+escape(group)+'">'+ids.map(id=>'<option value="'+id+'">'+escape(M.policyNames[id])+'</option>').join('')+'</optgroup>').join('');
  $('partyYear').innerHTML=Array.from({length:26},(_,i)=>'<option value="'+(i+2025)+'">'+(i+2025)+'</option>').join('');
 }
 function optionsLevel(i,selected){
@@ -116,6 +120,7 @@ function render(){
  $('partyPolicy').value=party.policy;
  $('partySeed').value=party.seed;
  $('partyYear').value=party.year;
+ $('partyPolicyHelp').textContent=M.policyDetails[party.policy]||'';
  const countries=$('partyCountries');
  countries.innerHTML=Core.COUNTRIES.map(c=>'<label class="party-country '+(party.controlled.includes(c)?'chosen':'')+'"><input type="checkbox" value="'+c+'" '+(party.controlled.includes(c)?'checked':'')+'><span>'+escape(M.countryNames[c])+'</span></label>').join('');
  countries.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>onCountriesChange(input)));
@@ -141,11 +146,11 @@ function render(){
  $('partyNext').disabled=party.year===2050;
  const wild=party.scenario.startsWith('W'),supported=!wild&&D.manifest.seeds.includes(party.seed);
  $('partyContext').innerHTML=wild?
-  '<strong>«Дикая карта» '+escape(party.scenario)+':</strong> четыре кризиса. Номер жеребьёвки: <b>'+escape(party.wildcardSeed||'не сохранён')+'</b>; номер экономического расчёта: <b>'+escape(party.seed)+'</b>. Доступны переговорная, нейтральная и адаптивная MAPPO; архивная MAPPO недоступна.':
+  '<strong>«Дикая карта» '+escape(party.scenario)+'.</strong> Четыре кризиса · жеребьёвка '+escape(party.wildcardSeed||'—')+' · расчёт '+escape(party.seed)+'. Архивный ИИ здесь недоступен.':
   '<strong>'+escape(G.scenarioTitles[party.scenario]||party.scenario)+'.</strong> '+(supported?
-   (party.policy.startsWith('ADAPTIVE_MAPPO')?'Адаптивная MAPPO: обученный актор вычисляет новые решения по текущему состоянию.':'Начальные решения взяты из выбранной стратегии. Архивная MAPPO использует сохранённые последовательности, а переговорная стратегия пересчитывается по состоянию модели.'):
-   'Начальный уровень решений — средний. Для этого номера расчёта доступны переговорная и нейтральная стратегии.');
- $('partyNotComputed').textContent='Вы задаёте решения только для выбранных лет. В остальные годы государства действуют по выбранным стратегиям. Расчёт всегда охватывает 2025–2050 годы.';
+   'Условия исходного исследования V4.7; автоматические действия выбирает «'+escape(M.policyNames[party.policy])+'».':
+   'Новый вариант исходных условий; доступны только стратегии без архивной привязки.');
+ $('partyNotComputed').textContent='Задавайте решения по годам. Пропущенные годы рассчитывает выбранная стратегия; полный итог — до 2050 года.';
  window.dispatchEvent(new Event('eurasia:party-rendered'));
 }
 function onCountriesChange(input){

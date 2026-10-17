@@ -32,7 +32,7 @@ renderReference(view());
 function renderSummaries(v){
 var q=G.scenarioDescriptions[v.scenario],p=G.policyDescriptions[v.policy];
 $('scenarioShort').textContent=q?q.short:'Сравните способы действий стран и их экономические последствия.';
-$('policyExplanation').textContent=p?p.short:'';
+$('policyExplanation').textContent=M.policyDetails[v.policy]||p?.short||'';
 }
 function renderCrisis(v){
 var list=due(v.scenario,v.year),node=$('crisisCurrent'),archive=M.at(D,v.scenario,v.policy,v.seed,v.year);
@@ -86,8 +86,8 @@ html+='<article class="guide-card '+(chosen?'selected-guide':'')+'"><span class=
 });
 html+='</div>';
 }else if(selectedTab==='strategies'){
-html='<p class="reference-intro">Здесь сравниваются два способа работы обученной многоагентной стратегии и два варианта поведения по заранее заданным правилам. Для сравнения используются одинаковые условия.</p><div class="guide-grid">';
-Object.keys(G.policyDescriptions).forEach(function(id){var t=G.policyDescriptions[id];html+='<article class="guide-card '+(v.policy===id?'selected-guide':'')+'"><span class="guide-code">'+(id.startsWith('MAPPO')?'ОБУЧЕННАЯ МОДЕЛЬ':'ПРАВИЛА ДЛЯ СРАВНЕНИЯ')+'</span><h3>'+escape(M.policyNames[id])+'</h3><p><strong>'+escape(t.short)+'</strong></p><p>'+escape(t.details)+'</p><button type="button" class="small-guide-action" data-choose-policy="'+id+'">'+(id===v.policy?'Выбрана':'Выбрать стратегию')+'</button></article>';});
+html='<p class="reference-intro">Четыре исходные стратегии воспроизводят архив V4.7; два адаптивных режима используют замороженный актор MAPPO и пересчитываются в браузере. Начальные условия сравнения совпадают.</p><div class="guide-grid">';
+Object.keys(M.policyNames).forEach(function(id){var t=G.policyDescriptions[id];var type=M.adaptivePolicies.includes(id)?'ТЕКУЩИЙ НЕЙРОСЕТЕВОЙ РАСЧЁТ':M.archivePolicies.includes(id)&&id.startsWith('MAPPO')?'АРХИВ ОБУЧЕННОЙ МОДЕЛИ':'ПРАВИЛА ДЛЯ СРАВНЕНИЯ';html+='<article class="guide-card '+(v.policy===id?'selected-guide':'')+'"><span class="guide-code">'+type+'</span><h3>'+escape(M.policyNames[id])+'</h3><p>'+escape(M.policyDetails[id])+'</p>'+(t?'<details class="guide-more"><summary>Методические сведения</summary><p>'+escape(t.details)+'</p></details>':'<p>Весовые параметры MAPPO не изменены; адаптер браузерного состояния сохраняет некоторые исторические признаки 2024 года.</p>')+'<button type="button" class="small-guide-action" data-choose-policy="'+id+'">'+(id===v.policy?'Выбрана':'Выбрать стратегию')+'</button></article>';});
 html+='</div>';
 }else if(selectedTab==='actions'){
 html='<p class="reference-intro">Каждая страна выбирает шесть действий; у каждого три уровня. Показаны значения обученной или контрольной стратегии, а не фактические решения правительств.</p><div class="guide-grid">';
