@@ -86,8 +86,8 @@ html+='<article class="guide-card '+(chosen?'selected-guide':'')+'"><span class=
 });
 html+='</div>';
 }else if(selectedTab==='strategies'){
-html='<p class="reference-intro">Здесь сравниваются два способа работы обученной многоагентной стратегии и два варианта поведения по заранее заданным правилам. Для сравнения используются одинаковые условия.</p><div class="guide-grid">';
-Object.keys(G.policyDescriptions).forEach(function(id){var t=G.policyDescriptions[id];html+='<article class="guide-card '+(v.policy===id?'selected-guide':'')+'"><span class="guide-code">'+(id.startsWith('MAPPO')?'ОБУЧЕННАЯ МОДЕЛЬ':'ПРАВИЛА ДЛЯ СРАВНЕНИЯ')+'</span><h3>'+escape(M.policyNames[id])+'</h3><p><strong>'+escape(t.short)+'</strong></p><p>'+escape(t.details)+'</p><button type="button" class="small-guide-action" data-choose-policy="'+id+'">'+(id===v.policy?'Выбрана':'Выбрать стратегию')+'</button></article>';});
+html='<p class="reference-intro">Это четыре архивные стратегии исследования V4.7. Адаптивные режимы доступны в новой игровой партии; здесь сравниваются сохранённые траектории при одинаковых исходных условиях.</p><div class="guide-grid">';
+Object.keys(G.policyDescriptions).forEach(function(id){var t=G.policyDescriptions[id];html+='<article class="guide-card '+(v.policy===id?'selected-guide':'')+'"><span class="guide-code">'+(id.startsWith('MAPPO')?'АРХИВ ОБУЧЕННОЙ МОДЕЛИ':'КОНТРОЛЬНЫЕ ПРАВИЛА')+'</span><h3>'+escape(M.policyNames[id])+'</h3><p>'+escape(M.policyDetails[id])+'</p><details class="guide-more"><summary>Методические сведения</summary><p>'+escape(t.details)+'</p></details><button type="button" class="small-guide-action" data-choose-policy="'+id+'">'+(id===v.policy?'Выбрана':'Выбрать стратегию')+'</button></article>';});
 html+='</div>';
 }else if(selectedTab==='actions'){
 html='<p class="reference-intro">Каждая страна выбирает шесть действий; у каждого три уровня. Показаны значения обученной или контрольной стратегии, а не фактические решения правительств.</p><div class="guide-grid">';
