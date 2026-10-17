@@ -22,6 +22,9 @@ jobs:
           node --check assets/policy_v47.js
           node --check assets/party_results.js
           node --check assets/party_ui.js
+          node --check assets/app.js
+          node --check assets/model.js
+          node --check assets/ux_v2.js
           node --check assets/party_turn.js
           node --check assets/metric_units.js
           node --check assets/text_editor.js
@@ -52,6 +55,10 @@ jobs:
           grep -o '<p id="status">[^<]*' /tmp/eurasia-adaptive-browser.html || true
           grep -Fq '<p id="status">PASS ADAPTIVE WEB:' /tmp/eurasia-adaptive-browser.html || { tail -c 1600 /tmp/eurasia-adaptive-browser.html; tail -n 20 /tmp/eurasia-adaptive-browser.log; exit 1; }
           echo "Адаптивная MAPPO: тест браузера пройден"
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=20000 --dump-dom http://127.0.0.1:8765/tests/compact_strategy_browser_smoke.html > /tmp/eurasia-compact-browser.html 2>/tmp/eurasia-compact-browser.log
+          grep -o '<p id="status">[^<]*' /tmp/eurasia-compact-browser.html || true
+          grep -Fq '<p id="status">PASS COMPACT UX:' /tmp/eurasia-compact-browser.html || { tail -c 2200 /tmp/eurasia-compact-browser.html; tail -n 20 /tmp/eurasia-compact-browser.log; exit 1; }
+          echo "Новые названия стратегий, корректность графика и компактная навигация: тест пройден"
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=25000 --dump-dom http://127.0.0.1:8765/tests/turn_browser_smoke.html > /tmp/eurasia-turn-browser.html 2>/tmp/eurasia-turn-browser.log
           grep -o '<p id="status">[^<]*' /tmp/eurasia-turn-browser.html || true
           grep -Fq '<p id="status">PASS TURN QA:' /tmp/eurasia-turn-browser.html || { tail -c 1600 /tmp/eurasia-turn-browser.html; tail -n 20 /tmp/eurasia-turn-browser.log; exit 1; }
