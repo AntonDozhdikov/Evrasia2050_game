@@ -5,7 +5,7 @@
  const out=document.getElementById('status'),f=document.getElementById('game'),pre=document.getElementById('report');
  const warnings=[],counts={partyRuns:0,partyMetrics:0,countryMetrics:0,countries:0,viewports:0};
  const ch=(cond,why)=>{if(!cond)throw Error(why);};
- const set=(d,id,value)=>{let el=d.getElementById(id);ch(el&&[...el.options].some(o=>o.value===String(value)),id+' no '+value);el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));};
+ const set=(d,id,value)=>{let el=d.getElementById(id);ch(el&&(!el.options||[...el.options].some(o=>o.value===String(value))),id+' no '+value);el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));};
  const inspect=(d,id,minLines,metric)=>{
   const box=d.getElementById(id),svg=box?.querySelector('svg'),lines=[...(box?.querySelectorAll('polyline')||[])];
   ch(svg,'No SVG in '+id+' for '+metric);
