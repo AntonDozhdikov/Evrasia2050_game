@@ -41,8 +41,11 @@
     bootstrap:root.EURASIA_ENGINE_BOOTSTRAP,cat:root.EURASIA_GUIDE.crisisCatalog,
     scenario:s,seed,policy,db,adaptive:root.EurasiaAdaptive
    });
+   // В оригинальном EurasiaEnv оба поля равны числу новых парных проектов:
+   // projects = (project > 0).sum()/2, new_projects = triu(project > 0).sum().
+   const aliases={projects:'new_projects'};
    const years=out.history.map(row=>db.fields.map(field=>{
-    const value=row[field];
+    const value=row[aliases[field]||field];
     if(!Number.isFinite(value))throw Error('Отсутствует показатель '+field+' в расчёте '+key+'; поля архива: '+db.fields.join(', ')+'; выходы движка: '+Object.keys(row).join(', '));
     return value;
    }));
