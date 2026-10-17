@@ -104,7 +104,11 @@ function configureOptions(){
  const opts=D.scenarios.map(s=>'<option value="'+s.scenario_id+'">'+s.scenario_id+' · '+escape(G.scenarioTitles[s.scenario_id]||s.name)+'</option>')
  .concat(W.getSets().map(s=>'<option value="'+s.id+'">'+escape(s.id+' · Дикая карта № '+Number(s.id.slice(1)))+'</option>'));
  $('partyScenario').innerHTML=opts.join('');
- $('partyPolicy').innerHTML=Object.entries(M.policyNames).map(([id,title])=>'<option value="'+id+'">'+escape(title)+'</option>').join('');
+ $('partyPolicy').innerHTML=[
+  ['Адаптивный ИИ',['ADAPTIVE_MAPPO_GREEDY','ADAPTIVE_MAPPO']],
+  ['Правила',['BARGAIN','NEUTRAL']],
+  ['Архив',['MAPPO_GREEDY','MAPPO']]
+ ].map(([group,ids])=>'<optgroup label="'+escape(group)+'">'+ids.map(id=>'<option value="'+id+'">'+escape(M.policyNames[id])+'</option>').join('')+'</optgroup>').join('');
  $('partyYear').innerHTML=Array.from({length:26},(_,i)=>'<option value="'+(i+2025)+'">'+(i+2025)+'</option>').join('');
 }
 function optionsLevel(i,selected){
