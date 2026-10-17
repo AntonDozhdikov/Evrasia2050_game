@@ -22,6 +22,10 @@
 .chart-data-note:empty{display:none}
 #chartDataNote{margin:5px 0}
 .chart-scales-note{font-size:10px;line-height:1.3;color:#5a7188}
+@media(max-width:900px){
+ #partyResultChart svg{min-width:740px!important;width:740px!important;height:241px!important;max-height:none!important;max-width:none!important}
+ #partyCountryDetailChart svg{min-width:720px!important;width:720px!important;height:213px!important;max-height:none!important;max-width:none!important}
+}
 @media(max-width:650px){
  /* Не сжимать график до 70px: горизонтальная прокрутка только графического блока. */
  #chart svg{min-width:680px!important;width:680px!important;height:240px!important;max-height:none!important;max-width:none!important}
