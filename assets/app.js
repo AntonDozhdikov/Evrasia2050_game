@@ -163,7 +163,7 @@ function renderNetwork(){
   const [ax,ay]=positions[e.a],[bx,by]=positions[e.b];const highlighted=e.a===state.country||e.b===state.country;
   const width=(1.5+6.5*Math.sqrt(e.total/maxValue)).toFixed(2);
   const info=e.flows.map(f=>`${M.countryNames[f.from]} → ${M.countryNames[f.to]}: ${tradeAmount(f.usd)}`).join('\n');
-  return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${highlighted?'#2362c6':'#739bbd'}" stroke-width="${width}" stroke-opacity="${highlighted?'.86':'.33'}" stroke-linecap="round"><title>${safe(info)}</title></line>`;
+  return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${highlighted?'#064bb6':'#6b87a4'}" stroke-width="${width}" stroke-opacity="${highlighted?'.96':'.55'}" stroke-linecap="round"><title>${safe(info)}</title></line>`;
  }).join('');
  const nodes=D.countries.map(c=>{const [x,y]=positions[c],is=c===state.country;
   return `<g class="network-node" tabindex="0" role="button" aria-label="Выбрать ${safe(M.countryNames[c])}" data-country="${c}"><circle cx="${x}" cy="${y}" r="${is?25:22}" fill="${is?'#2362c6':'#fff'}" stroke="${is?'#2362c6':'#93afcb'}" stroke-width="2"/><text x="${x}" y="${y+4}" fill="${is?'#fff':'#304963'}" font-size="12" font-weight="700" text-anchor="middle">${c}</text><title>${safe(M.countryNames[c])}</title></g>`;
