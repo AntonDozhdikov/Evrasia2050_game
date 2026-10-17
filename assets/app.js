@@ -38,15 +38,15 @@ function selectSetup(){
 }
 function play(){if(state.year===2050)state.year=2025;$('play').textContent='Ⅱ Пауза';timer=setInterval(()=>{if(state.year===2050){pause();return;}state.year++;render();},650);}
 function pause(){if(timer){clearInterval(timer);timer=null;}$('play').textContent='▶ Воспроизвести';}
-function updateStat(id,deltaId,v,other,suffix='',digits=1){
+function updateStat(id,deltaId,v,other,suffix='',digits=1,deltaUnit=suffix){
  $(id).textContent=fmt(v,digits)+suffix;
  let diff=Number(v)-Number(other);
- $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${suffix}</span> к ${safe(M.policyNames[state.compare])}`;
+ $(deltaId).innerHTML=`<span class="${diff>0?'pos':diff<0?'neg':'neutral'}">${signed(diff,digits)}${deltaUnit}</span> к ${safe(M.policyNames[state.compare])}`;
 }
 function renderStats(){let x=current().values,y=compare().values;
- updateStat('growth','growth-delta',x.mean_growth_pct,y.mean_growth_pct,' п.п.',2);
+ updateStat('growth','growth-delta',x.mean_growth_pct,y.mean_growth_pct,'%',2,' п.п.');
  updateStat('projects','projects-delta',x.new_projects,y.new_projects,'',0);
- updateStat('trade','trade-delta',x.trade_usd_total/1e9,y.trade_usd_total/1e9,' млрд долл.',1);
+ updateStat('trade','trade-delta',x.trade_usd_total/1e9,y.trade_usd_total/1e9,'',1,' млрд долл.');
  $('crisis').textContent=fmt(x.crises_active,0);$('crisis-delta').textContent=x.crises_active?'Синтетические воздействия':'Активных воздействий нет';
 }
 function renderChart(){
