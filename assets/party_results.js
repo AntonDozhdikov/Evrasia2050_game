@@ -249,21 +249,43 @@ function renderCountryDetail(){
  const player=c.runs.PLAYER.history.map(row=>row.country_stats[k]);
  const other=c.runs[baseline].history.map(row=>row.country_stats[k]);
  const scale=v=>field==='trade_usd'?U.countryTrade(v):v;
- const values=[...player,...other].map(row=>scale(row[field]));
- const rawMin=Math.min(...values),rawMax=Math.max(...values);
- const padding=Math.max((rawMax-rawMin)*.1,.03);
- const low=Math.min(0,rawMin-padding),high=Math.max(low+.1,rawMax+padding);
- const Wd=980,Hd=290,L=75,T=18,PW=865,PH=218;
+ const first=player.map(row=>scale(row[field])),second=other.map(row=>scale(row[field]));
+ const host=$('partyCountryDetailChart'),values=[...first,...second];
+ if(values.some(x=>!Number.isFinite(x))||first.length!==26||second.length!==26){
+  host.innerHTML='<p role="alert">Нет полного ряда данных по стране и выбранному показателю.</p>';
+  return;
+ }
+ const rawMin=Math.min(...values),rawMax=Math.max(...values),spread=rawMax-rawMin;
+ const margin=Math.max(spread*.14,Math.abs(rawMax)*.025,.012);
+ const low=rawMin-margin,high=Math.max(low+.02,rawMax+margin);
+ const Wd=980,Hd=290,L=75,T=19,PW=875,PH=220;
  const X=i=>L+i*PW/25,Y=v=>T+(high-v)/(high-low)*PH;
- const line=(values,col)=>'<polyline fill="none" stroke="'+col+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="'+values.map((v,i)=>X(i).toFixed(1)+','+Y(scale(v[field])).toFixed(1)).join(' ')+'"/>';
  const grid=Array.from({length:5},(_,i)=>{
-  const v=low+(high-low)*i/4,y=Y(v);
-  return '<line x1="'+L+'" x2="'+(Wd-24)+'" y1="'+y+'" y2="'+y+'" stroke="#dce6f0"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#48647e">'+fmt(v,2)+'</text>';
+  const v=low+(high-low)*i/4,y=Y(v),step=(high-low)/4;
+  const decimals=step>=10?1:step>=1?2:step>=.1?3:5;
+  return '<line x1="'+L+'" x2="'+(Wd-24)+'" y1="'+y+'" y2="'+y+'" stroke="#cddae8" stroke-width="1"/>'+
+   '<text x="'+(L-10)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#294660">'+fmt(v,decimals)+'</text>';
  }).join('');
- const years=[2025,2030,2035,2040,2045,2050].map(y=>'<text x="'+X(y-2025)+'" y="'+(Hd-12)+'" text-anchor="middle" font-size="12" fill="#48647e">'+y+'</text>').join('');
+ const years=[2025,2030,2035,2040,2045,2050].map(y=>
+  '<text x="'+X(y-2025)+'" y="'+(Hd-12)+'" text-anchor="middle" font-size="12" fill="#294660">'+y+'</text>').join('');
+ const line=(series,color,isPlayer)=>{
+  const coordinates=series.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ');
+  const markers=[0,5,10,15,20,25].map(i=>'<circle cx="'+X(i)+'" cy="'+Y(series[i])+'" r="'+(isPlayer?4.8:4.2)+'" fill="'+(isPlayer?color:'#fff')+'" stroke="'+(isPlayer?'#fff':color)+'" stroke-width="2.6"><title>'+
+   safe((isPlayer?'Ваш курс':NAMES[baseline])+', '+(2025+i)+': '+fmt(series[i],4))+'</title></circle>').join('');
+  return '<polyline fill="none" stroke="'+color+'" stroke-width="'+(isPlayer?4.3:5.2)+'" '+(!isPlayer?'stroke-dasharray="10 7" ':'')+
+   'stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" points="'+coordinates+'"/>'+markers;
+ };
+ const equal=first.every((v,i)=>Math.abs(v-second[i])<=1e-10*Math.max(1,Math.abs(v),Math.abs(second[i])));
+ const constant=values.every(v=>Math.abs(v-values[0])<=1e-10*Math.max(1,Math.abs(v)));
+ const note=equal?(constant?'По обеим стратегиям показатель не меняется в течение 26 лет; линии совпадают.':'У выбранной страны две траектории совпадают. Линии наложены друг на друга.'):'';
  const fieldNames={growth:'Рост ВВП, %',inflation:'Инфляция, %',investment_pct:'Инвестиции / ВВП, %',export_pct:'Экспорт / ВВП, %',import_pct:'Импорт / ВВП, %',unemployment:'Безработица, %',population_growth:'Рост населения, %',remittances_pct:'Денежные переводы / ВВП, %',reward:'Оценка решений, усл. ед.',budget:'Доступный капитал, усл. ед.',trade_usd:'Моделируемая исходящая торговля, млрд долл.'};
- $('partyCountryDetailChart').innerHTML='<strong>'+safe(M.countryNames[code])+' — '+safe(fieldNames[field])+'</strong><p class="country-legend"><span><i style="background:'+colors.PLAYER+'"></i>Игрок</span><span><i style="background:'+colors[baseline]+'"></i>'+safe(NAMES[baseline])+'</span></p>'+
- '<svg viewBox="0 0 '+Wd+' '+Hd+'" role="img" aria-label="'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+', 2025–2050"><title>'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+'</title>'+grid+years+line(player,colors.PLAYER)+line(other,colors[baseline])+'</svg>';
+ host.innerHTML='<strong>'+safe(M.countryNames[code])+' — '+safe(fieldNames[field])+'</strong>'+
+  '<p class="country-legend"><span><i style="background:'+colors.PLAYER+'"></i>Ваш курс · сплошная</span>'+
+  '<span><i style="background:'+colors[baseline]+'"></i>'+safe(NAMES[baseline])+' · пунктир</span></p>'+
+  (note?'<p class="chart-data-note">'+safe(note)+'</p>':'')+
+  '<svg viewBox="0 0 '+Wd+' '+Hd+'" role="img" aria-label="'+safe(fieldNames[field])+': '+safe(M.countryNames[code])+', 2025–2050"><title>'+
+  safe(fieldNames[field])+': '+safe(M.countryNames[code])+'</title>'+grid+years+
+  line(second,colors[baseline],false)+line(first,colors.PLAYER,true)+'</svg>';
  $('partyCountryDetailRows').innerHTML=player.map((row,i)=>'<tr><th>'+(i+2025)+'</th><td>'+fmt(row.growth,3)+'</td><td>'+fmt(other[i].growth,3)+'</td><td>'+fmt(row.reward,3)+'</td><td>'+fmt(other[i].reward,3)+'</td></tr>').join('');
  renderControlledSummary();
 }
