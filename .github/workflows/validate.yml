@@ -62,9 +62,13 @@ jobs:
           echo "Новые названия стратегий, корректность графика и компактная навигация: тест пройден"
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=60000 --dump-dom http://127.0.0.1:8765/tests/graph_visibility_matrix.html > /tmp/eurasia-graph-matrix.html 2>/tmp/eurasia-graph-matrix.log
           grep -o '<p id="status">[^<]*' /tmp/eurasia-graph-matrix.html || true
-          sed -n '/<pre id="report">/,/<\\/pre>/p' /tmp/eurasia-graph-matrix.html | head -c 11000 || true
+          grep -o '<pre id="report">[^<]*' /tmp/eurasia-graph-matrix.html | head -c 3000 || true
           grep -Fq '<p id="status">PASS GRAPH QA:' /tmp/eurasia-graph-matrix.html || { tail -c 1400 /tmp/eurasia-graph-matrix.html; exit 1; }
           echo "20 режимов графика и 4 ширины экрана проверены"
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=120000 --dump-dom http://127.0.0.1:8765/tests/all_game_charts_browser.html > /tmp/eurasia-all-game-charts.html 2>/tmp/eurasia-all-game-charts.log
+          grep -o '<p id="status">[^<]*' /tmp/eurasia-all-game-charts.html || true
+          grep -Fq '<p id="status">PASS FULL CHART:' /tmp/eurasia-all-game-charts.html || { tail -c 1600 /tmp/eurasia-all-game-charts.html; exit 1; }
+          echo "Все графики: 5 партий, 21 сводный и 11 страновых показателей, мобильные ширины"
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=25000 --dump-dom http://127.0.0.1:8765/tests/turn_browser_smoke.html > /tmp/eurasia-turn-browser.html 2>/tmp/eurasia-turn-browser.log
           grep -o '<p id="status">[^<]*' /tmp/eurasia-turn-browser.html || true
           grep -Fq '<p id="status">PASS TURN QA:' /tmp/eurasia-turn-browser.html || { tail -c 1600 /tmp/eurasia-turn-browser.html; tail -n 20 /tmp/eurasia-turn-browser.log; exit 1; }
