@@ -37,3 +37,14 @@
  #chart:focus-visible,#partyResultChart:focus-visible,#partyCountryDetailChart:focus-visible{outline:2px solid #1a64b3;outline-offset:2px}
 }
 @media(prefers-reduced-motion:reduce){#chart,#partyResultChart,#partyCountryDetailChart{scroll-behavior:auto}}
+
+/* Рядом с временными рядами: не терять читаемость схем торговых связей и решений. */
+.network-chart-scroll{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain}
+.network-chart-scroll svg{display:block}
+.network-chart-scroll:focus-visible,.decision-map:focus-visible{outline:2px solid #165caf;outline-offset:2px}
+.decision-map svg [data-decision-country] circle{vector-effect:non-scaling-stroke}
+@media(max-width:650px){
+ .network-chart-scroll #network{min-width:460px!important;width:460px!important;height:300px!important;max-height:none!important;max-width:none!important}
+ .decision-map{overflow-x:auto;overflow-y:hidden}
+ .decision-map svg{min-width:450px!important;width:450px!important;height:300px!important;max-height:none!important;max-width:none!important}
+}
