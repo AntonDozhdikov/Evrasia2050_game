@@ -36,6 +36,7 @@ jobs:
           node tests/verify_interface.cjs
           node tests/verify_engine.cjs
           node tests/verify_adaptive.cjs
+          node tests/verify_adaptive_archive.cjs
           node tests/verify_turn_and_units.cjs
           node tests/verify_ux.cjs
       - name: Проверить игровую партию в Chrome
