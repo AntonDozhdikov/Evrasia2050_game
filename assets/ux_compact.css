@@ -148,6 +148,7 @@ footer{padding-top:14px;padding-bottom:18px}
 }
 @media(max-width:650px){
  .topbar{min-height:51px}
+ .party-file-options{display:block!important}
  .intro{grid-template-columns:1fr;display:grid;padding:13px 15px;gap:8px}
  .intro .intro-note{display:none}
  .intro h1{font-size:36px}
@@ -173,3 +174,7 @@ footer{padding-top:14px;padding-bottom:18px}
  .archive-section .time-controls button.primary{min-width:115px}
  .party-decisions{grid-template-columns:1fr}
 }
+
+.guide-more{margin:5px 0 10px;border:1px solid #e0eaf3;border-radius:6px;padding:5px 8px}
+.guide-more summary{cursor:pointer;font-size:10px;font-weight:750;color:#31608a}
+.guide-more p{font-size:11px;line-height:1.55;margin:7px 0}
