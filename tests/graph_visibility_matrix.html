@@ -55,7 +55,7 @@
    }
   }catch(e){problems.push('Responsive graph: '+e.message);}
   log.textContent=JSON.stringify({cases:cases.length,results:rows,problems},null,2);
-  out.textContent=(problems.length?'FAIL GRAPH QA: '+problems.length+' defects':'PASS GRAPH QA: '+cases.length+' scenario-policy-metric modes and responsive heights');
+  out.textContent=(problems.length?'FAIL GRAPH QA: '+problems.join(' | '):'PASS GRAPH QA: '+cases.length+' scenario-policy-metric modes and responsive heights');
  },{once:true});
  setTimeout(()=>{if(out.textContent==='WAIT GRAPH')out.textContent='FAIL GRAPH QA: timeout';},65000);
 })();
