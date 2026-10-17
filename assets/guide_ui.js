@@ -32,7 +32,7 @@ renderReference(view());
 function renderSummaries(v){
 var q=G.scenarioDescriptions[v.scenario],p=G.policyDescriptions[v.policy];
 $('scenarioShort').textContent=q?q.short:'Сравните способы действий стран и их экономические последствия.';
-$('policyExplanation').textContent=p?p.short:'';
+$('policyExplanation').textContent=M.policyDetails[v.policy]||p?.short||'';
 }
 function renderCrisis(v){
 var list=due(v.scenario,v.year),node=$('crisisCurrent'),archive=M.at(D,v.scenario,v.policy,v.seed,v.year);
