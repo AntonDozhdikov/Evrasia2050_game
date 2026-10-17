@@ -37,7 +37,7 @@ function updatePicker(){
  select.innerHTML='<option value="">Выберите дополнительный сценарий</option>'+sets.map(s=>'<option value="'+s.id+'">'+escape(s.name+" — "+s.subtitle)+'</option>').join('');
  select.value=sets.some(x=>x.id===old)?old:'';
  const selected=sets.find(x=>x.id===select.value);
- summary.textContent=selected?selected.name+": "+selected.events.map((e,i)=>(2026+3*i)+" — "+e.name).join("; ")+". Итоги рассчитываются в новой игровой партии для переговорной и нейтральной стратегий.":
+ summary.textContent=selected?selected.name+": "+selected.events.map((e,i)=>(2026+3*i)+" — "+e.name).join("; ")+". Итоги рассчитываются в новой игровой партии для переговорной, нейтральной и двух адаптивных стратегий.":
  "Десять дополнительных сценариев охватывают все сорок ранее неиспользованных кризисов. В каждом по четыре события.";
 }
 function exportSelection(){
@@ -56,7 +56,7 @@ function render(box){
  '<ol class="wild-events">'+s.events.map((c,i)=>'<li><span class="wild-year">'+(2026+3*i)+'</span><div><b>'+escape(c.name)+'</b><small>'+escape(G.crisisTypes[c.type]||c.type)+' · интенсивность '+Number(c.intensity).toLocaleString("ru-RU")+' · продолжительность '+c.duration+' '+(c.duration===1?"год":"года")+'</small><p>'+escape(c.note||"")+'</p></div></li>').join('')+'</ol></article>').join('');
  box.innerHTML='<p class="reference-intro"><b>Все 100 кризисов распределены:</b> 60 входят в двадцать исходных сценариев, оставшиеся 40 — в десять дополнительных. Один кризис входит ровно в один сценарий. Номер жеребьевки позволяет воспроизвести тот же состав событий.</p>'+
  '<div class="wild-toolbar"><button type="button" class="small-guide-action" id="wildRegen">Новая жеребьевка</button><label>Номер жеребьевки <input id="wildSeed" type="number" min="1" max="4294967295" step="1" value="'+seed+'"></label><button type="button" class="small-guide-action" id="wildApply">Восстановить жеребьевку</button><button type="button" class="small-guide-action" id="wildSave">Скачать условия</button></div>'+
- '<p class="wild-warning"><b>Расчет последствий:</b> откройте «Вашу партию» и выберите «Дикую карту». Текущий движок рассчитывает её для переговорной и нейтральной стратегий; архивные траектории MAPPO доступны только для исходных 20 сценариев.</p>'+
+ '<p class="wild-warning"><b>Расчет последствий:</b> откройте «Вашу партию» и выберите «Дикую карту». Текущий движок рассчитывает её для переговорной, нейтральной и двух адаптивных стратегий; архивные траектории MAPPO доступны только для исходных 20 сценариев.</p>'+
  '<div class="guide-grid">'+cards+'</div>';
  box.querySelector("#wildRegen").addEventListener("click",()=>{generate((Date.now()+Math.floor(Math.random()*1000000))>>>0);render(box);});
  box.querySelector("#wildApply").addEventListener("click",()=>{
