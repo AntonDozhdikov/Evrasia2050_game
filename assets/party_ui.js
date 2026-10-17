@@ -116,6 +116,7 @@ function render(){
  $('partyPolicy').value=party.policy;
  $('partySeed').value=party.seed;
  $('partyYear').value=party.year;
+ $('partyPolicyHelp').textContent=M.policyDetails[party.policy]||'';
  const countries=$('partyCountries');
  countries.innerHTML=Core.COUNTRIES.map(c=>'<label class="party-country '+(party.controlled.includes(c)?'chosen':'')+'"><input type="checkbox" value="'+c+'" '+(party.controlled.includes(c)?'checked':'')+'><span>'+escape(M.countryNames[c])+'</span></label>').join('');
  countries.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>onCountriesChange(input)));
