@@ -142,11 +142,11 @@ function render(){
  $('partyNext').disabled=party.year===2050;
  const wild=party.scenario.startsWith('W'),supported=!wild&&D.manifest.seeds.includes(party.seed);
  $('partyContext').innerHTML=wild?
-  '<strong>«Дикая карта» '+escape(party.scenario)+':</strong> четыре кризиса. Номер жеребьёвки: <b>'+escape(party.wildcardSeed||'не сохранён')+'</b>; номер экономического расчёта: <b>'+escape(party.seed)+'</b>. Доступны переговорная, нейтральная и адаптивная MAPPO; архивная MAPPO недоступна.':
+  '<strong>«Дикая карта» '+escape(party.scenario)+'.</strong> Четыре кризиса · жеребьёвка '+escape(party.wildcardSeed||'—')+' · расчёт '+escape(party.seed)+'. Архивный ИИ здесь недоступен.':
   '<strong>'+escape(G.scenarioTitles[party.scenario]||party.scenario)+'.</strong> '+(supported?
-   (party.policy.startsWith('ADAPTIVE_MAPPO')?'Адаптивная MAPPO: обученный актор вычисляет новые решения по текущему состоянию.':'Начальные решения взяты из выбранной стратегии. Архивная MAPPO использует сохранённые последовательности, а переговорная стратегия пересчитывается по состоянию модели.'):
-   'Начальный уровень решений — средний. Для этого номера расчёта доступны переговорная и нейтральная стратегии.');
- $('partyNotComputed').textContent='Вы задаёте решения только для выбранных лет. В остальные годы государства действуют по выбранным стратегиям. Расчёт всегда охватывает 2025–2050 годы.';
+   'Условия исходного исследования V4.7; автоматические действия выбирает «'+escape(M.policyNames[party.policy])+'».':
+   'Новый вариант исходных условий; доступны только стратегии без архивной привязки.');
+ $('partyNotComputed').textContent='Задавайте решения по годам. Пропущенные годы рассчитывает выбранная стратегия; полный итог — до 2050 года.';
  window.dispatchEvent(new Event('eurasia:party-rendered'));
 }
 function onCountriesChange(input){
