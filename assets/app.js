@@ -13,7 +13,9 @@ const current=()=>M.at(D,state.scenario,state.policy,state.seed,state.year);
 const compare=()=>M.at(D,state.scenario,state.compare,state.seed,state.year);
 function selectSetup(){
  $('scenario').innerHTML=D.scenarios.map(s=>`<option value="${safe(s.scenario_id)}">${safe(s.scenario_id+' · '+(window.EURASIA_GUIDE?.scenarioTitles?.[s.scenario_id]||s.name))}</option>`).join('');
- for(const id of ['policy','compare'])$(id).innerHTML=M.archivePolicies.map(v=>`<option value="${v}">${safe(M.policyNames[v])}</option>`).join('');
+ for(const id of ['policy','compare'])$(id).innerHTML=
+   '<optgroup label="Расчёт адаптивной MAPPO">'+M.adaptivePolicies.map(v=>`<option value="${v}">${safe(M.policyNames[v])}</option>`).join('')+'</optgroup>'+
+   '<optgroup label="Архив V4.7">'+M.archivePolicies.map(v=>`<option value="${v}">${safe(M.policyNames[v])}</option>`).join('')+'</optgroup>';
  $('seed').innerHTML=D.manifest.seeds.map(v=>`<option value="${v}">${v}</option>`).join('');
  for(const id of ['scenario','policy','compare','seed','metric']){
   if(!$(id))continue;
@@ -21,7 +23,7 @@ function selectSetup(){
   $(id).addEventListener('change',e=>{
    state[id]=id==='seed'?Number(e.target.value):e.target.value;
    if((id==='policy'||id==='compare')&&state.policy===state.compare){
-    const different=M.archivePolicies.find(key=>key!==state[id]);
+    const different=[...M.adaptivePolicies,...M.archivePolicies].find(key=>key!==state[id]);
     const other=id==='policy'?'compare':'policy';
     state[other]=different;
     $(other).value=different;
@@ -64,7 +66,10 @@ function renderChart(){
  $('chartSelection').textContent=M.policyNames[state.policy]+'  ↔  '+M.policyNames[state.compare];
  $('chartStrategyDetails').innerHTML='<div><b class="strategy-primary">'+safe(M.policyNames[state.policy])+'</b><p>'+safe(M.policyDetails[state.policy])+'</p></div>'+
   '<div><b class="strategy-secondary">'+safe(M.policyNames[state.compare])+'</b><p>'+safe(M.policyDetails[state.compare])+'</p></div>';
- $('metricExplanation').textContent=metricExplanations[state.metric]+(state.metric==='trade_usd_total'?' Единица оси: млрд долл.':'')+' Синяя — основная стратегия, красная — контроль. Исходные данные: архив V4.7.';
+ const adaptiveMode=[state.policy,state.compare].some(key=>M.adaptivePolicies.includes(key));
+ $('metricExplanation').textContent=metricExplanations[state.metric]+(state.metric==='trade_usd_total'?' Единица оси: млрд долл.':'')+
+  ' Синяя — основная стратегия, красная — контроль. '+
+  (adaptiveMode?'Адаптивные линии рассчитаны в браузере исходным замороженным актором MAPPO с приближённым состоянием V4.7; архивные линии не изменяются.':'Обе линии — сохранённые траектории исходного эксперимента V4.7.');
 }
 const positions={RUS:[255,75],BLR:[110,122],KAZ:[312,186],KGZ:[205,260],UZB:[295,293],TJK:[385,283],TKM:[380,218],ARM:[87,246]};
 const actionLevels=[
