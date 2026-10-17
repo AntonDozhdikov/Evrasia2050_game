@@ -17,24 +17,27 @@
    check(Object.keys(M.policyDetails).length===6,'Missing canonical strategy explanations');
    const policies=[...d.getElementById('policy').options].map(x=>x.value);
    const comparisons=[...d.getElementById('compare').options].map(x=>x.value);
-   check(policies.length===4 && comparisons.length===4,'Historical browser offers unavailable adaptive policies');
-   check(policies.every(x=>M.archivePolicies.includes(x)),'Archive list includes policies without archived actions');
+   check(policies.length===6 && comparisons.length===6,'All six real strategies must be selectable in comparison');
+   check(policies.every(x=>[...M.archivePolicies,...M.adaptivePolicies].includes(x)),'Unknown strategy in comparison list');
    const primary=d.getElementById('policy'),other=d.getElementById('compare');
    check(d.querySelectorAll('#chart polyline').length===2,'Initial archive chart has wrong number of lines');
-   select(primary,'NEUTRAL');select(other,'MAPPO');
+   select(primary,'NEUTRAL');select(other,'ADAPTIVE_MAPPO_GREEDY');
    check(d.getElementById('legendPrimary').textContent===M.policyNames.NEUTRAL,'Primary chart legend out of sync');
-   check(d.getElementById('legendCompare').textContent===M.policyNames.MAPPO,'Comparison legend out of sync');
+   check(d.getElementById('legendCompare').textContent===M.policyNames.ADAPTIVE_MAPPO_GREEDY,'Comparison legend out of sync');
    check(d.getElementById('chartSelection').textContent.includes(M.policyNames.NEUTRAL) &&
-         d.getElementById('chartSelection').textContent.includes(M.policyNames.MAPPO),'Selected policy pair not visible above chart');
+         d.getElementById('chartSelection').textContent.includes(M.policyNames.ADAPTIVE_MAPPO_GREEDY),'Selected policy pair not visible above chart');
    check(d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.NEUTRAL) &&
-         d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.MAPPO),
+         d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.ADAPTIVE_MAPPO_GREEDY),
          'Full strategy explanations do not match active lines');
-   check(d.querySelectorAll('#chart polyline').length===2,'Archived lines disappear after strategy switch');
+   check(d.querySelectorAll('#chart polyline').length===2,'Archive+adaptive lines disappear after strategy switch');
+   check(d.getElementById('metricExplanation').textContent.includes('рассчитаны в браузере'),'Actual adaptive series provenance not indicated');
+   const adaptiveRun=M.getRun(w.EURASIA_DATA,'S01','ADAPTIVE_MAPPO_GREEDY',163);
+   check(adaptiveRun.origin==='adaptive_js_v47'&&adaptiveRun.years.length===26,'Adaptive series does not originate from actual state-conditioned JS actor');
    const points=[...d.querySelectorAll('#chart polyline')].map(x=>x.getAttribute('points'));
    check(points[0]!==points[1],'Different strategies show identical graph paths');
    select(d.getElementById('metric'),'trade_usd_total');
    check(d.getElementById('metricExplanation').textContent.includes('млрд'),'Trade unit label missing in chart footer');
-   select(primary,'MAPPO');
+   select(primary,'ADAPTIVE_MAPPO_GREEDY');
    check(primary.value!==other.value,'Identical selected strategies not separated');
    const extra=d.querySelector('.archive-extras');
    check(extra&&!extra.open,'Secondary research settings are expanded by default');
@@ -54,7 +57,7 @@
    check(w.getComputedStyle(d.querySelector('.mobile-jump-nav')).display!=='none','Mobile navigation missing');
    check(w.getComputedStyle(d.querySelector('.party-file-options')).display!=='none','Party files hidden on mobile');
    check([...d.querySelectorAll('.mobile-jump-nav a')].length===4,'Expected four mobile navigation destinations');
-   out.textContent='PASS COMPACT UX: 6 short strategies, 4 valid archive controls, two synchronized lines, explanations, 320px, saves, full-game results';
+   out.textContent='PASS COMPACT UX: 6 short policies, real adaptive/archive graph, synchronized labels, explanations, 320px, saves, full game';
   }catch(e){out.textContent='FAIL COMPACT UX: '+e.message;}
  },380),{once:true});
  setTimeout(()=>{if(out.textContent==='WAIT COMPACT')out.textContent='FAIL COMPACT UX: timed out';},30000);
