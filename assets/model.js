@@ -43,7 +43,7 @@
    });
    const years=out.history.map(row=>db.fields.map(field=>{
     const value=row[field];
-    if(!Number.isFinite(value))throw Error('Отсутствует показатель '+field+' в расчёте '+key);
+    if(!Number.isFinite(value))throw Error('Отсутствует показатель '+field+' в расчёте '+key+'; поля архива: '+db.fields.join(', ')+'; выходы движка: '+Object.keys(row).join(', '));
     return value;
    }));
    const actions=out.history.map(row=>row.actions.map(levels=>levels.slice()));
