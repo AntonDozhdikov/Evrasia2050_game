@@ -23,7 +23,8 @@
    check(d.querySelectorAll('#chart polyline').length===2,'Initial archive chart has wrong number of lines');
    select(primary,'NEUTRAL');select(other,'ADAPTIVE_MAPPO_GREEDY');
    check(d.getElementById('legendPrimary').textContent===M.policyNames.NEUTRAL,'Primary chart legend out of sync');
-   check(d.getElementById('legendCompare').textContent===M.policyNames.ADAPTIVE_MAPPO_GREEDY,'Comparison legend out of sync');
+   let calculationProbe='ok';try{M.getRun(w.EURASIA_DATA,'S01','ADAPTIVE_MAPPO_GREEDY',163);}catch(e){calculationProbe=e.message;}
+   check(d.getElementById('legendCompare').textContent===M.policyNames.ADAPTIVE_MAPPO_GREEDY,'Comparison legend out of sync: '+d.getElementById('legendCompare').textContent+' vs '+M.policyNames.ADAPTIVE_MAPPO_GREEDY+'; direct actor: '+calculationProbe);
    check(d.getElementById('chartSelection').textContent.includes(M.policyNames.NEUTRAL) &&
          d.getElementById('chartSelection').textContent.includes(M.policyNames.ADAPTIVE_MAPPO_GREEDY),'Selected policy pair not visible above chart');
    check(d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.NEUTRAL) &&
