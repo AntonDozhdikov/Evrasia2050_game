@@ -54,6 +54,16 @@
      counts.countries++;
     }
    }
+   d.getElementById('archive-results').open=true;
+   for(let direction=0;direction<6;direction++){
+    set(d,'actionType',direction);
+    const scene=d.querySelector('#decisionMap svg');
+    ch(scene&&d.querySelectorAll('#decisionMap [data-decision-country]').length===8,'Incomplete policy-decision map for action '+direction);
+    ch(!/NaN|undefined|Infinity/.test(scene.innerHTML),'Non-numeric policy-state diagram '+direction);
+   }
+   const trade=d.getElementById('network');
+   ch(trade&&trade.querySelectorAll('[data-country]').length===8,'Trade network missing 8 country nodes');
+   ch(trade.querySelectorAll('line').length>=10,'Trade network graph lines missing');
    for(const size of [1150,760,390,320]){
     f.style.width=size+'px';
     for(const id of ['chart','partyResultChart','partyCountryDetailChart']){
@@ -63,11 +73,19 @@
      ch(height>=175,id+' only '+height+' px tall at '+size+'px');
      if(size<=390)ch(el.scrollWidth>=el.clientWidth+60,'No graph-only horizontal scroll '+id+' at '+size+'px');
     }
+    if(size<=390){
+     for(const [id,scope] of [['network','.network-chart-scroll'],['decisionMap','#decisionMap']]){
+      const svg=d.getElementById(id).tagName==='svg'?d.getElementById(id):d.querySelector('#decisionMap svg');
+      ch(svg.getBoundingClientRect().height>=200,'Tiny '+id+' diagram at '+size);
+      const wrap=d.querySelector(scope);
+      ch(wrap.scrollWidth>wrap.clientWidth+60,'Diagram '+id+' does not scroll within its own container at '+size);
+     }
+    }
     ch(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Page overflows at '+size);
     counts.viewports++;
    }
    pre.textContent=JSON.stringify(counts,null,2);
-   out.textContent='PASS FULL CHART: '+counts.partyRuns+' game variants, '+counts.partyMetrics+' summary charts, '+counts.countryMetrics+' country plots, '+counts.viewports+' viewports';
+   out.textContent='PASS FULL CHART: '+counts.partyRuns+' game variants, '+counts.partyMetrics+' summary charts, '+counts.countryMetrics+' national plots, six policy diagrams and trade graph, '+counts.viewports+' viewports';
   }catch(e){pre.textContent=JSON.stringify({counts,error:e.message});out.textContent='FAIL FULL CHART: '+e.message;}
  },{once:true});
  setTimeout(()=>{if(out.textContent==='WAIT FULL CHART')out.textContent='FAIL FULL CHART: timeout';},90000);
