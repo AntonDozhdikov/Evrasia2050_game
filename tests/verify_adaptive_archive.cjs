@@ -41,5 +41,5 @@ for(const sc of scenarios)for(const seed of seeds)for(const policy of M.adaptive
 }
 const original=M.getRun(D,'S01','MAPPO_GREEDY',163);
 assert.equal(original,D.runs['S01|MAPPO_GREEDY|163'],'Archive trajectory must remain bitwise unchanged');
-assert.ok(M.policyDetails.ADAPTIVE_MAPPO_GREEDY.includes('пересчитывает'));
+assert.ok(M.policyDetails.ADAPTIVE_MAPPO_GREEDY.includes('заново оценивает'));
 console.log('PASS ADAPTIVE ARCHIVE: '+tested+' 26-year live actor trajectories, all 15 fields, project alias, six strategies and immutable source archive.');
