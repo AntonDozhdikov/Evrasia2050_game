@@ -52,24 +52,65 @@ function renderStats(){let x=current().values,y=compare().values;
  $('crisis').textContent=fmt(x.crises_active,0);$('crisis-delta').textContent=x.crises_active?'Синтетические воздействия':'Активных воздействий нет';
 }
 function renderChart(){
- const a=M.series(D,state.scenario,state.policy,state.seed,state.metric),b=M.series(D,state.scenario,state.compare,state.seed,state.metric);
- const vals=[...a,...b].map(p=>p.value).filter(Number.isFinite);let low=Math.min(...vals),high=Math.max(...vals);if(high===low){low-=1;high+=1;}
- const margin=(high-low)*.13;low-=margin;high+=margin;
- const w=820,h=290,p={l:58,r:16,t:21,b:42};const X=i=>p.l+i*(w-p.l-p.r)/25;const Y=v=>p.t+(high-v)/(high-low)*(h-p.t-p.b);
- const makeLine=(s,color)=>`<polyline points="${s.map((d,i)=>`${X(i).toFixed(2)},${Y(d.value).toFixed(2)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
- const ix=state.year-2025; const hl=`<line x1="${X(ix)}" y1="${p.t}" x2="${X(ix)}" y2="${h-p.b}" stroke="#9aaabe" stroke-width="1.5" stroke-dasharray="5 5"/>`;
- const grids=Array.from({length:5},(_,i)=>{let v=low+i*(high-low)/4,yy=Y(v);return `<line x1="${p.l}" y1="${yy}" x2="${w-p.r}" y2="${yy}" stroke="#e3e9f0"/><text x="${p.l-12}" y="${yy+4}" font-size="12" fill="#718095" text-anchor="end">${fmt(state.metric==='trade_usd_total'?v/1e9:v,1)}</text>`;}).join('');
- const labels=[2025,2030,2035,2040,2045,2050].map(v=>`<text x="${X(v-2025)}" y="${h-13}" text-anchor="middle" fill="#718095" font-size="12">${v}</text>`).join('');
- $('chart').innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Динамика ${safe(state.metric)}"><g>${grids}${labels}${hl}${makeLine(b,'#d44f5d')}${makeLine(a,'#2362c6')}</g><circle cx="${X(ix)}" cy="${Y(a[ix].value)}" r="6" fill="#2362c6" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.policy])}: ${fmt(a[ix].value,3)}</title></circle><circle cx="${X(ix)}" cy="${Y(b[ix].value)}" r="5" fill="#d44f5d" stroke="#fff" stroke-width="2"><title>${safe(M.policyNames[state.compare])}: ${fmt(b[ix].value,3)}</title></circle></svg>`;
- $('legendPrimary').textContent=M.policyNames[state.policy];
- $('legendCompare').textContent=M.policyNames[state.compare];
- $('chartSelection').textContent=M.policyNames[state.policy]+'  ↔  '+M.policyNames[state.compare];
- $('chartStrategyDetails').innerHTML='<div><b class="strategy-primary">'+safe(M.policyNames[state.policy])+'</b><p>'+safe(M.policyDetails[state.policy])+'</p></div>'+
-  '<div><b class="strategy-secondary">'+safe(M.policyNames[state.compare])+'</b><p>'+safe(M.policyDetails[state.compare])+'</p></div>';
+ const label=M.policyNames,stateName=state.metric;
+ const srcA=M.series(D,state.scenario,state.policy,state.seed,state.metric),
+       srcB=M.series(D,state.scenario,state.compare,state.seed,state.metric);
+ const convert=value=>stateName==='trade_usd_total'?value/1e9:value;
+ const a=srcA.map(p=>convert(p.value)),b=srcB.map(p=>convert(p.value)),values=[...a,...b];
+ const chart=$('chart'),note=$('chartDataNote');
+ if(a.length!==26||b.length!==26||values.some(v=>!Number.isFinite(v))){
+  chart.innerHTML='<p role="alert">Невозможно построить график: отсутствуют числовые данные для выбранного показателя.</p>';
+  note.textContent='Для этого варианта нужны полные ряды за 2025–2050 годы.';
+  return;
+ }
+ const discrete=['new_projects','projects_matured'].includes(stateName);
+ const amin=Math.min(...values),amax=Math.max(...values),span=amax-amin;
+ const margin=Math.max(span*.14,Math.abs(amax)*.025,discrete?.55:.015);
+ let low=discrete?Math.max(0,Math.floor(amin-margin)):amin-margin;
+ let high=discrete?Math.max(low+1,Math.ceil(amax+margin)):amax+margin;
+ if(high<=low){high=low+1;}
+ const width=880,height=300,p={l:75,r:21,t:26,b:39};
+ const X=i=>p.l+i*(width-p.l-p.r)/25;
+ const Y=v=>p.t+(high-v)/(high-low)*(height-p.t-p.b);
+ const round=n=>Number(n.toFixed(2));
+ const points=arr=>arr.map((v,i)=>round(X(i))+','+round(Y(v))).join(' ');
+ const blue='#064bb6',red='#b32644';
+ const yStep=(high-low)/4,decimals=discrete&&yStep>=1?0:yStep>=10?1:yStep>=1?2:yStep>=.1?3:5;
+ const grids=Array.from({length:5},(_,i)=>{
+  const val=low+(high-low)*i/4,y=round(Y(val));
+  return '<line x1="'+p.l+'" y1="'+y+'" x2="'+(width-p.r)+'" y2="'+y+'" stroke="#cbd8e8" stroke-width="1"/>'+
+  '<text x="'+(p.l-13)+'" y="'+(y+4)+'" font-size="13" fill="#294660" text-anchor="end">'+fmt(val,decimals)+'</text>';
+ }).join('');
+ const xlabels=[2025,2030,2035,2040,2045,2050].map(year=>
+  '<text x="'+round(X(year-2025))+'" y="'+(height-10)+'" text-anchor="middle" fill="#294660" font-size="13">'+year+'</text>').join('');
+ const ticks=(arr,color,radius,fill)=>[0,5,10,15,20,25].map(i=>
+  '<circle cx="'+round(X(i))+'" cy="'+round(Y(arr[i]))+'" r="'+radius+'" fill="'+fill+'" stroke="'+color+'" stroke-width="2.5"><title>'+
+  safe((color===red?label[state.compare]:label[state.policy])+' · '+(2025+i)+': '+fmt(arr[i],4))+'</title></circle>').join('');
+ const ix=state.year-2025;
+ const marker='<line x1="'+round(X(ix))+'" y1="'+p.t+'" x2="'+round(X(ix))+'" y2="'+(height-p.b)+'" stroke="#6f879d" stroke-width="1.5" stroke-dasharray="4 5"/>';
+ const equal=a.every((v,i)=>Math.abs(v-b[i])<=1e-10*Math.max(1,Math.abs(v),Math.abs(b[i])));
+ const unchanged=values.every(v=>Math.abs(v-values[0])<=1e-10*Math.max(1,Math.abs(v)));
+ note.textContent=equal?
+  (unchanged?(Math.abs(values[0])<1e-10?'В обоих вариантах показатель равен нулю в течение всего периода.':'В обеих стратегиях показатель остаётся постоянным за 2025–2050 годы.'):'Траектории двух стратегий совпадают. Красная пунктирная линия показана под синей; числовые значения одинаковы.'):
+  (unchanged?'Обе траектории постоянны за весь период.':'');
+ chart.innerHTML='<svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+safe('Сравнение '+label[state.policy]+' и '+label[state.compare]+', '+state.metric+', 2025–2050')+'">'+
+  '<title>'+safe(label[state.policy]+' и '+label[state.compare]+' · '+state.metric)+'</title>'+
+  grids+xlabels+marker+
+  '<polyline points="'+points(b)+'" fill="none" stroke="'+red+'" stroke-width="5.6" stroke-dasharray="11 7" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
+  '<polyline points="'+points(a)+'" fill="none" stroke="'+blue+'" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
+  ticks(b,red,5.9,'#fff')+ticks(a,blue,3.6,blue)+
+  '<circle cx="'+round(X(ix))+'" cy="'+round(Y(a[ix]))+'" r="6.1" fill="'+blue+'" stroke="#fff" stroke-width="2.2"/>'+
+  '<circle cx="'+round(X(ix))+'" cy="'+round(Y(b[ix]))+'" r="8" fill="none" stroke="'+red+'" stroke-width="2.3"/>'+
+  '</svg>';
+ $('legendPrimary').textContent=label[state.policy];
+ $('legendCompare').textContent=label[state.compare];
+ $('chartSelection').textContent=label[state.policy]+'  ↔  '+label[state.compare];
+ $('chartStrategyDetails').innerHTML='<div><b class="strategy-primary">'+safe(label[state.policy])+'</b><p>'+safe(M.policyDetails[state.policy])+'</p></div>'+
+  '<div><b class="strategy-secondary">'+safe(label[state.compare])+'</b><p>'+safe(M.policyDetails[state.compare])+'</p></div>';
  const adaptiveMode=[state.policy,state.compare].some(key=>M.adaptivePolicies.includes(key));
  $('metricExplanation').textContent=metricExplanations[state.metric]+(state.metric==='trade_usd_total'?' Единица оси: млрд долл.':'')+
-  ' Синяя — основная стратегия, красная — контроль. '+
-  (adaptiveMode?'Адаптивные линии рассчитаны в браузере исходным замороженным актором MAPPO с приближённым состоянием V4.7; архивные линии не изменяются.':'Обе линии — сохранённые траектории исходного эксперимента V4.7.');
+  ' Синяя сплошная — основная стратегия, красная пунктирная — контроль. '+
+  (adaptiveMode?'Адаптивные линии рассчитаны в браузере замороженным актором MAPPO с приближённым состоянием V4.7; архивные линии не изменяются.':'Обе линии — сохранённые траектории исходного эксперимента V4.7.');
 }
 const positions={RUS:[255,75],BLR:[110,122],KAZ:[312,186],KGZ:[205,260],UZB:[295,293],TJK:[385,283],TKM:[380,218],ARM:[87,246]};
 const actionLevels=[
@@ -122,7 +163,7 @@ function renderNetwork(){
   const [ax,ay]=positions[e.a],[bx,by]=positions[e.b];const highlighted=e.a===state.country||e.b===state.country;
   const width=(1.5+6.5*Math.sqrt(e.total/maxValue)).toFixed(2);
   const info=e.flows.map(f=>`${M.countryNames[f.from]} → ${M.countryNames[f.to]}: ${tradeAmount(f.usd)}`).join('\n');
-  return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${highlighted?'#2362c6':'#739bbd'}" stroke-width="${width}" stroke-opacity="${highlighted?'.86':'.33'}" stroke-linecap="round"><title>${safe(info)}</title></line>`;
+  return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${highlighted?'#064bb6':'#6b87a4'}" stroke-width="${width}" stroke-opacity="${highlighted?'.96':'.55'}" stroke-linecap="round"><title>${safe(info)}</title></line>`;
  }).join('');
  const nodes=D.countries.map(c=>{const [x,y]=positions[c],is=c===state.country;
   return `<g class="network-node" tabindex="0" role="button" aria-label="Выбрать ${safe(M.countryNames[c])}" data-country="${c}"><circle cx="${x}" cy="${y}" r="${is?25:22}" fill="${is?'#2362c6':'#fff'}" stroke="${is?'#2362c6':'#93afcb'}" stroke-width="2"/><text x="${x}" y="${y+4}" fill="${is?'#fff':'#304963'}" font-size="12" font-weight="700" text-anchor="middle">${c}</text><title>${safe(M.countryNames[c])}</title></g>`;

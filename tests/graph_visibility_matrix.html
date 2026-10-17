@@ -1,0 +1,62 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Диагностика графиков: 20 режимов</title></head>
+<body><p id="status">WAIT GRAPH</p><pre id="report"></pre>
+<iframe id="game" src="../play_the_game.html" style="width:1160px;height:900px;border:0"></iframe>
+<script>
+(()=>{
+ const f=document.getElementById('game'),out=document.getElementById('status'),log=document.getElementById('report');
+ const cases=[
+ ['S01','MAPPO_GREEDY','BARGAIN',163,'mean_growth_pct'],
+ ['S02','MAPPO','NEUTRAL',272,'new_projects'],
+ ['S03','ADAPTIVE_MAPPO_GREEDY','MAPPO_GREEDY',381,'trade_usd_total'],
+ ['S04','ADAPTIVE_MAPPO','ADAPTIVE_MAPPO_GREEDY',163,'mean_reward'],
+ ['S05','BARGAIN','NEUTRAL',272,'projects_matured'],
+ ['S06','ADAPTIVE_MAPPO','MAPPO',381,'network_strength'],
+ ['S07','MAPPO_GREEDY','MAPPO',163,'capital_budget_total'],
+ ['S08','NEUTRAL','MAPPO_GREEDY',272,'mean_growth_pct'],
+ ['S09','ADAPTIVE_MAPPO_GREEDY','BARGAIN',381,'new_projects'],
+ ['S10','MAPPO','ADAPTIVE_MAPPO',163,'trade_usd_total'],
+ ['S11','BARGAIN','MAPPO',272,'projects_matured'],
+ ['S12','NEUTRAL','ADAPTIVE_MAPPO_GREEDY',381,'network_strength'],
+ ['S13','ADAPTIVE_MAPPO','BARGAIN',163,'capital_budget_total'],
+ ['S14','MAPPO_GREEDY','NEUTRAL',272,'mean_reward'],
+ ['S15','ADAPTIVE_MAPPO_GREEDY','ADAPTIVE_MAPPO',381,'mean_growth_pct'],
+ ['S16','MAPPO','BARGAIN',163,'new_projects'],
+ ['S17','NEUTRAL','MAPPO',272,'trade_usd_total'],
+ ['S18','BARGAIN','ADAPTIVE_MAPPO_GREEDY',381,'projects_matured'],
+ ['S19','ADAPTIVE_MAPPO','NEUTRAL',163,'capital_budget_total'],
+ ['S20','MAPPO_GREEDY','ADAPTIVE_MAPPO',272,'network_strength']
+ ];
+ const wait=()=>new Promise(resolve=>setTimeout(resolve,25));
+ const set=(d,id,value)=>{const e=d.getElementById(id);e.value=value;e.dispatchEvent(new Event('change',{bubbles:true}));};
+ f.addEventListener('load',async()=>{
+  await wait();
+  const d=f.contentDocument,w=f.contentWindow,problems=[],rows=[];
+  for(let i=0;i<cases.length;i++){
+   const [sc,a,b,seed,metric]=cases[i];
+   try{
+    set(d,'scenario',sc);set(d,'seed',String(seed));set(d,'policy',a);set(d,'compare',b);set(d,'metric',metric);
+    const chart=d.querySelector('#chart svg'),paths=[...d.querySelectorAll('#chart polyline')];
+    const ls=paths.map(x=>x.getAttribute('points')||''),meaning=w.EurasiaModel;
+    const ok=chart&&paths.length===2&&ls.every(x=>x.split(' ').length===26&&!/NaN|undefined|Infinity/.test(x))&&
+      d.getElementById('legendPrimary').textContent===meaning.policyNames[a]&&
+      d.getElementById('legendCompare').textContent===meaning.policyNames[b];
+    const h=chart?.getBoundingClientRect().height||0;
+    rows.push({number:i+1,scenario:sc,primary:a,compare:b,seed,metric,lines:paths.length,height:+h.toFixed(1),ok:!!ok});
+    if(!ok)problems.push('Mode '+(i+1)+' missing/stale line: '+JSON.stringify(rows.at(-1)));
+   }catch(e){problems.push('Mode '+(i+1)+' '+sc+': '+e.message);}
+  }
+  try{
+   for(const size of [1100,760,390,320]){
+    f.style.width=size+'px';await wait();
+    const chart=d.querySelector('#chart svg'),h=chart.getBoundingClientRect().height;
+    rows.push({viewport:size,chartHeight:+h.toFixed(1),width:d.documentElement.scrollWidth});
+    if(h<155)problems.push('Chart too short at '+size+'px: '+h.toFixed(1)+'px');
+    if(d.documentElement.scrollWidth>d.documentElement.clientWidth+4)problems.push('Horizontal page overflow at '+size);
+   }
+  }catch(e){problems.push('Responsive graph: '+e.message);}
+  log.textContent=JSON.stringify({cases:cases.length,results:rows,problems},null,2);
+  out.textContent=(problems.length?'FAIL GRAPH QA: '+problems.join(' | '):'PASS GRAPH QA: '+cases.length+' scenario-policy-metric modes and responsive heights');
+ },{once:true});
+ setTimeout(()=>{if(out.textContent==='WAIT GRAPH')out.textContent='FAIL GRAPH QA: timeout';},65000);
+})();
+</script></body></html>

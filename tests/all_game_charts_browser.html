@@ -1,0 +1,93 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Расширенная проверка всех игровых графиков</title></head>
+<body><p id="status">WAIT FULL CHART</p><pre id="report"></pre><iframe id="game" src="../play_the_game.html" style="width:1160px;height:890px;border:0"></iframe>
+<script>
+(()=>{
+ const out=document.getElementById('status'),f=document.getElementById('game'),pre=document.getElementById('report');
+ const warnings=[],counts={partyRuns:0,partyMetrics:0,countryMetrics:0,countries:0,viewports:0};
+ const ch=(cond,why)=>{if(!cond)throw Error(why);};
+ const set=(d,id,value)=>{let el=d.getElementById(id);ch(el&&(!el.options||[...el.options].some(o=>o.value===String(value))),id+' no '+value);el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));};
+ const inspect=(d,id,minLines,metric)=>{
+  const box=d.getElementById(id),svg=box?.querySelector('svg'),lines=[...(box?.querySelectorAll('polyline')||[])];
+  ch(svg,'No SVG in '+id+' for '+metric);
+  ch(!box.querySelector('[role="alert"]'),'Missing data '+id+' for '+metric);
+  ch(lines.length>=minLines,'Missing line '+id+'/'+metric+': '+lines.length);
+  for(const line of lines){
+   const pts=line.getAttribute('points')||'';
+   ch(pts.split(/\s+/).length===26,'Incorrect year count: '+id+'/'+metric);
+   ch(!/NaN|undefined|Infinity/.test(pts),'Unusable coordinates '+id+'/'+metric);
+   ch(Number(line.getAttribute('stroke-width'))>=3,'Unclear stroke '+id+'/'+metric);
+  }
+  const b=svg.getBoundingClientRect();
+  ch(b.height>170,'SVG too short for '+id+'/'+metric+': '+b.height);
+ };
+ f.addEventListener('load',()=>{
+  const d=f.contentDocument,w=f.contentWindow;w.confirm=()=>true;
+  try{
+   d.getElementById('uxQuickStart').click();
+   const combos=[
+    ['S01','MAPPO_GREEDY',163],['S10','ADAPTIVE_MAPPO_GREEDY',272],
+    ['S17','ADAPTIVE_MAPPO',381],['W03','BARGAIN',163],
+    ['W07','ADAPTIVE_MAPPO_GREEDY',272]
+   ];
+   for(const [scenario,policy,seed] of combos){
+    set(d,'partyScenario',scenario);set(d,'partyPolicy',policy);set(d,'partySeed',seed);
+    d.getElementById('partyCalculate').click();
+    ch(!d.getElementById('partyResultsContent').hidden,
+       'No game result '+scenario+'/'+policy+': '+d.getElementById('partyResultsStatus').textContent);
+    counts.partyRuns++;
+    const opts=[...d.querySelectorAll('#partyResultMetric option')].map(o=>o.value);
+    ch(opts.length===21,'Missing summary indicators: '+opts.length);
+    for(const metric of opts){
+     set(d,'partyResultMetric',metric);
+     inspect(d,'partyResultChart',2,metric);
+     counts.partyMetrics++;
+    }
+    for(const country of ['RUS','BLR']){
+     set(d,'partyCountryDetailSelect',country);
+     const metrics=[...d.querySelectorAll('#partyCountryMetric option')].map(o=>o.value);
+     ch(metrics.length===11,'Expected 11 national indicators');
+     for(const metric of metrics){
+      set(d,'partyCountryMetric',metric);
+      inspect(d,'partyCountryDetailChart',2,country+'/'+metric);
+      counts.countryMetrics++;
+     }
+     counts.countries++;
+    }
+   }
+   d.getElementById('archive-results').open=true;
+   for(let direction=0;direction<6;direction++){
+    set(d,'actionType',direction);
+    const scene=d.querySelector('#decisionMap svg');
+    ch(scene&&d.querySelectorAll('#decisionMap [data-decision-country]').length===8,'Incomplete policy-decision map for action '+direction);
+    ch(!/NaN|undefined|Infinity/.test(scene.innerHTML),'Non-numeric policy-state diagram '+direction);
+   }
+   const trade=d.getElementById('network');
+   ch(trade&&trade.querySelectorAll('[data-country]').length===8,'Trade network missing 8 country nodes');
+   ch(trade.querySelectorAll('line').length>=10,'Trade network graph lines missing');
+   for(const size of [1150,760,390,320]){
+    f.style.width=size+'px';
+    for(const id of ['chart','partyResultChart','partyCountryDetailChart']){
+     const el=d.getElementById(id),svg=el.querySelector('svg');
+     ch(svg,'SVG missing after resize '+id);
+     const height=svg.getBoundingClientRect().height;
+     ch(height>=175,id+' only '+height+' px tall at '+size+'px');
+     if(size<=390)ch(el.scrollWidth>=el.clientWidth+60,'No graph-only horizontal scroll '+id+' at '+size+'px');
+    }
+    if(size<=390){
+     for(const [id,scope] of [['network','.network-chart-scroll'],['decisionMap','#decisionMap']]){
+      const svg=d.getElementById(id).tagName==='svg'?d.getElementById(id):d.querySelector('#decisionMap svg');
+      ch(svg.getBoundingClientRect().height>=200,'Tiny '+id+' diagram at '+size);
+      const wrap=d.querySelector(scope);
+      ch(wrap.scrollWidth>wrap.clientWidth+60,'Diagram '+id+' does not scroll within its own container at '+size);
+     }
+    }
+    ch(d.documentElement.scrollWidth<=d.documentElement.clientWidth+4,'Page overflows at '+size);
+    counts.viewports++;
+   }
+   pre.textContent=JSON.stringify(counts,null,2);
+   out.textContent='PASS FULL CHART: '+counts.partyRuns+' game variants, '+counts.partyMetrics+' summary charts, '+counts.countryMetrics+' national plots, six policy diagrams and trade graph, '+counts.viewports+' viewports';
+  }catch(e){pre.textContent=JSON.stringify({counts,error:e.message});out.textContent='FAIL FULL CHART: '+e.message;}
+ },{once:true});
+ setTimeout(()=>{if(out.textContent==='WAIT FULL CHART')out.textContent='FAIL FULL CHART: timeout';},90000);
+})();
+</script></body></html>

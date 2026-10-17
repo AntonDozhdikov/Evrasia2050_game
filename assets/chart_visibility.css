@@ -1,0 +1,53 @@
+/* Графическая читаемость V4.7: доступные цвета, минимум 230px высоты и скролл внутри графика на телефоне. */
+:root{--chart-blue:#004bb6;--chart-red:#b62644;--chart-grid:#d6e0eb;--chart-axis:#233d5b}
+#chart,#partyResultChart,#partyCountryDetailChart{min-width:0;max-width:100%;background:#fff}
+#chart{overflow-x:auto;overflow-y:hidden;scrollbar-gutter:stable}
+#chart svg{display:block;width:100%;height:auto}
+#chart svg polyline{stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+#chart svg text,#partyResultChart svg text,#partyCountryDetailChart svg text{fill:#243f60;font-weight:600}
+#chart svg line,#partyResultChart svg line,#partyCountryDetailChart svg line{shape-rendering:crispEdges}
+.plot-legend{align-items:center;gap:7px 17px}
+.plot-legend>span{font-size:12px;font-weight:800;color:#21405f}
+.plot-legend .swatch{width:25px;height:5px}
+.plot-legend .swatch.blue{background:var(--chart-blue)}
+.plot-legend .swatch.red{background:repeating-linear-gradient(to right,var(--chart-red) 0 12px,transparent 12px 16px)}
+#partyResultChart,#partyCountryDetailChart{overflow-x:auto;overflow-y:hidden;border:1px solid #bdcfe2;background:#fff}
+#partyResultChart svg,#partyCountryDetailChart svg{display:block;width:100%}
+.player-series-choices{gap:7px 9px}
+.player-series-choices .series-toggle{font-size:11px;padding:7px 10px;opacity:1;border:1.5px solid #becfe0;background:#fff;color:#3a516d}
+.player-series-choices .series-toggle:not(.selected){background:#f1f5f9;border-style:dashed;color:#64758b;opacity:.83}
+.player-series-choices .series-toggle.selected{background:#e7f0fc;border-color:#245ca7;color:#133e73;font-weight:800;box-shadow:0 0 0 1px #afc8e6 inset}
+.player-series-choices .series-toggle i{height:5px;width:22px}
+.chart-data-note{font-size:11px;line-height:1.45;color:#365a7c;border-left:3px solid #7ca9d5;background:#eef5fc;padding:7px 10px;margin:6px 0}
+.chart-data-note:empty{display:none}
+#chartDataNote{margin:5px 0}
+.chart-scales-note{font-size:10px;line-height:1.3;color:#5a7188}
+@media(max-width:900px){
+ #partyResultChart svg{min-width:740px!important;width:740px!important;height:241px!important;max-height:none!important;max-width:none!important}
+ #partyCountryDetailChart svg{min-width:720px!important;width:720px!important;height:213px!important;max-height:none!important;max-width:none!important}
+}
+@media(max-width:650px){
+ /* Не сжимать график до 70px: горизонтальная прокрутка только графического блока. */
+ #chart svg{min-width:680px!important;width:680px!important;height:240px!important;max-height:none!important;max-width:none!important}
+ #partyResultChart svg{min-width:740px!important;width:740px!important;height:241px!important;max-height:none!important;max-width:none!important}
+ #partyCountryDetailChart svg{min-width:720px!important;width:720px!important;height:213px!important;max-height:none!important;max-width:none!important}
+ #chart,#partyResultChart,#partyCountryDetailChart{-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}
+ .plot-legend{gap:7px}
+ .plot-legend>span{font-size:11px}
+ #chart:focus-visible,#partyResultChart:focus-visible,#partyCountryDetailChart:focus-visible{outline:2px solid #1a64b3;outline-offset:2px}
+}
+@media(prefers-reduced-motion:reduce){#chart,#partyResultChart,#partyCountryDetailChart{scroll-behavior:auto}}
+
+/* Рядом с временными рядами: не терять читаемость схем торговых связей и решений. */
+.network-chart-scroll{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain}
+.network-chart-scroll svg{display:block}
+.network-chart-scroll:focus-visible,.decision-map:focus-visible{outline:2px solid #165caf;outline-offset:2px}
+.decision-map svg [data-decision-country] circle{vector-effect:non-scaling-stroke}
+@media(max-width:650px){
+ .network-chart-scroll #network{min-width:460px!important;width:460px!important;height:300px!important;max-height:none!important;max-width:none!important}
+ .decision-map{overflow-x:auto;overflow-y:hidden}
+ .decision-map svg{min-width:450px!important;width:450px!important;height:300px!important;max-height:none!important;max-width:none!important}
+}
+
+.chart-scroll-hint{display:none;font-size:11px;color:#3b6389;font-weight:650;margin:4px 0 8px}
+@media(max-width:650px){.chart-scroll-hint{display:block}}
