@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Компактность, стратегии и график — QA</title></head>
+<body><p id="status">WAIT COMPACT</p>
+<iframe id="game" src="../play_the_game.html" style="width:1200px;height:900px;border:0"></iframe>
+<script>
+(function(){
+ const f=document.getElementById('game'),out=document.getElementById('status');
+ const check=(ok,msg)=>{if(!ok)throw Error(msg);};
+ const select=(node,value)=>{node.value=value;node.dispatchEvent(new Event('change',{bubbles:true}));};
+ f.addEventListener('load',()=>setTimeout(()=>{
+  try{
+   let d=f.contentDocument,w=f.contentWindow;
+   const M=w.EurasiaModel;
+   const names=Object.values(M.policyNames);
+   check(names.length===6&&new Set(names).size===6,'Six unique strategy labels required');
+   check(names.every(x=>x.trim().split(/\s+/).length<=2),'Long strategy labels remain');
+   check(Object.keys(M.policyDetails).length===6,'Missing canonical strategy explanations');
+   const policies=[...d.getElementById('policy').options].map(x=>x.value);
+   const comparisons=[...d.getElementById('compare').options].map(x=>x.value);
+   check(policies.length===4 && comparisons.length===4,'Historical browser offers unavailable adaptive policies');
+   check(policies.every(x=>M.archivePolicies.includes(x)),'Archive list includes policies without archived actions');
+   const primary=d.getElementById('policy'),other=d.getElementById('compare');
+   check(d.querySelectorAll('#chart polyline').length===2,'Initial archive chart has wrong number of lines');
+   select(primary,'NEUTRAL');select(other,'MAPPO');
+   check(d.getElementById('legendPrimary').textContent===M.policyNames.NEUTRAL,'Primary chart legend out of sync');
+   check(d.getElementById('legendCompare').textContent===M.policyNames.MAPPO,'Comparison legend out of sync');
+   check(d.getElementById('chartSelection').textContent.includes(M.policyNames.NEUTRAL) &&
+         d.getElementById('chartSelection').textContent.includes(M.policyNames.MAPPO),'Selected policy pair not visible above chart');
+   check(d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.NEUTRAL) &&
+         d.getElementById('chartStrategyDetails').textContent.includes(M.policyDetails.MAPPO),
+         'Full strategy explanations do not match active lines');
+   check(d.querySelectorAll('#chart polyline').length===2,'Archived lines disappear after strategy switch');
+   const points=[...d.querySelectorAll('#chart polyline')].map(x=>x.getAttribute('points'));
+   check(points[0]!==points[1],'Different strategies show identical graph paths');
+   select(d.getElementById('metric'),'trade_usd_total');
+   check(d.getElementById('metricExplanation').textContent.includes('млрд'),'Trade unit label missing in chart footer');
+   select(primary,'MAPPO');
+   check(primary.value!==other.value,'Identical selected strategies not separated');
+   const extra=d.querySelector('.archive-extras');
+   check(extra&&!extra.open,'Secondary research settings are expanded by default');
+   extra.open=true;
+   check(!!d.getElementById('wildcardPicker'),'Crisis wildcard control lost');
+   d.getElementById('uxQuickStart').click();
+   d.getElementById('partyCalculate').click();
+   check(!d.getElementById('partyResultsContent').hidden,'Real game calculations no longer work');
+   check(d.getElementById('playerStrategyDetails').textContent.includes(M.policyDetails.BARGAIN) ||
+         d.getElementById('playerStrategyDetails').textContent.includes(M.policyDetails.MAPPO_GREEDY),'Player chart glossary is empty');
+   let rootWidth=d.documentElement.scrollWidth,view=d.documentElement.clientWidth;
+   check(rootWidth<=view+4,'Desktop horizontal overflow: '+rootWidth+'/'+view);
+   check(d.querySelector('.intro').getBoundingClientRect().height<400,'Hero still unnecessarily tall');
+   f.style.width='320px';
+   rootWidth=d.documentElement.scrollWidth;view=d.documentElement.clientWidth;
+   check(rootWidth<=view+4,'Mobile horizontal overflow: '+rootWidth+'/'+view);
+   check(w.getComputedStyle(d.querySelector('.mobile-jump-nav')).display!=='none','Mobile navigation missing');
+   check(w.getComputedStyle(d.querySelector('.party-file-options')).display!=='none','Party files hidden on mobile');
+   check([...d.querySelectorAll('.mobile-jump-nav a')].length===4,'Expected four mobile navigation destinations');
+   out.textContent='PASS COMPACT UX: 6 short strategies, 4 valid archive controls, two synchronized lines, explanations, 320px, saves, full-game results';
+  }catch(e){out.textContent='FAIL COMPACT UX: '+e.message;}
+ },380),{once:true});
+ setTimeout(()=>{if(out.textContent==='WAIT COMPACT')out.textContent='FAIL COMPACT UX: timed out';},30000);
+})();
+</script></body></html>
